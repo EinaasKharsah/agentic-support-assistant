@@ -40,6 +40,23 @@ def test_compute_metrics():
     assert m["retrieval_recall_at_3"] == 1.0
 
 
+def test_list_of_accepted_actions():
+    r = row(["clarify", "answer"], "answer", expected_cards=("Q1", "Q2"), predicted_card="Q2")
+    r["category"] = "multi_question"
+    m = compute_metrics([r, row("decline", "answer", expected_cards=(), predicted_card="Q1")])
+    assert m["decision_accuracy"] == 0.5
+    assert m["by_category"]["multi_question"] == "1/1"
+
+
+def test_robustness_set_is_valid():
+    items = json.loads(Path("evaluation/robustness_set.json").read_text(encoding="utf-8"))
+    assert len({i["id"] for i in items}) == len(items)
+    for item in items:
+        actions = item["expected_action"] if isinstance(item["expected_action"], list) else [item["expected_action"]]
+        assert set(actions) <= {"answer", "clarify", "decline"}
+        assert item["category"]
+
+
 def test_eval_set_is_valid():
     items = json.loads(Path("evaluation/eval_set.json").read_text(encoding="utf-8"))
     ids = [item["id"] for item in items]
