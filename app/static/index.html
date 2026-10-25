@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Help Center Assistant</title>
+  <meta name="description" content="Agentic RAG support assistant that answers from help articles and shows how it decided.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='5' fill='%23000c20'/%3E%3Cpath d='M4 7l8-4 8 4v8l-7 4-5 3v-4l-4-3z M12 3v8l8-4 M12 11L4 7 M12 11l1 8' fill='none' stroke='%23ff8c8c' stroke-width='1.6' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <meta name="theme-color" content="#000c20">
+  <link rel="stylesheet" href="/static/styles.css">
+  <script>
+    // Apply the saved theme before the page paints, to avoid a flash.
+    try {
+      const saved = localStorage.getItem("theme");
+      if (saved) document.documentElement.dataset.theme = saved;
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#input">Skip to the message box</a>
+
+  <header class="topbar" id="topbar">
+    <div class="brand">
+      <!-- Original mark: a speech bubble drawn from facets (not an IKIM or MML logo). -->
+      <svg class="brand-mark" width="30" height="30" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 7l8-4 8 4v8l-7 4-5 3v-4l-4-3z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M12 3v8l8-4M12 11L4 7M12 11l1 8" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round" opacity=".7"/>
+      </svg>
+      <h1>Help center assistant</h1>
+    </div>
+
+    <div class="topbar-controls">
+      <button type="button" class="text-button" id="new-chat" title="Clear this conversation and start again" aria-label="New conversation"></button>
+      <div class="mode-switch" role="radiogroup" aria-label="How the assistant decides">
+        <button type="button" role="radio" aria-checked="true" data-mode="llm"
+                title="The AI model reads the articles and decides; safety rules check it">AI decides</button>
+        <button type="button" role="radio" aria-checked="false" data-mode="rules"
+                title="Only similarity scores decide (baseline for comparison)">Rules only</button>
+      </div>
+      <span class="status" id="status" aria-live="polite">
+        <span class="status-dot"></span><span class="status-text">Connecting</span>
+      </span>
+      <button type="button" class="icon-button" id="theme-toggle" aria-label="Switch dark or light mode"></button>
+    </div>
+  </header>
+
+  <main class="layout" id="main">
+    <section class="chat" aria-label="Conversation">
+      <div class="messages" id="messages" aria-live="polite">
+        <div class="welcome" id="welcome">
+          <h2>Ask about your account, billing, integrations or data.</h2>
+          <p>Answers come only from our help articles, and each answer shows the article it used.</p>
+
+          <div class="suggestions" id="suggestions"></div>
+        </div>
+      </div>
+
+      <div class="reply-to" id="reply-to" hidden>
+        <span>Your next message will be read together with <q id="reply-to-text"></q></span>
+        <button type="button" class="icon-button" id="reply-to-clear" aria-label="Ask a new question instead"></button>
+      </div>
+
+      <form class="composer" id="composer" autocomplete="off">
+        <label for="input" class="visually-hidden">Your question</label>
+        <textarea id="input" rows="1" maxlength="1000"
+                  placeholder="Type your question, for example: I forgot my password"></textarea>
+        <button type="submit" class="send-button" id="send" aria-label="Send question"></button>
+      </form>
+    </section>
+
+  </main>
+
+  <aside class="trace" id="trace" role="dialog" aria-modal="true" aria-labelledby="trace-title" aria-hidden="true">
+    <div class="trace-header">
+      <h2 id="trace-title">How I decided</h2>
+      <button type="button" class="icon-button trace-close" id="trace-close" aria-label="Close"></button>
+    </div>
+    <div class="trace-body" id="trace-body">
+    </div>
+  </aside>
+
+  <div class="scrim" id="scrim" hidden></div>
+  <script type="module" src="/static/app.js"></script>
+</body>
+</html>
