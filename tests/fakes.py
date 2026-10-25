@@ -27,3 +27,25 @@ class FakeEmbedder:
 
     def embed_query(self, text: str) -> list[float]:
         return self._vector(text)
+
+
+class FakeLLM:
+    """Returns a fixed reply (or raises an error) instead of calling Ollama."""
+
+    def __init__(self, reply: str = "", error: Exception | None = None, json_reply: dict | None = None):
+        self.reply = reply
+        self.error = error
+        self.json_reply = json_reply
+        self.calls: list[list[dict[str, str]]] = []
+
+    def chat(self, messages, json_schema=None):
+        self.calls.append(messages)
+        if self.error:
+            raise self.error
+        return self.reply
+
+    def chat_json(self, messages, json_schema):
+        self.calls.append(messages)
+        if self.error:
+            raise self.error
+        return self.json_reply or {}

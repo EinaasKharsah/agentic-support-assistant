@@ -1,3 +1,4 @@
 fastembed==0.9.1
 qdrant-client==1.20.0
+httpx==0.28.1
 pytest==8.3.3

@@ -12,10 +12,13 @@ app/                     Application code
   knowledge_base.py      Loads and validates the Q&A entries
   embeddings.py          Turns text into vectors (bge-small via fastembed)
   vector_store.py        Stores vectors in Qdrant and searches them
+  llm.py                 Small client for the Ollama chat API
+  answering.py           Writes the answer from one card (falls back to the card text)
 data/
   knowledge_base.json    The 10 Q&A entries
 scripts/
   try_search.py          Try a question and see the similarity scores
+  try_answer.py          Search + let the LLM write the answer
 tests/                   Unit tests
 ```
 
@@ -36,4 +39,11 @@ RUN_MODEL_TESTS=1 pytest tests/test_real_retrieval.py
 
 ```bash
 python scripts/try_search.py "Do you take Bitcoin?"
+```
+
+## Try an answer (needs Ollama)
+
+```bash
+ollama pull qwen2.5:1.5b
+python scripts/try_answer.py "Do you take Bitcoin?"
 ```

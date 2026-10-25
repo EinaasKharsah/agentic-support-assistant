@@ -19,5 +19,10 @@ class Settings:
     qdrant_url: str = os.getenv("QDRANT_URL", "")
     qdrant_collection: str = os.getenv("QDRANT_COLLECTION", "support_kb")
 
+    # Ollama (the LLM that writes answers and makes decisions).
+    ollama_url: str = os.getenv("OLLAMA_URL", "http://localhost:11434")
+    ollama_model: str = os.getenv("OLLAMA_MODEL", "qwen2.5:1.5b")
+    llm_timeout_seconds: float = float(os.getenv("LLM_TIMEOUT_SECONDS", "60"))
+
 
 settings = Settings()
