@@ -15,10 +15,12 @@ app/                     Application code
   llm.py                 Small client for the Ollama chat API
   answering.py           Writes the answer from one card (falls back to the card text)
   agent.py               Decides: answer, ask a clarifying question, or decline
+  main.py                REST API (FastAPI): /chat, /feedback, /health
+  static/                Chat page (plain HTML, CSS and JavaScript; fonts and icons bundled)
 data/
   knowledge_base.json    The 10 Q&A entries
 evaluation/
-  eval_set.json          40 test questions with the expected decision (dev/test split)
+  eval_set.json          41 test questions with the expected decision (dev/test split)
   run_eval.py            Runs the agent on them and reports accuracy and error types
   metrics.py             Accuracy, error types, confusion table, retrieval recall
 scripts/
@@ -68,4 +70,16 @@ python scripts/try_agent.py "I want to stop paying" --mode rules   # score-only 
 python evaluation/run_eval.py --scores-only --split dev   # similarity scores, no LLM
 python evaluation/run_eval.py --mode llm                  # LLM decides + guardrails
 python evaluation/run_eval.py --mode rules                # score-only baseline
+```
+
+## Run the API (needs Ollama)
+
+```bash
+uvicorn app.main:app --reload
+```
+
+Open http://localhost:8000 for the chat page, http://localhost:8000/docs to try the API, or:
+
+```bash
+curl -X POST http://localhost:8000/chat -H "Content-Type: application/json" -d "{\"message\": \"I forgot my password\"}"
 ```
