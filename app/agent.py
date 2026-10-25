@@ -6,6 +6,11 @@ alone did not show this (gap of only 0.06). Code adds guardrails around it:
 
   Guardrail 1 (before the LLM): if no card is relevant at all, decline.
                                  No need to ask a small model about the weather.
+                                 If the best match is the knowledge base's own
+                                 out-of-scope example (Q10), decline as well.
+                                 Q10 is never shown to the LLM as a candidate:
+                                 in evaluation, seeing it confused the model
+                                 ("Q10 is out of scope, so decline") on normal questions.
   Guardrail 2 (after the LLM):  check the decision is valid. The card must be one
                                  of the retrieved cards, and the out-of-scope card
                                  can never be used as an answer.
@@ -56,42 +61,43 @@ DEFAULT_DECLINE_MESSAGE = (
 )
 DEFAULT_CLARIFY_MESSAGE = "I want to make sure I help with the right thing. Which of these do you mean?"
 
-DECISION_SYSTEM_PROMPT = """You are the decision step of a customer support assistant.
-You get a customer message and the most similar support articles (cards).
+DECISION_SYSTEM_PROMPT = """You help a customer support assistant understand a customer message.
+You get the message and the most similar support articles (cards). Fill in:
 
-First, in "reason", say which card or cards match the message and why.
-Then choose exactly ONE action, based on your reason:
+1. "reason": think first. What does the customer want? Which cards fit, and why?
+2. "is_support_question": true if the message is about the customer's account, billing,
+   integrations, or data and security on our platform. false for anything else
+   (for example general coding help, weather, jokes, recommendations).
+3. "matching_cards": list EVERY card that could be what the customer means.
+   - One card if the message clearly asks for one specific thing.
+   - Two or three cards if the message is vague and could mean different things.
+   - An empty list if no card fits.
+4. "clarifying_question": only if you listed two or more cards, a short question that asks
+   which one the customer means. Otherwise an empty string.
 
-- "answer": one card answers the message. Set card_id to that card. This is the most common case.
-- "clarify": the message is vague and could mean 2 or 3 different cards.
-  Put those card ids in options and write a short clarifying_question.
-- "decline": ONLY if the message is not about account, billing, integrations, or data and
-  security, or if it asks for what the card marked OUT OF SCOPE describes.
-
-Rules:
-- Only use card ids from the list below.
-- A support question that matches a normal card must never be declined.
-- The score shows how similar a card is (higher is more similar).
+Only use card ids from the list below. The score shows how similar a card is.
 
 Examples (not from the list below):
-- "How do I update my phone number?" + a card about contact details -> answer
-- "Something is wrong with my bill" + cards about refunds, cancelling and failed payments -> clarify
-- "Can you recommend a good laptop?" -> decline"""
+- "How do I update my phone number?" with a card about contact details:
+  is_support_question=true, matching_cards=[that card]
+- "Something is wrong with my bill" with cards about refunds, cancelling and failed payments:
+  is_support_question=true, matching_cards=[all three], clarifying_question="Is this about ...?"
+- "Can you recommend a good laptop?": is_support_question=false, matching_cards=[]"""
 
-# "reason" is FIRST on purpose. The model writes the JSON from left to right,
-# so it must think before it decides. When "action" came first, the model
-# wrote correct reasons ("this is about a password reset") but had already
-# chosen "decline".
+# The model does the UNDERSTANDING; the code only maps it to an action:
+#   not a support question -> decline, one card -> answer, 2-3 cards -> clarify.
+# Why: when we asked the 3B model to pick the action itself, it often wrote a
+# correct reason ("Q4 is about payment methods") and still chose "decline".
+# "reason" stays first so the model thinks before filling in the other fields.
 DECISION_SCHEMA = {
     "type": "object",
     "properties": {
         "reason": {"type": "string"},
-        "action": {"type": "string", "enum": ["answer", "clarify", "decline"]},
-        "card_id": {"type": "string"},
-        "options": {"type": "array", "items": {"type": "string"}},
+        "is_support_question": {"type": "boolean"},
+        "matching_cards": {"type": "array", "items": {"type": "string"}},
         "clarifying_question": {"type": "string"},
     },
-    "required": ["reason", "action", "card_id", "options", "clarifying_question"],
+    "required": ["reason", "is_support_question", "matching_cards", "clarifying_question"],
 }
 
 
@@ -99,9 +105,8 @@ def format_candidates(matches: list[SearchResult]) -> str:
     lines = []
     for match in matches:
         entry = match.entry
-        flag = "  [OUT OF SCOPE]" if entry.out_of_scope else ""
         lines.append(
-            f"[{entry.id}] score={match.score:.2f}{flag}\n"
+            f"[{entry.id}] score={match.score:.2f}\n"
             f"  Category: {entry.category}\n"
             f"  Question: {entry.question}\n"
             f"  Answer: {entry.answer}"
@@ -118,6 +123,7 @@ class SupportAgent:
         ambiguity_gap: float = 0.05,
         top_k: int = 3,
         mode: str = "llm",
+        generate_answers: bool = True,
     ):
         self.store = store
         self.llm = llm
@@ -125,6 +131,9 @@ class SupportAgent:
         self.ambiguity_gap = ambiguity_gap
         self.top_k = top_k
         self.mode = mode  # "llm" (LLM decides + guardrails) or "rules" (scores only)
+        # False = return the card text without asking the LLM to rephrase it.
+        # Used by the evaluation to measure decisions quickly.
+        self.generate_answers = generate_answers
 
     # ---- public -----------------------------------------------------------
 
@@ -144,6 +153,11 @@ class SupportAgent:
                 matches, "guardrail", f"No card is relevant enough (best score below {self.min_relevance})."
             )
 
+        # The out-of-scope card (Q10) is an example of what to decline, not an article.
+        if matches[0].entry.out_of_scope:
+            return self._decline(matches, "guardrail", "The message matches the out-of-scope example card.")
+        candidates = [m for m in matches if not m.entry.out_of_scope]
+
         if self.mode == "rules":
             return self._rules_decision(query, matches)
 
@@ -153,7 +167,7 @@ class SupportAgent:
                     {"role": "system", "content": DECISION_SYSTEM_PROMPT},
                     {
                         "role": "user",
-                        "content": f"Customer message: {query}\n\nCards:\n{format_candidates(matches)}",
+                        "content": f"Customer message: {query}\n\nCards:\n{format_candidates(candidates)}",
                     },
                 ],
                 json_schema=DECISION_SCHEMA,
@@ -161,35 +175,36 @@ class SupportAgent:
         except LLMError:
             return self._rules_decision(query, matches, note="LLM unavailable. ")
 
-        return self._apply_llm_decision(query, matches, decision)
+        return self._apply_llm_decision(query, matches, candidates, decision)
 
     # ---- decision handling --------------------------------------------------
 
-    def _apply_llm_decision(self, query: str, matches: list[SearchResult], decision: dict) -> AgentResponse:
-        """Guardrail 2: only accept decisions that make sense."""
-        by_id = {m.entry.id: m.entry for m in matches}
-        action = decision.get("action")
+    def _apply_llm_decision(
+        self, query: str, matches: list[SearchResult], candidates: list[SearchResult], decision: dict
+    ) -> AgentResponse:
+        """Map the model's understanding to an action. Guardrail 2: ignore invalid output."""
+        by_id = {m.entry.id: m.entry for m in candidates}
         reason = str(decision.get("reason", "")).strip() or "No reason given."
-        card_id = str(decision.get("card_id", "")).strip()
+        is_support = decision.get("is_support_question")
+        cards = decision.get("matching_cards")
 
-        if action == Action.DECLINE.value:
+        if not isinstance(is_support, bool) or not isinstance(cards, list):
+            return self._rules_decision(query, matches, note="LLM decision was not valid. ")
+
+        if not is_support:
             return self._decline(matches, "llm", reason)
 
-        if action == Action.ANSWER.value and card_id in by_id:
-            entry = by_id[card_id]
-            if entry.out_of_scope:
-                return self._decline(matches, "guardrail", "The best match is the out-of-scope card.")
-            return self._answer(query, entry, matches, "llm", reason)
+        # Keep only real candidate ids, in order, without duplicates (max 3 options).
+        valid = [by_id[cid] for cid in dict.fromkeys(str(c).strip() for c in cards) if cid in by_id][:3]
 
-        if action == Action.CLARIFY.value:
-            option_ids = [cid for cid in decision.get("options", []) if cid in by_id]
-            entries = [by_id[cid] for cid in dict.fromkeys(option_ids) if not by_id[cid].out_of_scope]
-            if len(entries) >= 2:
-                question = str(decision.get("clarifying_question", "")).strip() or DEFAULT_CLARIFY_MESSAGE
-                return self._clarify(entries, matches, "llm", reason, question)
+        if len(valid) == 1:
+            return self._answer(query, valid[0], matches, "llm", reason)
+        if len(valid) >= 2:
+            question = str(decision.get("clarifying_question", "")).strip() or DEFAULT_CLARIFY_MESSAGE
+            return self._clarify(valid, matches, "llm", reason, question)
 
-        # The LLM returned something we cannot use (unknown card id, one option, ...).
-        return self._rules_decision(query, matches, note="LLM decision was not valid. ")
+        # A support question, but the model listed no valid card (none fit, or unknown ids).
+        return self._rules_decision(query, matches, note="LLM listed no valid card. ")
 
     def _rules_decision(self, query: str, matches: list[SearchResult], note: str = "") -> AgentResponse:
         """Simple score-based rules. Used as a fallback, and as a baseline to compare against."""
@@ -211,7 +226,10 @@ class SupportAgent:
     # ---- building responses -------------------------------------------------
 
     def _answer(self, query, entry, matches, decided_by, reason) -> AgentResponse:
-        text, _used_llm = generate_answer(query, entry, self.llm)
+        if self.generate_answers:
+            text, _used_llm = generate_answer(query, entry, self.llm)
+        else:
+            text = entry.answer
         return AgentResponse(Action.ANSWER, text, reason, decided_by, source=entry.id, matches=matches)
 
     def _clarify(self, entries, matches, decided_by, reason, question) -> AgentResponse:

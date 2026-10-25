@@ -17,6 +17,10 @@ app/                     Application code
   agent.py               Decides: answer, ask a clarifying question, or decline
 data/
   knowledge_base.json    The 10 Q&A entries
+evaluation/
+  eval_set.json          40 test questions with the expected decision (dev/test split)
+  run_eval.py            Runs the agent on them and reports accuracy and error types
+  metrics.py             Accuracy, error types, confusion table, retrieval recall
 scripts/
   try_search.py          Try a question and see the similarity scores
   try_answer.py          Search + let the LLM write the answer
@@ -56,4 +60,12 @@ python scripts/try_answer.py "Do you take Bitcoin?"
 python scripts/try_agent.py "I want to stop paying"
 python scripts/try_agent.py "cancel my subscription" --previous "I want to stop paying"
 python scripts/try_agent.py "I want to stop paying" --mode rules   # score-only baseline
+```
+
+## Evaluate
+
+```bash
+python evaluation/run_eval.py --scores-only --split dev   # similarity scores, no LLM
+python evaluation/run_eval.py --mode llm                  # LLM decides + guardrails
+python evaluation/run_eval.py --mode rules                # score-only baseline
 ```
