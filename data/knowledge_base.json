@@ -1,0 +1,72 @@
+[
+  {
+    "id": "Q1",
+    "category": "Account",
+    "question": "How do I reset my password?",
+    "answer": "Go to the login page and click \"Forgot Password.\" Enter your registered email address and a reset link will be sent within 2 minutes. The link expires after 30 minutes. If you do not receive the email, check your spam folder or contact support@test.com.",
+    "out_of_scope": false
+  },
+  {
+    "id": "Q2",
+    "category": "Account",
+    "question": "How do I change the email address on my account?",
+    "answer": "Navigate to Settings > Profile > Contact Information. Enter your new email address and click Save. A verification email will be sent to the new address — you must click the link to confirm the change. Your old email remains active until the new one is verified.",
+    "out_of_scope": false
+  },
+  {
+    "id": "Q3",
+    "category": "Account",
+    "question": "My account appears to be suspended. What should I do?",
+    "answer": "Suspension usually occurs due to a failed payment or a Terms of Service violation. Check your registered email for a suspension notice. For payment-related suspensions, update your billing information and the account will be reactivated within one hour. For policy violations, contact support@test.com to submit an appeal.",
+    "out_of_scope": false
+  },
+  {
+    "id": "Q4",
+    "category": "Billing",
+    "question": "What payment methods are accepted?",
+    "answer": "All major credit and debit cards (Visa, Mastercard, Amex, Discover) are accepted, as well as bank transfers for annual plans. All payments are processed securely. Cryptocurrency is not supported.",
+    "out_of_scope": false
+  },
+  {
+    "id": "Q5",
+    "category": "Billing",
+    "question": "How do I request a refund?",
+    "answer": "A full refund is available within 14 days of your initial purchase or annual renewal. Monthly plan charges are non-refundable after 48 hours. To request a refund, contact billing@test.com with your account email and order ID. Refunds are processed within 5 to 10 business days.",
+    "out_of_scope": false
+  },
+  {
+    "id": "Q6",
+    "category": "Billing",
+    "question": "How do I cancel my subscription?",
+    "answer": "Go to Settings > Billing > Subscription > Cancel Plan. Your access continues until the end of the current billing period. Partial refunds are not issued for unused time on monthly plans. After cancellation, your data is retained for 60 days before being permanently deleted.",
+    "out_of_scope": false
+  },
+  {
+    "id": "Q7",
+    "category": "Integrations",
+    "question": "What third-party tools does the platform integrate with?",
+    "answer": "The platform integrates natively with Slack, Google Workspace, Microsoft Teams, GitHub, Jira, and Zapier. Additional integrations are available via the REST API and webhooks. Contact support@test.com for the full list of supported integrations.",
+    "out_of_scope": false
+  },
+  {
+    "id": "Q8",
+    "category": "Data & Security",
+    "question": "Where is my data stored?",
+    "answer": "All data is stored in encrypted cloud infrastructure. Data is encrypted at rest using AES-256 and in transit using TLS 1.2 or higher. EU customers on eligible plans may request regional data residency by contacting support@test.com.",
+    "out_of_scope": false
+  },
+  {
+    "id": "Q9",
+    "category": "Data & Security",
+    "question": "How do I export all my data?",
+    "answer": "Go to Settings > Account > Export Data. You can export workspaces, activity logs, and user data as a JSON or CSV file. Exports are generated asynchronously and a download link will be sent to your registered email within 30 minutes for large datasets.",
+    "out_of_scope": false
+  },
+  {
+    "id": "Q10",
+    "category": "Out of Scope",
+    "question": "Can you help me write code for my integration project?",
+    "answer": "That is outside the scope of this support channel. This assistant can only help with questions related to your account, billing, integrations, and platform features. For general coding help, please refer to the developer documentation or contact your technical team.",
+    "out_of_scope": true
+  }
+]
