@@ -1,0 +1,3 @@
+# Always use Linux line endings (LF) in the repository.
+# Prevents "\r" errors when files are used inside Linux Docker containers.
+* text=auto eol=lf
