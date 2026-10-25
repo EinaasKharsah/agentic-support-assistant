@@ -1,7 +1,7 @@
 """Search the best card and let the LLM write the answer from it.
 
 Usage:  python scripts/try_answer.py "Do you take Bitcoin?"
-Needs Ollama running with the model from OLLAMA_MODEL (default qwen2.5:1.5b).
+Needs Ollama running with the model from OLLAMA_MODEL (default qwen2.5:3b).
 """
 
 import sys

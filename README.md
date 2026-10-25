@@ -44,6 +44,6 @@ python scripts/try_search.py "Do you take Bitcoin?"
 ## Try an answer (needs Ollama)
 
 ```bash
-ollama pull qwen2.5:1.5b
+ollama pull qwen2.5:3b
 python scripts/try_answer.py "Do you take Bitcoin?"
 ```
