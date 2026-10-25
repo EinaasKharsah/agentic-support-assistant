@@ -30,12 +30,12 @@ def main() -> None:
 
     best = store.search(question, top_k=1)[0]
     start = time.perf_counter()
-    answer, used_llm = generate_answer(question, best.entry, llm)
+    answer, note = generate_answer(question, best.entry, llm)
     seconds = time.perf_counter() - start
 
     print(f"\nQuestion: {question}")
     print(f"Source:   {best.entry.id} (score {best.score:.3f})")
-    print(f"Model:    {settings.ollama_model if used_llm else 'NOT USED (fallback to card text)'}")
+    print(f"Model:    {settings.ollama_model if note is None else 'NOT USED: ' + note}")
     print(f"Time:     {seconds:.1f}s\n")
     print(answer, "\n")
 

@@ -380,7 +380,9 @@ class SupportAgent:
 
     def _answer(self, query, entry, matches, decided_by, reason) -> AgentResponse:
         if self.generate_answers:
-            text, _used_llm = generate_answer(query, entry, self.llm)
+            text, note = generate_answer(query, entry, self.llm)
+            if note:
+                reason = f"{reason} Answer check: {note}.".strip()
         else:
             text = entry.answer
         return AgentResponse(Action.ANSWER, text, reason, decided_by, source=entry.id, matches=matches)

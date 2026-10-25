@@ -46,11 +46,12 @@ def test_irrelevant_question_is_declined_without_calling_the_llm(store):
 # ---- LLM decisions ----------------------------------------------------------
 
 def test_llm_answer_uses_the_chosen_card(store):
-    llm = FakeLLM(json_reply=decision(["Q1"]), reply="Click Forgot Password.")
+    reply = "Click Forgot Password. The link arrives within 2 minutes and expires after 30 minutes."
+    llm = FakeLLM(json_reply=decision(["Q1"]), reply=reply)
     response = make_agent(store, llm).respond("How do I reset my password?")
     assert response.action == Action.ANSWER
     assert response.source == "Q1"
-    assert response.message == "Click Forgot Password."
+    assert response.message == reply
     assert response.decided_by == "llm"
 
 
@@ -281,3 +282,10 @@ def test_rewrite_prompt_does_not_list_topics():
 
     assert "billing" not in REWRITE_PROMPT.lower()
     assert "integrations" not in REWRITE_PROMPT.lower()
+
+
+def test_failed_answer_check_shows_card_text_and_explains_why(store):
+    llm = FakeLLM(json_reply=decision(["Q1"]), reply="Click Forgot Password.")  # drops "2" and "30" minutes
+    response = make_agent(store, llm).respond("How do I reset my password?")
+    assert response.message == ENTRIES[0].answer
+    assert "Answer check:" in response.reason

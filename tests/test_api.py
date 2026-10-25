@@ -12,6 +12,8 @@ from app.knowledge_base import load_knowledge_base
 from app.vector_store import VectorStore, make_client
 from tests.fakes import FakeEmbedder, FakeLLM
 
+Q1_REPLY = "Click Forgot Password. The link arrives within 2 minutes and expires after 30 minutes."
+
 
 def make_test_agent(llm: FakeLLM) -> SupportAgent:
     store = VectorStore(make_client(None), FakeEmbedder(), "api_test")
@@ -44,11 +46,11 @@ def test_health(client_with):
 
 
 def test_chat_answer_includes_source_and_matches(client_with):
-    llm = FakeLLM(json_reply=decision(["Q1"]), reply="Click Forgot Password.")
+    llm = FakeLLM(json_reply=decision(["Q1"]), reply=Q1_REPLY)
     with client_with(llm) as client:
         body = client.post("/chat", json={"message": "How do I reset my password?"}).json()
     assert body["action"] == "answer"
-    assert body["message"] == "Click Forgot Password."
+    assert body["message"] == Q1_REPLY
     assert body["source"]["id"] == "Q1"
     assert body["source"]["question"] == "How do I reset my password?"
     assert body["decided_by"] == "llm"

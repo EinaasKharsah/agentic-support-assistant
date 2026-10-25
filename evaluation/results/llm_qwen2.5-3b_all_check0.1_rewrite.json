@@ -1,14 +1,12 @@
 {
   "metrics": {
     "questions": 41,
-    "decision_accuracy": 0.976,
-    "errors": {
-      "over_clarify": 1
-    },
+    "decision_accuracy": 1.0,
+    "errors": {},
     "confusion": {
       "answer": {
-        "answer": 24,
-        "clarify": 1,
+        "answer": 25,
+        "clarify": 0,
         "decline": 0
       },
       "clarify": {
@@ -24,7 +22,7 @@
     },
     "retrieval_recall_at_1": 1.0,
     "retrieval_recall_at_3": 1.0,
-    "avg_seconds": 5.4,
+    "avg_seconds": 8.57,
     "by_category": {}
   },
   "rows": [
@@ -48,9 +46,9 @@
       "top_score": 0.724,
       "decided_by": "llm",
       "search_query": null,
-      "reason": "The customer is asking about resetting their password, which is related to account management.",
+      "reason": "The customer is asking about resetting their password, which is related to their account.",
       "message": "Go to the login page and click \"Forgot Password.\" Enter your registered email address and a reset link will be sent within 2 minutes. The link expires after 30 minutes. If you do not receive the email, check your spam folder or contact support@test.com.",
-      "seconds": 5.21
+      "seconds": 19.38
     },
     {
       "id": "A02",
@@ -72,9 +70,9 @@
       "top_score": 0.719,
       "decided_by": "llm",
       "search_query": null,
-      "reason": "The customer is experiencing an issue with receiving a password reset link, which is related to their account.",
+      "reason": "The customer is experiencing an issue with receiving a password reset link, which is related to their account. Answer check: the written answer left out limits from the article: 30, so the article text is shown.",
       "message": "Go to the login page and click \"Forgot Password.\" Enter your registered email address and a reset link will be sent within 2 minutes. The link expires after 30 minutes. If you do not receive the email, check your spam folder or contact support@test.com.",
-      "seconds": 5.24
+      "seconds": 8.83
     },
     {
       "id": "A03",
@@ -96,9 +94,9 @@
       "top_score": 0.719,
       "decided_by": "llm",
       "search_query": null,
-      "reason": "The customer is asking about the validity of a reset link, which is related to account management.",
+      "reason": "The customer is asking about the validity of a reset link, which is related to account management. Answer check: the written answer left out limits from the article: 2, so the article text is shown.",
       "message": "Go to the login page and click \"Forgot Password.\" Enter your registered email address and a reset link will be sent within 2 minutes. The link expires after 30 minutes. If you do not receive the email, check your spam folder or contact support@test.com.",
-      "seconds": 5.22
+      "seconds": 8.56
     },
     {
       "id": "A04",
@@ -122,7 +120,7 @@
       "search_query": null,
       "reason": "The customer wants to update their email address on their profile, which is related to account management.",
       "message": "Navigate to Settings > Profile > Contact Information. Enter your new email address and click Save. A verification email will be sent to the new address \u2014 you must click the link to confirm the change. Your old email remains active until the new one is verified.",
-      "seconds": 5.21
+      "seconds": 9.39
     },
     {
       "id": "A05",
@@ -144,9 +142,9 @@
       "top_score": 0.703,
       "decided_by": "llm",
       "search_query": null,
-      "reason": "The customer wants to change their login email, which is related to account settings. Second check: The customer's message is clearly asking about changing their login email, which is best addressed by article A. Article B is about resetting a password, which is unrelated to the customer's request.",
-      "message": "Navigate to Settings > Profile > Contact Information. Enter your new email address and click Save. A verification email will be sent to the new address \u2014 you must click the link to confirm the change. Your old email remains active until the new one is verified.",
-      "seconds": 10.36
+      "reason": "The customer wants to change their login email, which is related to account settings. Second check: The customer's message clearly asks about changing the email address on their account. Article A directly addresses this by providing instructions on how to change the email address. Article B is about resetting a password, which is unrelated to the customer's request. Therefore, the customer's message clearly points to Article A.",
+      "message": "You can't switch your login email directly through the account settings as mentioned in the article. The article only covers changing the email address for contact information. For login email changes, you should contact support for assistance.",
+      "seconds": 15.38
     },
     {
       "id": "A06",
@@ -168,9 +166,9 @@
       "top_score": 0.836,
       "decided_by": "llm",
       "search_query": null,
-      "reason": "The customer wants to know why their account was suspended, which is related to account status and potential policy violations.",
-      "message": "Suspension usually occurs due to a failed payment or a Terms of Service violation. Check your registered email for a suspension notice. For payment-related suspensions, update your billing information and the account will be reactivated within one hour. For policy violations, contact support@test.com to submit an appeal.",
-      "seconds": 5.6
+      "reason": "The customer wants to know why their account was suspended, which is related to account status and actions taken.",
+      "message": "My account appears to be suspended due to a failed payment or a Terms of Service violation. Check your registered email for a suspension notice. For payment-related suspensions, update your billing information and the account will be reactivated within one hour. For policy violations, contact support@test.com to submit an appeal.",
+      "seconds": 9.89
     },
     {
       "id": "A07",
@@ -180,12 +178,9 @@
       "expected_cards": [
         "Q3"
       ],
-      "predicted_action": "clarify",
-      "predicted_card": null,
-      "options": [
-        "Q3",
-        "Q6"
-      ],
+      "predicted_action": "answer",
+      "predicted_card": "Q3",
+      "options": [],
       "top3_cards": [
         "Q3",
         "Q5",
@@ -195,9 +190,9 @@
       "top_score": 0.688,
       "decided_by": "llm",
       "search_query": null,
-      "reason": "The customer is concerned about their account being blocked due to a declined card payment, which is a billing issue.",
-      "message": "Is this about your account being blocked due to a declined card payment?",
-      "seconds": 5.74
+      "reason": "The customer is concerned about their account being blocked due to a declined card payment, which is a common issue in account management. Second check: The customer's message clearly indicates they are experiencing an account suspension issue due to a declined payment. Article A discusses account suspensions and provides steps for reactivating the account. Therefore, the customer's message clearly points to Article A.",
+      "message": "Your account was likely blocked due to a failed payment. To resolve this, update your billing information and your account will be reactivated within one hour. If the issue persists, contact support@test.com for further assistance.",
+      "seconds": 14.62
     },
     {
       "id": "A08",
@@ -220,8 +215,8 @@
       "decided_by": "llm",
       "search_query": null,
       "reason": "The customer is asking about payment methods, specifically if Bitcoin is accepted.",
-      "message": "All major credit and debit cards (Visa, Mastercard, Amex, Discover) are accepted, as well as bank transfers for annual plans. All payments are processed securely. Cryptocurrency is not supported.",
-      "seconds": 5.3
+      "message": "Bitcoin is not supported in our help article. All major credit and debit cards (Visa, Mastercard, Amex, Discover) and bank transfers for annual plans are accepted. Payments are processed securely.",
+      "seconds": 9.2
     },
     {
       "id": "A09",
@@ -244,8 +239,8 @@
       "decided_by": "llm",
       "search_query": null,
       "reason": "The customer is asking about credit cards that can be used, which is related to payment methods.",
-      "message": "All major credit and debit cards (Visa, Mastercard, Amex, Discover) are accepted, as well as bank transfers for annual plans. All payments are processed securely. Cryptocurrency is not supported.",
-      "seconds": 5.22
+      "message": "All major credit cards (Visa, Mastercard, Amex, Discover) are accepted.",
+      "seconds": 8.25
     },
     {
       "id": "A10",
@@ -268,8 +263,8 @@
       "decided_by": "llm",
       "search_query": null,
       "reason": "The customer is asking about payment methods, specifically bank transfers, which is relevant to the Billing category.",
-      "message": "All major credit and debit cards (Visa, Mastercard, Amex, Discover) are accepted, as well as bank transfers for annual plans. All payments are processed securely. Cryptocurrency is not supported.",
-      "seconds": 5.26
+      "message": "Yes, bank transfers are accepted for annual plans. Payments are processed securely.",
+      "seconds": 8.3
     },
     {
       "id": "A11",
@@ -291,9 +286,9 @@
       "top_score": 0.727,
       "decided_by": "llm",
       "search_query": null,
-      "reason": "The customer is asking about a refund for a recently purchased plan. Second check: The customer is asking about getting a refund for a plan purchase. Article A directly addresses refund requests, which fits the customer's query about getting their money back. Article B is about canceling a subscription, which is not relevant to the customer's request.",
-      "message": "A full refund is available within 14 days of your initial purchase or annual renewal. Monthly plan charges are non-refundable after 48 hours. To request a refund, contact billing@test.com with your account email and order ID. Refunds are processed within 5 to 10 business days.",
-      "seconds": 10.72
+      "reason": "The customer is asking about a refund for a plan they purchased last week. Second check: The customer is asking about getting a refund for a plan purchase. Article A directly addresses refund requests, which fits the customer's query about getting their money back. Article B is about canceling a subscription, which is not relevant to the customer's request.",
+      "message": "A full refund is available within 14 days of your initial purchase. Since it's been less than 14 days, you cannot request a refund at this time. Monthly plan charges are non-refundable after 48 hours. Please contact billing@test.com for further assistance if you need to extend your trial period. Refunds are processed within 5 to 10 business days.",
+      "seconds": 15.73
     },
     {
       "id": "A12",
@@ -315,9 +310,9 @@
       "top_score": 0.807,
       "decided_by": "llm",
       "search_query": null,
-      "reason": "The customer is asking about the time it takes to receive a refund, which is relevant to the Billing category.",
+      "reason": "The customer is asking about the time it takes to receive a refund, which is relevant to the Billing category. Answer check: the written answer left out limits from the article: 14, 48, so the article text is shown.",
       "message": "A full refund is available within 14 days of your initial purchase or annual renewal. Monthly plan charges are non-refundable after 48 hours. To request a refund, contact billing@test.com with your account email and order ID. Refunds are processed within 5 to 10 business days.",
-      "seconds": 5.41
+      "seconds": 10.74
     },
     {
       "id": "A13",
@@ -341,7 +336,7 @@
       "search_query": null,
       "reason": "The customer wants to end their plan, which is related to the billing process.",
       "message": "Go to Settings > Billing > Subscription > Cancel Plan. Your access continues until the end of the current billing period. Partial refunds are not issued for unused time on monthly plans. After cancellation, your data is retained for 60 days before being permanently deleted.",
-      "seconds": 5.18
+      "seconds": 12.88
     },
     {
       "id": "A14",
@@ -364,8 +359,8 @@
       "decided_by": "llm",
       "search_query": null,
       "reason": "The customer is asking about what happens to their data after canceling their subscription, which is relevant to the Billing category. Second check: The customer's message is clearly asking about what happens to their data after canceling, which aligns with the content of article A. Article B does not address data retention or cancellation at all. Therefore, the customer's message clearly points to article A.",
-      "message": "Go to Settings > Billing > Subscription > Cancel Plan. Your access continues until the end of the current billing period. Partial refunds are not issued for unused time on monthly plans. After cancellation, your data is retained for 60 days before being permanently deleted.",
-      "seconds": 10.78
+      "message": "After cancellation, your data is retained for 60 days before being permanently deleted.",
+      "seconds": 21.17
     },
     {
       "id": "A15",
@@ -388,8 +383,8 @@
       "decided_by": "llm",
       "search_query": null,
       "reason": "The customer is asking about a specific integration (Slack) and is looking for information about supported integrations.",
-      "message": "The platform integrates natively with Slack, Google Workspace, Microsoft Teams, GitHub, Jira, and Zapier. Additional integrations are available via the REST API and webhooks. Contact support@test.com for the full list of supported integrations.",
-      "seconds": 5.36
+      "message": "Yes, the platform integrates natively with Slack. For a full list of supported integrations, contact support@test.com.",
+      "seconds": 8.92
     },
     {
       "id": "A16",
@@ -412,8 +407,8 @@
       "decided_by": "llm",
       "search_query": null,
       "reason": "The customer wants to know if they can connect their platform to Jira, which is mentioned in the Integrations card.",
-      "message": "The platform integrates natively with Slack, Google Workspace, Microsoft Teams, GitHub, Jira, and Zapier. Additional integrations are available via the REST API and webhooks. Contact support@test.com for the full list of supported integrations.",
-      "seconds": 5.4
+      "message": "Yes, you can connect it to Jira. The platform integrates natively with Jira as well as other tools like Slack, Google Workspace, Microsoft Teams, GitHub, and Zapier. For more details or to add additional integrations, you can contact support@test.com.",
+      "seconds": 9.5
     },
     {
       "id": "A17",
@@ -435,9 +430,9 @@
       "top_score": 0.66,
       "decided_by": "llm",
       "search_query": null,
-      "reason": "The customer is asking about the platform's support for webhooks, which are a type of integration.",
-      "message": "The platform integrates natively with Slack, Google Workspace, Microsoft Teams, GitHub, Jira, and Zapier. Additional integrations are available via the REST API and webhooks. Contact support@test.com for the full list of supported integrations.",
-      "seconds": 5.08
+      "reason": "The customer is asking about the platform's support for webhooks, which is relevant to the integrations category.",
+      "message": "Yes, the platform supports webhooks. For a full list of supported integrations, including webhooks, contact support@test.com.",
+      "seconds": 13.55
     },
     {
       "id": "A18",
@@ -460,8 +455,8 @@
       "decided_by": "llm",
       "search_query": null,
       "reason": "The customer is asking about data encryption, which is relevant to the cards about data security.",
-      "message": "All data is stored in encrypted cloud infrastructure. Data is encrypted at rest using AES-256 and in transit using TLS 1.2 or higher. EU customers on eligible plans may request regional data residency by contacting support@test.com.",
-      "seconds": 5.16
+      "message": "Yes, all data is encrypted. It is encrypted at rest using AES-256 and in transit using TLS 1.2 or higher.",
+      "seconds": 8.9
     },
     {
       "id": "A19",
@@ -483,9 +478,9 @@
       "top_score": 0.751,
       "decided_by": "llm",
       "search_query": null,
-      "reason": "The customer is asking about the location of their data, which is relevant to the Data & Security category. Second check: The customer's message is clearly asking about data storage location, which is addressed in help article A. Article A discusses where data is stored and mentions EU customers can request regional data residency. The customer's message specifically asks about keeping data inside the EU, which is a direct query to article A.",
+      "reason": "The customer is asking about data residency and storage, which is relevant to the Data & Security category. Second check: The customer's message is clearly asking about data storage location, which is addressed in help article A. Article A discusses where data is stored and mentions EU customers can request regional data residency. The customer's message specifically asks about keeping data inside the EU, which is a direct query to article A. Answer check: the written answer left out limits from the article: 1.2, 256, so the article text is shown.",
       "message": "All data is stored in encrypted cloud infrastructure. Data is encrypted at rest using AES-256 and in transit using TLS 1.2 or higher. EU customers on eligible plans may request regional data residency by contacting support@test.com.",
-      "seconds": 11.05
+      "seconds": 14.39
     },
     {
       "id": "A20",
@@ -507,9 +502,9 @@
       "top_score": 0.75,
       "decided_by": "llm",
       "search_query": null,
-      "reason": "The customer wants to download all their workspace data, which is related to data security and export options.",
-      "message": "Go to Settings > Account > Export Data. You can export workspaces, activity logs, and user data as a JSON or CSV file. Exports are generated asynchronously and a download link will be sent to your registered email within 30 minutes for large datasets.",
-      "seconds": 5.34
+      "reason": "The customer wants to download all their workspace data, which is relevant to the Data & Security category.",
+      "message": "Go to Settings > Account > Export Data. You can export workspace data as a JSON or CSV file. Exports are generated asynchronously and a download link will be sent to your registered email within 30 minutes for large datasets.",
+      "seconds": 9.38
     },
     {
       "id": "A21",
@@ -531,9 +526,9 @@
       "top_score": 0.793,
       "decided_by": "llm",
       "search_query": null,
-      "reason": "The customer wants to export their activity logs as a CSV file, which is related to data and security.",
+      "reason": "The customer wants to export their activity logs as a CSV file, which is related to data and security. Answer check: the written answer left out limits from the article: 30, so the article text is shown.",
       "message": "Go to Settings > Account > Export Data. You can export workspaces, activity logs, and user data as a JSON or CSV file. Exports are generated asynchronously and a download link will be sent to your registered email within 30 minutes for large datasets.",
-      "seconds": 5.34
+      "seconds": 8.57
     },
     {
       "id": "A22",
@@ -558,7 +553,7 @@
       "search_query": null,
       "reason": "The customer wants to reset their password, which is related to account management. Second check: The customer's message is very specific about resetting a password, which directly matches article A. Article B is about canceling a subscription, which is unrelated to password reset. Therefore, A is the clear fit.",
       "message": "Go to the login page and click \"Forgot Password.\" Enter your registered email address and a reset link will be sent within 2 minutes. The link expires after 30 minutes. If you do not receive the email, check your spam folder or contact support@test.com.",
-      "seconds": 10.52
+      "seconds": 14.98
     },
     {
       "id": "A23",
@@ -582,8 +577,8 @@
       "decided_by": "rules",
       "search_query": null,
       "reason": "LLM listed no valid card. One card clearly matches best.",
-      "message": "All major credit and debit cards (Visa, Mastercard, Amex, Discover) are accepted, as well as bank transfers for annual plans. All payments are processed securely. Cryptocurrency is not supported.",
-      "seconds": 5.25
+      "message": "PayPal is not mentioned in our help article. All major credit and debit cards (Visa, Mastercard, Amex, Discover) are accepted, as well as bank transfers for annual plans. Payments are processed securely.",
+      "seconds": 9.31
     },
     {
       "id": "A24",
@@ -607,8 +602,8 @@
       "decided_by": "llm",
       "search_query": null,
       "reason": "The customer is asking about integrations with Trello, and the closest card is about integrations.",
-      "message": "The platform integrates natively with Slack, Google Workspace, Microsoft Teams, GitHub, Jira, and Zapier. Additional integrations are available via the REST API and webhooks. Contact support@test.com for the full list of supported integrations.",
-      "seconds": 5.12
+      "message": "Trello isn't mentioned in our help article. We currently integrate with Slack, Google Workspace, Microsoft Teams, GitHub, Jira, and Zapier. Contact support@test.com for the full list of supported integrations.",
+      "seconds": 9.19
     },
     {
       "id": "A25",
@@ -633,7 +628,7 @@
       "search_query": "how to reset password",
       "reason": "The customer is asking about resetting their password, which is directly related to account management.",
       "message": "Go to the login page and click \"Forgot Password.\" Enter your registered email address and a reset link will be sent within 2 minutes. The link expires after 30 minutes. If you do not receive the email, check your spam folder or contact support@test.com.",
-      "seconds": 9.05
+      "seconds": 13.48
     },
     {
       "id": "C01",
@@ -659,9 +654,9 @@
       "top_score": 0.627,
       "decided_by": "llm",
       "search_query": null,
-      "reason": "The customer wants to stop paying, which is related to their subscription or account.",
+      "reason": "The customer wants to stop paying, which is related to the billing process.",
       "message": "Do you want to cancel your subscription or request a refund?",
-      "seconds": 5.51
+      "seconds": 5.52
     },
     {
       "id": "C02",
@@ -688,9 +683,9 @@
       "top_score": 0.702,
       "decided_by": "llm",
       "search_query": null,
-      "reason": "The customer is having an issue with their account, which is relevant to the cards provided.",
+      "reason": "The customer is having an issue with their account, which is relevant to the support questions provided.",
       "message": "Is this about your account being suspended or about canceling a subscription?",
-      "seconds": 5.66
+      "seconds": 5.67
     },
     {
       "id": "C03",
@@ -718,8 +713,8 @@
       "decided_by": "llm",
       "search_query": null,
       "reason": "The customer is having trouble logging into their account, which is a common issue related to account access.",
-      "message": "Which part of your account login issue are you referring to?",
-      "seconds": 5.8
+      "message": "Which one of these issues are you facing?",
+      "seconds": 5.71
     },
     {
       "id": "C04",
@@ -735,8 +730,7 @@
       "predicted_card": null,
       "options": [
         "Q3",
-        "Q4",
-        "Q5"
+        "Q4"
       ],
       "top3_cards": [
         "Q3",
@@ -747,9 +741,9 @@
       "top_score": 0.698,
       "decided_by": "llm",
       "search_query": null,
-      "reason": "The customer is concerned about a payment issue, which could relate to account suspension or payment processing.",
+      "reason": "The customer is concerned about a payment issue, which could be related to account suspension or payment processing problems.",
       "message": "Is this about a payment issue with your account?",
-      "seconds": 5.8
+      "seconds": 5.59
     },
     {
       "id": "C05",
@@ -764,8 +758,8 @@
       "predicted_action": "clarify",
       "predicted_card": null,
       "options": [
-        "Q8",
-        "Q9"
+        "Q9",
+        "Q8"
       ],
       "top3_cards": [
         "Q9",
@@ -777,8 +771,8 @@
       "decided_by": "llm",
       "search_query": null,
       "reason": "The customer is asking about their data, which is relevant to the Data & Security category.",
-      "message": "Are you asking about where your data is stored or how to export your data?",
-      "seconds": 5.76
+      "message": "Are you asking about what happens to your data when you delete your account or are you inquiring about where your data is stored?",
+      "seconds": 6.01
     },
     {
       "id": "C06",
@@ -793,7 +787,8 @@
       "predicted_card": null,
       "options": [
         "Q1",
-        "Q2"
+        "Q2",
+        "Q9"
       ],
       "top3_cards": [
         "Q1",
@@ -804,9 +799,9 @@
       "top_score": 0.649,
       "decided_by": "llm",
       "search_query": null,
-      "reason": "The customer is asking about their email, which is related to their account settings and contact information.",
-      "message": "Are you looking to reset your password or change your email address?",
-      "seconds": 5.59
+      "reason": "The customer is asking for help with their email, which could relate to account settings or data security.",
+      "message": "Are you looking for help with resetting your password, changing your email address, or exporting your data?",
+      "seconds": 6.06
     },
     {
       "id": "C07",
@@ -834,7 +829,7 @@
       "search_query": null,
       "reason": "The customer wants to stop being charged, which is related to the billing category.",
       "message": "Are you looking to cancel your subscription or request a refund?",
-      "seconds": 5.52
+      "seconds": 5.55
     },
     {
       "id": "D01",
@@ -856,7 +851,7 @@
       "search_query": "weather in berlin",
       "reason": "No card is relevant enough (best score below 0.55).",
       "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security.",
-      "seconds": 3.2
+      "seconds": 3.18
     },
     {
       "id": "D02",
@@ -922,7 +917,7 @@
       "search_query": "Recommend good restaurant Essen",
       "reason": "No card is relevant enough (best score below 0.55).",
       "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security.",
-      "seconds": 3.22
+      "seconds": 3.25
     },
     {
       "id": "D05",
@@ -944,7 +939,7 @@
       "search_query": null,
       "reason": "No card is relevant enough (best score below 0.55).",
       "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security.",
-      "seconds": 3.04
+      "seconds": 3.03
     },
     {
       "id": "D06",
@@ -1011,7 +1006,7 @@
       "search_query": null,
       "reason": "No card is relevant enough (best score below 0.55).",
       "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security.",
-      "seconds": 3.0
+      "seconds": 3.03
     },
     {
       "id": "D09",
@@ -1033,7 +1028,7 @@
       "search_query": "who won football match yesterday",
       "reason": "No card is relevant enough (best score below 0.55).",
       "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security.",
-      "seconds": 3.18
+      "seconds": 3.2
     }
   ]
 }
