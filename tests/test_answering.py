@@ -14,6 +14,12 @@ def test_prompt_contains_only_the_selected_card():
     assert messages[1] == {"role": "user", "content": "I forgot my password"}
 
 
+def test_prompt_explains_how_to_handle_facts_not_in_the_article():
+    system = build_messages("Can I pay with PayPal?", Q1)[0]["content"]
+    assert "does NOT mention" in system
+    assert "do not say yes or no" in system
+
+
 def test_uses_llm_answer():
     llm = FakeLLM(reply="Click Forgot Password on the login page.")
     answer, used_llm = generate_answer("I forgot my password", Q1, llm)
