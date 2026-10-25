@@ -32,6 +32,15 @@ class Settings:
     min_relevance: float = float(os.getenv("MIN_RELEVANCE", "0.55"))
     # Rules mode only: if the top two cards are closer than this, ask a clarifying question.
     ambiguity_gap: float = float(os.getenv("AMBIGUITY_GAP", "0.05"))
+    # LLM mode: if a second card scores within this gap of the chosen card, the agent
+    # asks the LLM a focused "A, B or either?" question before answering. 0 = off.
+    second_check_gap: float = float(os.getenv("SECOND_CHECK_GAP", "0.1"))
+    # LLM mode: if the first search finds nothing relevant, rewrite the message as an English
+    # search query (fixes typos, translates) and search again.
+    rewrite_weak_queries: bool = os.getenv("REWRITE_WEAK_QUERIES", "true").lower() == "true"
+
+    # Thumbs up/down from the chat page are appended to this file (one JSON per line).
+    feedback_path: str = os.getenv("FEEDBACK_PATH", "feedback/feedback.jsonl")
 
 
 settings = Settings()

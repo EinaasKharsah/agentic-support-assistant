@@ -65,3 +65,65 @@ def test_invalid_json_becomes_llm_error(monkeypatch):
     monkeypatch.setattr(httpx, "post", post)
     with pytest.raises(LLMError):
         OllamaClient("http://x", "m").chat_json([], json_schema={})
+
+
+@pytest.fixture(autouse=True)
+def no_sleep(monkeypatch):
+    monkeypatch.setattr("app.llm.time.sleep", lambda seconds: None)
+
+
+def test_sends_fixed_seed(monkeypatch):
+    post, calls = fake_post("ok")
+    monkeypatch.setattr(httpx, "post", post)
+    OllamaClient("http://x", "m").chat([])
+    assert calls[0]["json"]["options"]["seed"] == 42
+
+
+def test_retries_once_after_connection_error(monkeypatch):
+    attempts = []
+
+    def flaky_post(url, json=None, timeout=None):
+        attempts.append(1)
+        if len(attempts) == 1:
+            raise httpx.ConnectError("refused")
+        return httpx.Response(200, json={"message": {"content": "back"}}, request=httpx.Request("POST", url))
+
+    monkeypatch.setattr(httpx, "post", flaky_post)
+    assert OllamaClient("http://x", "m").chat([]) == "back"
+    assert len(attempts) == 2
+
+
+def test_does_not_retry_a_bad_request(monkeypatch):
+    post, calls = fake_post("bad", status=400)
+    monkeypatch.setattr(httpx, "post", post)
+    with pytest.raises(LLMError):
+        OllamaClient("http://x", "m").chat([])
+    assert len(calls) == 1
+
+
+def test_does_not_retry_a_timeout(monkeypatch):
+    post, calls = fake_post(raise_error=httpx.ReadTimeout("slow"))
+    monkeypatch.setattr(httpx, "post", post)
+    with pytest.raises(LLMError):
+        OllamaClient("http://x", "m").chat([])
+    assert len(calls) == 1
+
+
+@pytest.mark.parametrize(
+    "models, expected",
+    [([{"name": "qwen2.5:3b"}], "ok"), ([{"name": "llama3:8b"}], "model_missing")],
+)
+def test_status(monkeypatch, models, expected):
+    def fake_get(url, timeout=None):
+        return httpx.Response(200, json={"models": models}, request=httpx.Request("GET", url))
+
+    monkeypatch.setattr(httpx, "get", fake_get)
+    assert OllamaClient("http://x", "qwen2.5:3b").status() == expected
+
+
+def test_status_unreachable(monkeypatch):
+    def fake_get(url, timeout=None):
+        raise httpx.ConnectError("refused")
+
+    monkeypatch.setattr(httpx, "get", fake_get)
+    assert OllamaClient("http://x", "qwen2.5:3b").status() == "unreachable"

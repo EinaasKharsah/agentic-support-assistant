@@ -45,7 +45,10 @@ class FakeLLM:
         return self.reply
 
     def chat_json(self, messages, json_schema):
+        """json_reply can be one dict (always returned) or a list (one per call, in order)."""
         self.calls.append(messages)
         if self.error:
             raise self.error
+        if isinstance(self.json_reply, list):
+            return self.json_reply.pop(0) if self.json_reply else {}
         return self.json_reply or {}

@@ -40,6 +40,8 @@ def main() -> None:
         store, llm,
         min_relevance=settings.min_relevance,
         ambiguity_gap=settings.ambiguity_gap,
+        second_check_gap=settings.second_check_gap,
+        rewrite_weak_queries=settings.rewrite_weak_queries,
         mode=args.mode,
     )
 

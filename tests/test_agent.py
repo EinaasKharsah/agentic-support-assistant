@@ -36,7 +36,7 @@ def decision(cards=(), support=True, question="", reason="test"):
 
 def test_irrelevant_question_is_declined_without_calling_the_llm(store):
     llm = FakeLLM(json_reply=decision(["Q1"]))
-    response = make_agent(store, llm).respond("zzz qqq xxx")
+    response = make_agent(store, llm, rewrite_weak_queries=False).respond("zzz qqq xxx")
     assert response.action == Action.DECLINE
     assert response.decided_by == "guardrail"
     assert response.message == DEFAULT_DECLINE_MESSAGE
@@ -168,3 +168,116 @@ def test_generate_answers_false_returns_card_text_without_llm_answer(store):
     response = make_agent(store, llm, generate_answers=False).respond("How do I reset my password?")
     assert response.message == ENTRIES[0].answer
     assert len(llm.calls) == 1  # only the decision call
+
+
+# ---- second check (reflection) ---------------------------------------------------
+
+def second_check(choice, question="", reason="check"):
+    return {"reason": reason, "choice": choice, "clarifying_question": question}
+
+
+def test_second_check_either_turns_answer_into_clarify(store):
+    llm = FakeLLM(json_reply=[decision(["Q1"]), second_check("either", "Password or email?")])
+    agent = make_agent(store, llm, min_relevance=0.0, second_check_gap=1.0)  # any runner-up counts as close
+    response = agent.respond("How do I reset my password?")
+    assert response.action == Action.CLARIFY
+    assert response.message == "Password or email?"
+    assert len(response.options) == 2
+    assert "Second check" in response.reason
+    assert "A:" in llm.calls[1][1]["content"] and "B:" in llm.calls[1][1]["content"]
+
+
+def test_second_check_clear_choice_keeps_answer(store):
+    llm = FakeLLM(json_reply=[decision(["Q1"]), second_check("A")], reply="answer text")
+    agent = make_agent(store, llm, min_relevance=0.0, second_check_gap=1.0)
+    response = agent.respond("How do I reset my password?")
+    assert response.action == Action.ANSWER
+    assert response.source == "Q1"  # Q1 has the highest score, so it is option A
+
+
+def test_second_check_is_skipped_when_turned_off(store):
+    llm = FakeLLM(json_reply=[decision(["Q1"])], reply="answer text")
+    agent = make_agent(store, llm, min_relevance=0.0, second_check_gap=0)
+    agent.respond("How do I reset my password?")
+    decision_calls = [c for c in llm.calls if "A:" in c[-1]["content"]]
+    assert decision_calls == []
+
+
+def test_second_check_error_keeps_first_decision(store):
+    class FailOnSecondCall(FakeLLM):
+        def chat_json(self, messages, json_schema):
+            if self.calls:
+                self.calls.append(messages)
+                raise LLMError("timeout")
+            return super().chat_json(messages, json_schema)
+
+    llm = FailOnSecondCall(json_reply=decision(["Q1"]), reply="answer text")
+    response = make_agent(store, llm, min_relevance=0.0, second_check_gap=1.0).respond("How do I reset my password?")
+    assert response.action == Action.ANSWER
+    assert response.source == "Q1"
+
+
+def test_model_sees_three_cards_even_when_q10_is_retrieved(store):
+    llm = FakeLLM(json_reply=decision(["Q7"]), reply="answer")
+    make_agent(store, llm).respond("What third-party tools does the platform integrate with?")
+    prompt = llm.calls[0][1]["content"]
+    assert prompt.count("score=") == 3
+
+
+# ---- search again with a rewritten query ------------------------------------------
+
+def test_weak_search_is_rewritten_and_searched_again(store):
+    llm = FakeLLM(
+        json_reply=[{"has_meaning": True, "search_query": "How do I reset my password?"}, decision(["Q1"])],
+        reply="Click Forgot Password.",
+    )
+    response = make_agent(store, llm).respond("Ich habe mein Passwort vergessen")
+    assert response.search_query == "How do I reset my password?"
+    assert response.action == Action.ANSWER
+    assert response.source == "Q1"
+    assert "In English: How do I reset my password?" in llm.calls[1][1]["content"]
+
+
+def test_strong_search_is_not_rewritten(store):
+    llm = FakeLLM(json_reply=decision(["Q1"]), reply="answer")
+    response = make_agent(store, llm).respond("How do I reset my password?")
+    assert response.search_query is None
+    assert all("search query" not in call[0]["content"] for call in llm.calls)
+
+
+def test_unchanged_rewrite_is_ignored_and_message_declined(store):
+    llm = FakeLLM(json_reply=[{"has_meaning": True, "search_query": "zzz qqq xxx"}])
+    response = make_agent(store, llm).respond("zzz qqq xxx")
+    assert response.action == Action.DECLINE
+    assert response.search_query is None
+
+
+def test_rewrite_failure_keeps_the_first_search(store):
+    class FailingRewrite(FakeLLM):
+        def chat_json(self, messages, json_schema):
+            raise LLMError("down")
+
+    response = make_agent(store, FailingRewrite()).respond("zzz qqq xxx")
+    assert response.action == Action.DECLINE
+
+
+def test_rules_mode_never_rewrites(store):
+    llm = FakeLLM(json_reply=[{"has_meaning": True, "search_query": "How do I reset my password?"}])
+    response = make_agent(store, llm, mode="rules").respond("zzz qqq xxx")
+    assert response.search_query is None
+    assert llm.calls == []
+
+
+def test_message_without_meaning_is_not_rewritten(store):
+    # Regression: an earlier prompt turned "asdfgh qwerty zxcv" into "accounts billing integrations data".
+    llm = FakeLLM(json_reply=[{"has_meaning": False, "search_query": "accounts billing integrations data"}])
+    response = make_agent(store, llm).respond("zzz qqq xxx")
+    assert response.search_query is None
+    assert response.action == Action.DECLINE
+
+
+def test_rewrite_prompt_does_not_list_topics():
+    from app.agent import REWRITE_PROMPT
+
+    assert "billing" not in REWRITE_PROMPT.lower()
+    assert "integrations" not in REWRITE_PROMPT.lower()
