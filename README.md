@@ -1,5 +1,7 @@
 # Agentic Customer Support Assistant
 
+[![Tests](https://github.com/EinaasKharsah/agentic-support-assistant/actions/workflows/tests.yml/badge.svg)](https://github.com/EinaasKharsah/agentic-support-assistant/actions/workflows/tests.yml)
+
 A support assistant that answers customer questions from a small knowledge base (10 Q&A cards).
 For every message it decides what to do:
 
@@ -13,10 +15,29 @@ Everything runs locally: a small LLM in Ollama (`qwen2.5:3b`), embeddings with `
 
 **Results** (details in [Evaluation](#evaluation)): 98% correct decisions on 41 test questions, 90% on 20 hard cases (typos, other languages, prompt injection, noise), and **0 unsafe answers** (the assistant never answered a question it should have declined, and never invented a policy).
 
+## Demo
+
+**Vague question → clarifying question → answer.** "I want to stop paying" could mean cancel or refund, so the assistant asks. After the customer picks "refund", it answers from the refund article, including the 48-hour condition.
+
+![Clarifying question, then an answer from the refund article](docs/images/clarify-then-answer.png)
+
+**A detail the knowledge base does not cover.** The assistant does not invent a yes or no about PayPal. It says PayPal is not mentioned and lists the accepted methods.
+
+![PayPal question answered without inventing facts](docs/images/not-mentioned.png)
+
+**Out of scope → polite decline,** with a way to contact support.
+
+![Weather question declined](docs/images/decline.png)
+
+**"How I decided" panel** (opens only on request): similarity scores with the 0.55 cut-off, the out-of-scope card that is never shown to the LLM, the model's reason, and the result.
+
+![Decision trace panel](docs/images/how-i-decided.png)
+
 ---
 
 ## Contents
 
+- [Demo](#demo)
 - [Quick start](#quick-start)
 - [How it works](#how-it-works)
 - [Design decisions and trade-offs](#design-decisions-and-trade-offs)
@@ -60,7 +81,7 @@ pip install -r requirements-dev.txt
 pytest
 ```
 
-The tests do not need Ollama or the internet: they use a fake LLM and a fake embedder. Tests with the real embedding model are skipped by default (`RUN_MODEL_TESTS=1 pytest tests/test_real_retrieval.py` runs them).
+The tests do not need Ollama or the internet: they use a fake LLM and a fake embedder. GitHub Actions runs them on every push (see the badge at the top). Tests with the real embedding model are skipped by default (`RUN_MODEL_TESTS=1 pytest tests/test_real_retrieval.py` runs them).
 
 ---
 
@@ -140,6 +161,23 @@ Settings: temperature 0 and a fixed seed, so the same question gives the same de
 - For 10 cards, any option is fast enough. I chose Qdrant for the path to production: it supports filters (for example by category or language), and changing from in-memory to server is one setting (`QDRANT_URL`).
 - Indexing is **idempotent**: each card gets a fixed ID made from its card ID (`uuid5`), so restarting the app updates the cards instead of adding copies.
 
+#### At larger scale
+
+With 10 cards, any option is fast. With thousands or millions of articles, these things change:
+
+| Topic | What changes | How this design handles it |
+|---|---|---|
+| **Long articles** | One vector per article no longer works: long texts lose detail in a single vector | Split articles into chunks (about 200 to 400 words) and store the article ID in the payload, so the agent can still show the whole source article |
+| **Memory** | A `bge-small` vector has 384 numbers (about 1.5 KB). 1 million chunks need about 1.5 GB for vectors, plus the search index | Qdrant can keep vectors on disk and compress them (scalar quantization: about 4x less memory, with a small loss in accuracy). FAISS would need this built by hand; pgvector and Chroma offer less control here |
+| **Running mode** | In-memory mode loses data on restart and cannot be shared | Server mode with a persistent volume (already used in `docker-compose.yml`). Large setups can split data across several Qdrant nodes and keep copies (sharding and replication) |
+| **Filtering** | More articles means more near-matches from the wrong product, plan or language | Store category, product, language and plan in the payload and filter **before** the vector search. This is a main reason for choosing Qdrant over a plain vector index such as FAISS |
+| **Exact terms** | Vector search is weak on error codes, product names and IDs | Add keyword search (sparse vectors such as BM25) next to vector search (hybrid search). Qdrant supports both in one collection |
+| **Ranking** | The top result is right less often when many articles are similar | Retrieve the top 20, then reorder them with a small re-ranking model before the agent sees the top 3 |
+| **Thresholds** | `MIN_RELEVANCE` (0.55) and the second-check gap (0.1) were chosen on 10 cards. With more articles, scores sit closer together | Choose them again on a larger evaluation set. The evaluation scripts already support this |
+| **Updates** | Re-indexing everything on every start becomes slow | Index in a separate job, and only update changed articles. The fixed IDs (`uuid5`) already make updates safe to repeat |
+
+**When another store would be better:** if the company already keeps its articles in PostgreSQL, **pgvector** avoids running a second database, and is a good choice up to a few million vectors. For a quick prototype with no server, **Chroma** is simpler to start with.
+
 ### 4. Agent design: "the LLM understands, the code routes"
 
 This is the most important decision, and it came from the evaluation, not from the start.
@@ -216,6 +254,10 @@ Each round changed one thing.
 | 6 | Fix: the rewrite step copied words from its prompt | **98%** | **7/7** | **90%** | **0** |
 
 Robustness by group (final): typos 2/3, one word 3/3, other languages 2/3, prompt injection 4/4, random text 2/2, long or angry 3/3, two questions 2/2.
+
+**Run-to-run variation.** A later run of the main set (with answers turned on) scored 100%: "My account got blocked after my card was declined" was answered instead of clarified. Temperature is 0 and the seed is fixed, but small differences in GPU computation can still change a close decision. So the honest result is **98 to 100%**.
+
+**Answer check** (main set, 25 answers): the fact check replaced **5 answers (20%)** with the card text. In all 5, the written answer was correct but left out a number from the card, for example "How long is the reset link valid?" was answered with the 30 minutes but without "sent within 2 minutes". **No answer contained an invented fact.** The check is strict on purpose: a longer answer is better than a missing condition such as "non-refundable after 48 hours".
 
 Result files with every question, decision and reason: [`evaluation/results/`](evaluation/results). The full log, with what each round taught me: [`docs/evaluation_log.md`](docs/evaluation_log.md).
 
@@ -330,6 +372,7 @@ Known errors in the final run:
 
 - **Arabic is sometimes declined.** After the round 6 fix, the 3b model sometimes marks Arabic text as "no meaning", so it is not rewritten. A language check in code before the rewrite, or a multilingual embedding model (for example `bge-m3`), would fix this.
 - **Some clear questions get a clarifying question.** "My account got blocked after my card was declined" mentions both a blocked account and a card payment, so the assistant asks which one the customer means. This is safe, but one step slower for the customer.
+- **The answer check is strict.** It replaced 20% of correct, focused answers with the full card text. A smarter check could tell important limits ("48 hours") from background facts ("AES-256").
 - **The answer check only covers numbers, e-mail addresses and menu paths.** In a test on the chat page, the model left out "Monthly plan charges are non-refundable after 48 hours" and added "Please contact support to confirm your order ID" (copied from the style of its own prompt). The missing "48" is now caught, so the card text is shown. An invented sentence without numbers or addresses would not be caught on its own. A second LLM call that compares the reply with the card would catch more, but adds a few seconds to every answer.
 
 With more time, I would:
@@ -338,7 +381,7 @@ With more time, I would:
 2. **Test on an unseen set** written by someone else, for a fair final number.
 3. **Use the LLM's own confidence.** With token probabilities from the model, a low-confidence decision could become a clarifying question or a handover to a human.
 4. **Hand over to a human** when the customer is frustrated or asks twice, with the conversation attached.
-5. **Grow the knowledge base.** With hundreds of articles: split long articles into chunks, filter by category in Qdrant, and add keyword search next to vector search (hybrid search) for product names and error codes.
+5. **Grow the knowledge base** as described in [At larger scale](#at-larger-scale).
 6. **Stream answers** so the first words appear sooner on slow hardware.
 
 ---
