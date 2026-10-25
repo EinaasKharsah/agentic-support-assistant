@@ -1,0 +1,77 @@
+# One command starts everything:  docker compose up --build
+# Then open http://localhost:8000
+#
+# Services:
+#   app          the API and chat page
+#   qdrant       the vector database
+#   ollama       runs the LLM
+#   ollama-pull  downloads the model once (about 2 GB), then stops
+#
+# The app does not wait for the model download. Until the model is ready,
+# /health shows "llm": "model_missing" and the agent uses its score-only rules.
+
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      QDRANT_URL: http://qdrant:6333
+      OLLAMA_URL: ${OLLAMA_URL:-http://ollama:11434}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen2.5:3b}
+      AGENT_MODE: ${AGENT_MODE:-llm}
+      MIN_RELEVANCE: ${MIN_RELEVANCE:-0.55}
+      SECOND_CHECK_GAP: ${SECOND_CHECK_GAP:-0.1}
+      REWRITE_WEAK_QUERIES: ${REWRITE_WEAK_QUERIES:-true}
+      LLM_TIMEOUT_SECONDS: ${LLM_TIMEOUT_SECONDS:-60}
+    extra_hosts:
+      # Lets the app reach an Ollama that runs on your own computer (see README).
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - feedback:/app/feedback
+    depends_on:
+      qdrant:
+        condition: service_healthy
+    restart: unless-stopped
+
+  qdrant:
+    image: qdrant/qdrant:v1.20.0
+    volumes:
+      - qdrant_data:/qdrant/storage
+    healthcheck:
+      # The Qdrant image has no curl, so we only check that the port accepts connections.
+      test: ["CMD", "bash", "-c", ":> /dev/tcp/127.0.0.1/6333"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+  ollama:
+    image: ollama/ollama:0.40.9
+    environment:
+      # Keep the model in memory between questions. The default (5 minutes) means the
+      # first question after a pause waits for the model to load again.
+      OLLAMA_KEEP_ALIVE: 24h
+    volumes:
+      - ollama_models:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  ollama-pull:
+    image: ollama/ollama:0.40.9
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+    command: ["pull", "${OLLAMA_MODEL:-qwen2.5:3b}"]
+    depends_on:
+      ollama:
+        condition: service_healthy
+    restart: "no"
+
+volumes:
+  feedback:
+  qdrant_data:
+  ollama_models:

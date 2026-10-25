@@ -1,0 +1,11 @@
+# Use an NVIDIA GPU for Ollama (Linux, or Windows with Docker Desktop + WSL 2):
+#   docker compose -f docker-compose.yml -f docker-compose.gpu.yml up --build
+services:
+  ollama:
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
