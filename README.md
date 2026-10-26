@@ -419,11 +419,13 @@ app/
   main.py                REST API (FastAPI)
   static/                Chat page (HTML, CSS, JavaScript; fonts and icons bundled)
 data/knowledge_base.json The 10 cards
-evaluation/              Question sets, metrics, runner and saved results
 docs/                    Model comparison, re-ranker calibration, evaluation log, screenshots
+evaluation/              Question sets, metrics, runner and saved results
 scripts/                 Try search, answers and the agent; calibrate the re-ranker; export feedback
 tests/                   Unit and API tests (no Ollama or internet needed)
-Dockerfile, docker-compose.yml, docker-compose.gpu.yml, .github/workflows/tests.yml
+Dockerfile, docker-compose.yml, docker-compose.gpu.yml   Docker setup (CPU and optional GPU)
+.github/workflows/tests.yml                              Tests and Docker build on every push
+requirements.txt, requirements-dev.txt, pytest.ini, .env.example
 ```
 
 ---
