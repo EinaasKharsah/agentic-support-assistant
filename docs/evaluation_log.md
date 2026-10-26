@@ -80,6 +80,25 @@ in the card must be in the answer; otherwise the card text is shown. Main set wi
 5 of 25 answers (20%) replaced, all for a left-out number, 0 invented facts. Decision
 accuracy in that run: 100% (A07 was answered), so the main-set result varies between 98% and 100%.
 
+## Held-out hard set (after all tuning)
+
+20 harder questions in 8 new groups, written after all tuning, committed before the run
+(commit b91b7dc), run once, and the agent was not changed afterwards. Result: **65%**
+(13/20), Recall@1 78%. By group: needs reasoning 2/3, different wording 3/4, not covered 2/2,
+near-miss 1/4, vague 2/3, two questions 1/1, French/Spanish 1/2, small talk 1/1.
+
+- Main weakness: near-misses. "What is Netflix's refund policy?" and "How do I reset my Wi-Fi
+  router password?" score 0.67 and 0.70, pass the guardrail, and the model calls them support
+  questions. The Netflix reply showed our refund article without saying it is not Netflix's.
+- "I got a strange email about my account" was answered with "Your account appears to be
+  suspended": a guess where a clarifying question was needed.
+- The Spanish question was declined: the rewrite returned Spanish, not English.
+- Safe errors: two over-clarifications (negation; card failed and account locked).
+- No reply invented a number, e-mail address or menu path.
+
+This confirms that the development numbers (98 to 100%) were optimistic. They remain useful to
+compare versions; 65% is the fairer estimate for new questions.
+
 ## Remaining errors (round 6)
 
 - "My account got blocked after my card was declined": asks blocked account or cancel (too careful, but safe).

@@ -209,9 +209,37 @@ Other choices:
 
 ### 6. Chat page
 
-Plain HTML, CSS and JavaScript (no build step), served by FastAPI. Features: suggested questions, clickable options for clarifying questions, the source card behind each answer, thumbs up/down feedback (saved to a JSON Lines file), "new conversation", a switch to compare "AI decides" with "Rules only", light and dark themes, and the on-demand "How I decided" panel.
+Plain HTML, CSS and JavaScript (no build step), served by FastAPI. Features: suggested questions, clickable options for clarifying questions, the source card behind each answer, thumbs up/down feedback on every reply (see [Feedback loop](#7-feedback-loop)), "new conversation", a switch to compare "AI decides" with "Rules only", light and dark themes, and the on-demand "How I decided" panel.
 
 Accessibility: WCAG AA colour contrast, full keyboard use, a skip link, screen-reader labels, focus management in the side panel, and support for reduced motion. Fonts and icons are bundled, so the page works offline. All text from the server is inserted as text, never as HTML, so a message cannot inject code into the page.
+
+### 7. Feedback loop
+
+Every reply (answer, clarifying question or decline) has 👍 and 👎 buttons. A thumbs-down on a decline shows a wrong **decision**, not only a wrong answer, so all three are rated.
+
+**What is saved** (`feedback/feedback.jsonl`, one JSON record per line, path set by `FEEDBACK_PATH`): the customer's message and earlier message, the reply, the rating, and **the decision behind the reply**: action, source card or offered cards, who decided, the reason, the rewritten search, the similarity scores, and the model name. With the decision attached, a record can be replayed later.
+
+**How it is used:**
+
+```bash
+docker compose cp app:/app/feedback ./feedback     # with Docker: copy the file out of the container
+python scripts/export_feedback.py                 # reads feedback/feedback.jsonl
+curl http://localhost:8000/feedback/stats         # thumbs up/down per decision type
+```
+
+| Output | From | Purpose |
+|---|---|---|
+| `review_queue.json` | Thumbs-down replies | A person fills in the right action and cards, in the same format as the evaluation sets. Reviewed cases become new test questions, written by real customers instead of by me |
+| `finetune_decisions.jsonl` | Thumbs-up decisions made by the LLM or the rules | Chat-format training examples: the **exact** prompt of the decision step (built by the same `decision_messages` function the agent uses) and the decision as the answer. After a few hundred examples, this is the data to fine-tune the decision model |
+| `GET /feedback/stats` | All feedback | A first quality monitor: which decision type gets the most thumbs-down |
+
+This follows the same idea as the clinician accept/reject step in ACIE: real judgments first **measure** quality, and later they can **improve** the model.
+
+**Trade-offs:**
+- Feedback is optional, so it is biased: unhappy customers click more often than happy ones. It shows where to look, not exact accuracy.
+- A thumbs-up is not a verified label. Before training, examples should be spot-checked by a person.
+- The file contains customer messages. It is in `.gitignore` and stays on the server. In production it needs a retention period and access rules (GDPR).
+- The page sends the decision details with the rating. This keeps the server stateless, but a client could send wrong details. For an internal quality tool this is acceptable; a public product would look the decision up on the server by its ID instead.
 
 ---
 
@@ -292,8 +320,9 @@ Interactive docs: http://localhost:8000/docs
 |---|---|---|
 | `GET` | `/` | Chat page |
 | `POST` | `/chat` | Send a message, get the decision and reply |
-| `POST` | `/feedback` | Save thumbs up/down for a reply |
+| `POST` | `/feedback` | Save thumbs up/down with the decision behind the reply |
 | `GET` | `/health` | Cards loaded, LLM status, model, mode |
+| `GET` | `/feedback/stats` | Thumbs up/down per decision type |
 
 ```bash
 curl -X POST http://localhost:8000/chat -H "Content-Type: application/json" \
@@ -350,7 +379,7 @@ app/
 data/knowledge_base.json The 10 cards
 evaluation/              Test sets, metrics, runner and saved results
 docs/                    Model comparison and evaluation log
-scripts/                 Small command-line tools to try search, answers and the agent
+scripts/                 Command-line tools: try search, answers and the agent; export feedback
 tests/                   Unit and API tests (no Ollama or internet needed)
 Dockerfile, docker-compose.yml, docker-compose.gpu.yml
 ```
@@ -377,7 +406,7 @@ Known errors in the final run:
 
 With more time, I would:
 
-1. **Collect real questions** through the feedback buttons and turn thumbs-down replies into new test cases.
+1. **Use the feedback loop:** review the thumbs-down cases, add them to the evaluation, and fine-tune the decision model once there are a few hundred checked examples.
 2. **Test on an unseen set** written by someone else, for a fair final number.
 3. **Use the LLM's own confidence.** With token probabilities from the model, a low-confidence decision could become a clarifying question or a handover to a human.
 4. **Hand over to a human** when the customer is frustrated or asks twice, with the conversation attached.
