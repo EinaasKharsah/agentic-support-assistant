@@ -12,7 +12,10 @@
 
 services:
   app:
-    build: .
+    build:
+      context: .
+      args:
+        RERANKER_MODEL: ${RERANKER_MODEL:-BAAI/bge-reranker-v2-m3-int8}
     ports:
       - "8000:8000"
     environment:
@@ -23,6 +26,8 @@ services:
       MIN_RELEVANCE: ${MIN_RELEVANCE:-0.55}
       SECOND_CHECK_GAP: ${SECOND_CHECK_GAP:-0.1}
       REWRITE_WEAK_QUERIES: ${REWRITE_WEAK_QUERIES:-true}
+      RERANKER_MODEL: ${RERANKER_MODEL:-BAAI/bge-reranker-v2-m3-int8}
+      MIN_RERANK: ${MIN_RERANK:--10}
       LLM_TIMEOUT_SECONDS: ${LLM_TIMEOUT_SECONDS:-60}
     extra_hosts:
       # Lets the app reach an Ollama that runs on your own computer (see README).

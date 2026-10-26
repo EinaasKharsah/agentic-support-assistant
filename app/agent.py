@@ -33,6 +33,7 @@ from enum import Enum
 
 from app.answering import generate_answer
 from app.llm import LLM, LLMError
+from app.reranker import Reranker
 from app.vector_store import SearchResult, VectorStore
 
 
@@ -60,6 +61,7 @@ class AgentResponse:
     options: list[Option] = field(default_factory=list)
     matches: list[SearchResult] = field(default_factory=list)
     search_query: str | None = None  # set when the agent rewrote the message to search again
+    rerank: dict[str, float] = field(default_factory=dict)  # card id -> re-ranker score (if used)
 
     @property
     def confidence(self) -> float:
@@ -68,7 +70,7 @@ class AgentResponse:
 
 # One general message for every decline. Earlier, a decline that matched the out-of-scope
 # card (Q10) used Q10's own text, which talks about coding help, even for "Thanks, that was
-# helpful!" or "Do you offer a student discount?" (found in the held-out evaluation).
+# helpful!" or "Do you offer a student discount?".
 DEFAULT_DECLINE_MESSAGE = (
     "Sorry, I can only help with questions about your account, billing, "
     "integrations, and data and security. Is there anything in these areas I can help you with?"
@@ -244,6 +246,8 @@ class SupportAgent:
         generate_answers: bool = True,
         second_check_gap: float = 0.1,
         rewrite_weak_queries: bool = True,
+        reranker: Reranker | None = None,
+        min_rerank: float = 0.0,
     ):
         self.store = store
         self.llm = llm
@@ -259,6 +263,10 @@ class SupportAgent:
         self.second_check_gap = second_check_gap
         # Rewrite the message and search again when the first search finds nothing relevant.
         self.rewrite_weak_queries = rewrite_weak_queries
+        # Optional re-ranking model: reads the message and each article together. When set,
+        # it orders the candidates and declines when no article really answers the message.
+        self.reranker = reranker
+        self.min_rerank = min_rerank
 
     # ---- public -----------------------------------------------------------
 
@@ -285,8 +293,20 @@ class SupportAgent:
                 matches = self._merge(matches, self.store.search(search_query, top_k=self.top_k))
                 query = f"{query}\n(In English: {search_query})"
 
-        response = self._decide(query, matches, mode)
-        return replace(response, search_query=search_query) if search_query else response
+        rerank = self._rerank(search_query or query, matches) if mode == "llm" else {}
+        response = self._decide(query, matches, mode, rerank)
+        return replace(response, search_query=search_query, rerank=rerank)
+
+    def _rerank(self, query: str, matches: list[SearchResult]) -> dict[str, float]:
+        """Re-ranker scores per card. Empty if there is no re-ranker or it fails,
+        so the agent falls back to the vector scores and keeps working."""
+        if not self.reranker or not matches:
+            return {}
+        try:
+            scores = self.reranker.score(query, [m.entry.to_text() for m in matches])
+        except Exception:
+            return {}
+        return {m.entry.id: s for m, s in zip(matches, scores)}
 
     def _is_weak(self, matches: list[SearchResult]) -> bool:
         return not matches or matches[0].score < self.min_relevance
@@ -328,18 +348,41 @@ class SupportAgent:
                 best[match.entry.id] = match
         return sorted(best.values(), key=lambda m: m.score, reverse=True)[: self.top_k]
 
-    def _decide(self, query: str, matches: list[SearchResult], mode: str) -> AgentResponse:
+    def _decide(
+        self, query: str, matches: list[SearchResult], mode: str, rerank: dict[str, float] | None = None
+    ) -> AgentResponse:
         # Guardrail 1: nothing relevant -> decline without asking the LLM.
         if not matches or matches[0].score < self.min_relevance:
             return self._decline(
                 matches, "guardrail", f"No card is relevant enough (best score below {self.min_relevance})."
             )
 
-        # The out-of-scope card (Q10) is an example of what to decline, not an article.
-        if matches[0].entry.out_of_scope:
-            return self._decline(matches, "guardrail", "The message matches the out-of-scope example card.")
-        # We search top_k=4, so after removing Q10 the model still sees 3 cards.
-        candidates = [m for m in matches if not m.entry.out_of_scope][:3]
+        if rerank:
+            # The re-ranker reads the message and each article together. It decides the two
+            # guardrails below. The LLM still sees the cards in vector order: when it saw the
+            # re-ranker's order (best card first), it more often listed only that card, and
+            # clarifying questions on the main set dropped from 7/7 to 5/7.
+            ranked = sorted(matches, key=lambda m: rerank[m.entry.id], reverse=True)
+            if ranked[0].entry.out_of_scope:
+                return self._decline(
+                    matches, "guardrail", "The re-ranker found the out-of-scope example to be the best match."
+                )
+            in_scope = [m for m in ranked if not m.entry.out_of_scope]
+            best = rerank[in_scope[0].entry.id] if in_scope else float("-inf")
+            if best < self.min_rerank:
+                return self._decline(
+                    matches,
+                    "guardrail",
+                    f"No article really answers this message (re-ranker score {best:.2f}, "
+                    f"needed {self.min_rerank:.2f}).",
+                )
+            candidates = [m for m in matches if not m.entry.out_of_scope][:3]
+        else:
+            # The out-of-scope card (Q10) is an example of what to decline, not an article.
+            if matches[0].entry.out_of_scope:
+                return self._decline(matches, "guardrail", "The message matches the out-of-scope example card.")
+            # We search top_k=4, so after removing Q10 the model still sees 3 cards.
+            candidates = [m for m in matches if not m.entry.out_of_scope][:3]
 
         if mode == "rules":
             return self._rules_decision(query, matches)

@@ -29,6 +29,7 @@ from app.config import settings
 from app.embeddings import FastEmbedEmbedder
 from app.knowledge_base import load_knowledge_base
 from app.llm import OllamaClient
+from app.reranker import CrossEncoderReranker
 from app.vector_store import VectorStore, make_client
 
 logger = logging.getLogger("support-assistant")
@@ -64,6 +65,7 @@ class MatchOut(BaseModel):
     card_id: str
     question: str
     score: float
+    rerank_score: float | None = None  # only when a re-ranking model is used
     out_of_scope: bool = False
 
 
@@ -127,6 +129,7 @@ def build_agent() -> SupportAgent:
     )
     index_with_retry(store, entries)
     llm = OllamaClient(settings.ollama_url, settings.ollama_model, settings.llm_timeout_seconds)
+    reranker = CrossEncoderReranker(settings.reranker_model) if settings.reranker_model else None
     return SupportAgent(
         store,
         llm,
@@ -134,6 +137,8 @@ def build_agent() -> SupportAgent:
         ambiguity_gap=settings.ambiguity_gap,
         second_check_gap=settings.second_check_gap,
         rewrite_weak_queries=settings.rewrite_weak_queries,
+        reranker=reranker,
+        min_rerank=settings.min_rerank,
         mode=settings.agent_mode,
     )
 
@@ -178,6 +183,7 @@ def to_chat_response(result: AgentResponse) -> ChatResponse:
                 card_id=m.entry.id,
                 question=m.entry.question,
                 score=round(m.score, 3),
+                rerank_score=round(result.rerank[m.entry.id], 3) if m.entry.id in result.rerank else None,
                 out_of_scope=m.entry.out_of_scope,
             )
             for m in result.matches
@@ -199,6 +205,7 @@ def health(agent: SupportAgent = Depends(get_agent)) -> dict:
         "cards": cards,
         "llm": llm_status,  # "ok", "model_missing" or "unreachable"
         "model": settings.ollama_model,
+        "reranker": settings.reranker_model or None,
         "mode": agent.mode,
         "min_relevance": agent.min_relevance,
     }

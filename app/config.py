@@ -39,6 +39,16 @@ class Settings:
     # search query (fixes typos, translates) and search again.
     rewrite_weak_queries: bool = os.getenv("REWRITE_WEAK_QUERIES", "true").lower() == "true"
 
+    # Re-ranking model (a cross-encoder that reads the message and each article together).
+    # Chosen with scripts/calibrate_reranker.py on 119 development questions: it put the right
+    # article first for 75 of 78 answerable questions (vector search alone: 63), works in other
+    # languages, and as the out-of-scope check it lost no real question. Empty = no re-ranker.
+    reranker_model: str = os.getenv("RERANKER_MODEL", "BAAI/bge-reranker-v2-m3-int8")
+    # Below this re-ranker score, no article is related at all, so the agent declines. Kept low on
+    # purpose: near-miss questions ("change the email on my Facebook account") score as high as
+    # real ones, so no threshold separates them, and a higher one loses real questions.
+    min_rerank: float = float(os.getenv("MIN_RERANK", "-10"))
+
     # Thumbs up/down from the chat page are appended to this file (one JSON per line).
     feedback_path: str = os.getenv("FEEDBACK_PATH", "feedback/feedback.jsonl")
 

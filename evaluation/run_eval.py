@@ -28,6 +28,7 @@ from app.config import settings  # noqa: E402
 from app.embeddings import FastEmbedEmbedder  # noqa: E402
 from app.knowledge_base import load_knowledge_base  # noqa: E402
 from app.llm import OllamaClient  # noqa: E402
+from app.reranker import CrossEncoderReranker  # noqa: E402
 from app.vector_store import VectorStore, make_client  # noqa: E402
 from evaluation.metrics import compute_metrics, format_report, row_error  # noqa: E402
 
@@ -113,12 +114,15 @@ def main() -> None:
         return
 
     llm = OllamaClient(settings.ollama_url, settings.ollama_model, settings.llm_timeout_seconds)
+    reranker = CrossEncoderReranker(settings.reranker_model) if settings.reranker_model else None
     agent = SupportAgent(
         store, llm,
         min_relevance=settings.min_relevance,
         ambiguity_gap=settings.ambiguity_gap,
         second_check_gap=settings.second_check_gap,
         rewrite_weak_queries=settings.rewrite_weak_queries,
+        reranker=reranker,
+        min_rerank=settings.min_rerank,
         mode=args.mode,
         generate_answers=args.with_answers,
     )
@@ -137,6 +141,7 @@ def main() -> None:
             "top_score": round(response.confidence, 3),
             "decided_by": response.decided_by,
             "search_query": response.search_query,
+            "rerank": {card: round(score, 3) for card, score in response.rerank.items()},
             "reason": response.reason,
             "message": response.message,
             "seconds": round(seconds, 2),
@@ -150,6 +155,7 @@ def main() -> None:
     check = ""
     if args.mode == "llm":
         check = f"_check{settings.second_check_gap}" + ("_rewrite" if settings.rewrite_weak_queries else "")
+        check += "_rerank" if reranker else ""
     if args.file:
         prefix = f"{args.file.stem}_"
     else:

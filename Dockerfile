@@ -14,6 +14,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # and does not need the internet at run time.
 ARG EMBEDDING_MODEL=BAAI/bge-small-en-v1.5
 RUN python -c "from fastembed import TextEmbedding; TextEmbedding('${EMBEDDING_MODEL}')"
+# The re-ranking model too, if one is set (see RERANKER_MODEL in .env.example).
+ARG RERANKER_MODEL="BAAI/bge-reranker-v2-m3-int8"
+RUN if [ -n "${RERANKER_MODEL}" ]; then python -c "from fastembed.rerank.cross_encoder import TextCrossEncoder; TextCrossEncoder('${RERANKER_MODEL}')"; fi
 # From now on, only use the downloaded copy (no internet calls at start-up).
 ENV HF_HUB_OFFLINE=1
 

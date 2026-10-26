@@ -1,0 +1,1280 @@
+{
+  "metrics": {
+    "questions": 41,
+    "decision_accuracy": 1.0,
+    "errors": {},
+    "confusion": {
+      "answer": {
+        "answer": 25,
+        "clarify": 0,
+        "decline": 0
+      },
+      "clarify": {
+        "answer": 0,
+        "clarify": 7,
+        "decline": 0
+      },
+      "decline": {
+        "answer": 0,
+        "clarify": 0,
+        "decline": 9
+      }
+    },
+    "retrieval_recall_at_1": 1.0,
+    "retrieval_recall_at_3": 1.0,
+    "avg_seconds": 8.76,
+    "by_category": {}
+  },
+  "rows": [
+    {
+      "id": "A01",
+      "split": "dev",
+      "question": "I forgot my password",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q1"
+      ],
+      "predicted_action": "answer",
+      "predicted_card": "Q1",
+      "options": [],
+      "top3_cards": [
+        "Q1",
+        "Q10",
+        "Q8",
+        "Q3"
+      ],
+      "top_score": 0.724,
+      "decided_by": "llm",
+      "search_query": null,
+      "rerank": {
+        "Q1": 2.84,
+        "Q10": -8.863,
+        "Q8": -6.006,
+        "Q3": -6.407
+      },
+      "reason": "The customer is asking about resetting their password, which is related to their account.",
+      "message": "Go to the login page and click \"Forgot Password.\" Enter your registered email address and a reset link will be sent within 2 minutes. The link expires after 30 minutes. If you do not receive the email, check your spam folder or contact support@test.com.",
+      "seconds": 19.19
+    },
+    {
+      "id": "A02",
+      "split": "test",
+      "question": "The password reset link never arrived in my inbox",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q1"
+      ],
+      "predicted_action": "answer",
+      "predicted_card": "Q1",
+      "options": [],
+      "top3_cards": [
+        "Q1",
+        "Q3",
+        "Q2",
+        "Q9"
+      ],
+      "top_score": 0.719,
+      "decided_by": "llm",
+      "search_query": null,
+      "rerank": {
+        "Q1": -0.825,
+        "Q3": -9.18,
+        "Q2": -8.564,
+        "Q9": -9.97
+      },
+      "reason": "The customer is experiencing an issue with receiving a password reset link, which is related to their account. Answer check: the written answer left out limits from the article: 2, 30, so the article text is shown.",
+      "message": "Go to the login page and click \"Forgot Password.\" Enter your registered email address and a reset link will be sent within 2 minutes. The link expires after 30 minutes. If you do not receive the email, check your spam folder or contact support@test.com.",
+      "seconds": 8.91
+    },
+    {
+      "id": "A03",
+      "split": "dev",
+      "question": "How long is the reset link valid?",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q1"
+      ],
+      "predicted_action": "answer",
+      "predicted_card": "Q1",
+      "options": [],
+      "top3_cards": [
+        "Q1",
+        "Q6",
+        "Q5",
+        "Q3"
+      ],
+      "top_score": 0.719,
+      "decided_by": "llm",
+      "search_query": null,
+      "rerank": {
+        "Q1": 2.11,
+        "Q6": -9.262,
+        "Q5": -7.572,
+        "Q3": -9.156
+      },
+      "reason": "The customer is asking about the validity of a reset link, which is related to account management. Answer check: the written answer left out limits from the article: 2, so the article text is shown.",
+      "message": "Go to the login page and click \"Forgot Password.\" Enter your registered email address and a reset link will be sent within 2 minutes. The link expires after 30 minutes. If you do not receive the email, check your spam folder or contact support@test.com.",
+      "seconds": 8.86
+    },
+    {
+      "id": "A04",
+      "split": "test",
+      "question": "I need to update the email address on my profile",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q2"
+      ],
+      "predicted_action": "answer",
+      "predicted_card": "Q2",
+      "options": [],
+      "top3_cards": [
+        "Q2",
+        "Q1",
+        "Q9",
+        "Q3"
+      ],
+      "top_score": 0.828,
+      "decided_by": "llm",
+      "search_query": null,
+      "rerank": {
+        "Q2": 3.545,
+        "Q1": -5.265,
+        "Q9": -8.6,
+        "Q3": -6.383
+      },
+      "reason": "The customer wants to update their email address on their profile, which is related to account management.",
+      "message": "Navigate to Settings > Profile > Contact Information. Enter your new email address and click Save. A verification email will be sent to the new address \u2014 you must click the link to confirm the change. Your old email remains active until the new one is verified.",
+      "seconds": 9.83
+    },
+    {
+      "id": "A05",
+      "split": "dev",
+      "question": "Can I switch my login email to a new one?",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q2"
+      ],
+      "predicted_action": "answer",
+      "predicted_card": "Q2",
+      "options": [],
+      "top3_cards": [
+        "Q2",
+        "Q1",
+        "Q9",
+        "Q3"
+      ],
+      "top_score": 0.703,
+      "decided_by": "llm",
+      "search_query": null,
+      "rerank": {
+        "Q2": -1.07,
+        "Q1": -4.857,
+        "Q9": -9.704,
+        "Q3": -9.144
+      },
+      "reason": "The customer wants to change their login email, which is related to account settings. Second check: The customer's message clearly asks about changing the email address on their account. Article A directly addresses this by providing instructions on how to change the email address. Article B is about resetting a password, which is unrelated to the customer's request. Therefore, the customer's message clearly points to Article A.",
+      "message": "You cannot switch your login email directly through the account settings as described in the help article. The article only mentions changing the email address for contact information. For login email changes, you should contact support for assistance.",
+      "seconds": 15.47
+    },
+    {
+      "id": "A06",
+      "split": "test",
+      "question": "Why was my account suspended?",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q3"
+      ],
+      "predicted_action": "answer",
+      "predicted_card": "Q3",
+      "options": [],
+      "top3_cards": [
+        "Q3",
+        "Q6",
+        "Q5",
+        "Q1"
+      ],
+      "top_score": 0.836,
+      "decided_by": "llm",
+      "search_query": null,
+      "rerank": {
+        "Q3": 5.177,
+        "Q6": -9.438,
+        "Q5": -9.177,
+        "Q1": -8.057
+      },
+      "reason": "The customer wants to know why their account was suspended, which is related to account status and actions taken.",
+      "message": "Your account appears to be suspended due to a failed payment or a Terms of Service violation. To determine the reason, check your registered email for a suspension notice. If the issue is related to a failed payment, update your billing information to reactivate your account within one hour. For policy violations, contact support@test.com to submit an appeal.",
+      "seconds": 10.26
+    },
+    {
+      "id": "A07",
+      "split": "dev",
+      "question": "My account got blocked after my card was declined",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q3"
+      ],
+      "predicted_action": "answer",
+      "predicted_card": "Q3",
+      "options": [],
+      "top3_cards": [
+        "Q3",
+        "Q5",
+        "Q6",
+        "Q4"
+      ],
+      "top_score": 0.688,
+      "decided_by": "llm",
+      "search_query": null,
+      "rerank": {
+        "Q3": -3.116,
+        "Q5": -8.16,
+        "Q6": -9.577,
+        "Q4": -9.688
+      },
+      "reason": "The customer is concerned about their account being blocked due to a declined card payment, which is a common issue in account management. Second check: The customer's message clearly indicates they are experiencing an account suspension issue due to a declined payment. Article A discusses account suspensions and provides steps for reactivating the account. Therefore, the customer's message clearly points to Article A.",
+      "message": "Suspension usually occurs due to a failed payment or a Terms of Service violation. Check your registered email for a suspension notice. Since your card was declined, it's likely a payment-related issue. Update your billing information and the account will be reactivated within one hour. If you haven't received a notice, contact support@test.com for further assistance.",
+      "seconds": 15.45
+    },
+    {
+      "id": "A08",
+      "split": "test",
+      "question": "Do you take Bitcoin?",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q4"
+      ],
+      "predicted_action": "answer",
+      "predicted_card": "Q4",
+      "options": [],
+      "top3_cards": [
+        "Q4",
+        "Q10",
+        "Q8",
+        "Q7"
+      ],
+      "top_score": 0.639,
+      "decided_by": "llm",
+      "search_query": null,
+      "rerank": {
+        "Q4": -7.67,
+        "Q10": -11.018,
+        "Q8": -10.97,
+        "Q7": -10.886
+      },
+      "reason": "The customer is asking about payment methods, specifically if Bitcoin is accepted.",
+      "message": "The article states that cryptocurrency is not supported. All major credit and debit cards (Visa, Mastercard, Amex, Discover) are accepted, as well as bank transfers for annual plans.",
+      "seconds": 9.5
+    },
+    {
+      "id": "A09",
+      "split": "dev",
+      "question": "Which credit cards can I use?",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q4"
+      ],
+      "predicted_action": "answer",
+      "predicted_card": "Q4",
+      "options": [],
+      "top3_cards": [
+        "Q4",
+        "Q10",
+        "Q6",
+        "Q5"
+      ],
+      "top_score": 0.742,
+      "decided_by": "llm",
+      "search_query": null,
+      "rerank": {
+        "Q4": 0.693,
+        "Q10": -10.911,
+        "Q6": -10.567,
+        "Q5": -10.481
+      },
+      "reason": "The customer is asking about credit cards that can be used, which is related to payment methods.",
+      "message": "All major credit cards such as Visa, Mastercard, Amex, and Discover are accepted.",
+      "seconds": 8.66
+    },
+    {
+      "id": "A10",
+      "split": "test",
+      "question": "Can I pay by bank transfer?",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q4"
+      ],
+      "predicted_action": "answer",
+      "predicted_card": "Q4",
+      "options": [],
+      "top3_cards": [
+        "Q4",
+        "Q10",
+        "Q3",
+        "Q5"
+      ],
+      "top_score": 0.653,
+      "decided_by": "llm",
+      "search_query": null,
+      "rerank": {
+        "Q4": 0.313,
+        "Q10": -10.11,
+        "Q3": -9.483,
+        "Q5": -9.995
+      },
+      "reason": "The customer is asking about payment methods, specifically bank transfers, which is relevant to the Billing category.",
+      "message": "Yes, bank transfers are accepted for annual plans. Payments are processed securely.",
+      "seconds": 8.69
+    },
+    {
+      "id": "A11",
+      "split": "dev",
+      "question": "Can I get my money back? I bought the plan last week",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q5"
+      ],
+      "predicted_action": "answer",
+      "predicted_card": "Q5",
+      "options": [],
+      "top3_cards": [
+        "Q5",
+        "Q6",
+        "Q3",
+        "Q10"
+      ],
+      "top_score": 0.727,
+      "decided_by": "llm",
+      "search_query": null,
+      "rerank": {
+        "Q5": -2.086,
+        "Q6": -5.709,
+        "Q3": -8.129,
+        "Q10": -9.982
+      },
+      "reason": "The customer is asking about a refund for a plan they purchased last week. Second check: The customer is asking about getting a refund for a plan purchase. Article A directly addresses refund requests, which fits the customer's query about getting their money back. Article B is about canceling a subscription, which is not relevant to the customer's request.",
+      "message": "A full refund is available within 14 days of your initial purchase. Since it's been more than 14 days, you are not eligible for a refund at this time. Monthly plan charges are non-refundable after 48 hours. If you need further assistance, you can contact billing@test.com with your account email and order ID. Refunds are processed within 5 to 10 business days.",
+      "seconds": 16.21
+    },
+    {
+      "id": "A12",
+      "split": "test",
+      "question": "How long does it take to receive a refund?",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q5"
+      ],
+      "predicted_action": "answer",
+      "predicted_card": "Q5",
+      "options": [],
+      "top3_cards": [
+        "Q5",
+        "Q6",
+        "Q3",
+        "Q1"
+      ],
+      "top_score": 0.807,
+      "decided_by": "llm",
+      "search_query": null,
+      "rerank": {
+        "Q5": 2.055,
+        "Q6": -5.589,
+        "Q3": -7.566,
+        "Q1": -8.11
+      },
+      "reason": "The customer is asking about the time it takes to receive a refund, which is relevant to the Billing category. Answer check: the written answer left out limits from the article: 14, 48, so the article text is shown.",
+      "message": "A full refund is available within 14 days of your initial purchase or annual renewal. Monthly plan charges are non-refundable after 48 hours. To request a refund, contact billing@test.com with your account email and order ID. Refunds are processed within 5 to 10 business days.",
+      "seconds": 8.77
+    },
+    {
+      "id": "A13",
+      "split": "dev",
+      "question": "How do I end my plan?",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q6"
+      ],
+      "predicted_action": "answer",
+      "predicted_card": "Q6",
+      "options": [],
+      "top3_cards": [
+        "Q6",
+        "Q10",
+        "Q5",
+        "Q3"
+      ],
+      "top_score": 0.657,
+      "decided_by": "llm",
+      "search_query": null,
+      "rerank": {
+        "Q6": 2.483,
+        "Q10": -10.914,
+        "Q5": -4.505,
+        "Q3": -6.923
+      },
+      "reason": "The customer wants to end their plan, which is related to the billing process.",
+      "message": "Go to Settings > Billing > Subscription > Cancel Plan. Your access continues until the end of the current billing period. Partial refunds are not issued for unused time on monthly plans. After cancellation, your data is retained for 60 days before being permanently deleted.",
+      "seconds": 9.7
+    },
+    {
+      "id": "A14",
+      "split": "test",
+      "question": "What happens to my data after I cancel?",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q6"
+      ],
+      "predicted_action": "answer",
+      "predicted_card": "Q6",
+      "options": [],
+      "top3_cards": [
+        "Q6",
+        "Q3",
+        "Q5",
+        "Q9"
+      ],
+      "top_score": 0.741,
+      "decided_by": "llm",
+      "search_query": null,
+      "rerank": {
+        "Q6": 1.378,
+        "Q3": -7.5,
+        "Q5": -9.741,
+        "Q9": -8.354
+      },
+      "reason": "The customer is asking about what happens to their data after canceling their subscription, which is relevant to the Billing category. Second check: The customer's message is clearly asking about what happens to their data after canceling, which aligns with the content of article A. Article B does not address data retention or cancellation at all. Therefore, the customer's message clearly points to article A.",
+      "message": "After you cancel your subscription, your data is retained for 60 days before being permanently deleted.",
+      "seconds": 14.31
+    },
+    {
+      "id": "A15",
+      "split": "dev",
+      "question": "Do you have a Slack integration?",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q7"
+      ],
+      "predicted_action": "answer",
+      "predicted_card": "Q7",
+      "options": [],
+      "top3_cards": [
+        "Q7",
+        "Q10",
+        "Q9",
+        "Q8"
+      ],
+      "top_score": 0.75,
+      "decided_by": "llm",
+      "search_query": null,
+      "rerank": {
+        "Q7": 2.889,
+        "Q10": -5.593,
+        "Q9": -10.512,
+        "Q8": -10.982
+      },
+      "reason": "The customer is asking about a specific integration (Slack) and is looking for information about supported integrations.",
+      "message": "Yes, the platform integrates natively with Slack. For more details or additional integrations, you can contact support@test.com.",
+      "seconds": 9.37
+    },
+    {
+      "id": "A16",
+      "split": "test",
+      "question": "Can I connect it to Jira?",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q7"
+      ],
+      "predicted_action": "answer",
+      "predicted_card": "Q7",
+      "options": [],
+      "top3_cards": [
+        "Q7",
+        "Q10",
+        "Q9",
+        "Q1"
+      ],
+      "top_score": 0.605,
+      "decided_by": "llm",
+      "search_query": null,
+      "rerank": {
+        "Q7": -3.207,
+        "Q10": -9.047,
+        "Q9": -10.8,
+        "Q1": -11.006
+      },
+      "reason": "The customer wants to know if they can connect their platform to Jira, which is mentioned in the Integrations card.",
+      "message": "Yes, you can connect it to Jira. The platform integrates natively with Jira as well as with Slack, Google Workspace, Microsoft Teams, GitHub, and Zapier. For more details or to add other integrations, you can contact support@test.com.",
+      "seconds": 9.66
+    },
+    {
+      "id": "A17",
+      "split": "dev",
+      "question": "Do you support webhooks?",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q7"
+      ],
+      "predicted_action": "answer",
+      "predicted_card": "Q7",
+      "options": [],
+      "top3_cards": [
+        "Q7",
+        "Q10",
+        "Q9",
+        "Q4"
+      ],
+      "top_score": 0.66,
+      "decided_by": "llm",
+      "search_query": null,
+      "rerank": {
+        "Q7": 1.294,
+        "Q10": -8.15,
+        "Q9": -10.831,
+        "Q4": -9.987
+      },
+      "reason": "The customer is asking about the platform's support for webhooks, which is relevant to the integrations category.",
+      "message": "Yes, the platform supports webhooks for additional integrations. For more details, you can contact support@test.com.",
+      "seconds": 8.66
+    },
+    {
+      "id": "A18",
+      "split": "test",
+      "question": "Is my data encrypted?",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q8"
+      ],
+      "predicted_action": "answer",
+      "predicted_card": "Q8",
+      "options": [],
+      "top3_cards": [
+        "Q8",
+        "Q9",
+        "Q10",
+        "Q4"
+      ],
+      "top_score": 0.753,
+      "decided_by": "llm",
+      "search_query": null,
+      "rerank": {
+        "Q8": 4.528,
+        "Q9": -7.016,
+        "Q10": -10.226,
+        "Q4": -7.629
+      },
+      "reason": "The customer is asking about data encryption, which is relevant to the cards about data security.",
+      "message": "Yes, all data is encrypted. It is encrypted at rest using AES-256 and in transit using TLS 1.2 or higher.",
+      "seconds": 9.22
+    },
+    {
+      "id": "A19",
+      "split": "dev",
+      "question": "Can I keep my data inside the EU?",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q8"
+      ],
+      "predicted_action": "answer",
+      "predicted_card": "Q8",
+      "options": [],
+      "top3_cards": [
+        "Q8",
+        "Q9",
+        "Q10",
+        "Q6"
+      ],
+      "top_score": 0.751,
+      "decided_by": "llm",
+      "search_query": null,
+      "rerank": {
+        "Q8": -2.21,
+        "Q9": -9.441,
+        "Q10": -10.941,
+        "Q6": -9.254
+      },
+      "reason": "The customer is asking about data residency and storage, which is relevant to the Data & Security category. Second check: The customer's message is clearly asking about data storage location, which is addressed in help article A. Article A discusses where data is stored and mentions EU customers can request regional data residency. The customer's message specifically asks about keeping data inside the EU, which is a direct query to article A. Answer check: the written answer left out limits from the article: 1.2, 256, so the article text is shown.",
+      "message": "All data is stored in encrypted cloud infrastructure. Data is encrypted at rest using AES-256 and in transit using TLS 1.2 or higher. EU customers on eligible plans may request regional data residency by contacting support@test.com.",
+      "seconds": 14.32
+    },
+    {
+      "id": "A20",
+      "split": "test",
+      "question": "How can I download all my workspace data?",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q9"
+      ],
+      "predicted_action": "answer",
+      "predicted_card": "Q9",
+      "options": [],
+      "top3_cards": [
+        "Q9",
+        "Q7",
+        "Q8",
+        "Q10"
+      ],
+      "top_score": 0.75,
+      "decided_by": "llm",
+      "search_query": null,
+      "rerank": {
+        "Q9": 2.943,
+        "Q7": -8.469,
+        "Q8": -6.828,
+        "Q10": -10.95
+      },
+      "reason": "The customer wants to download all their workspace data, which is relevant to the Data & Security category.",
+      "message": "Go to Settings > Account > Export Data. You can download workspace data as a JSON or CSV file. Exports are generated asynchronously and a download link will be sent to your registered email within 30 minutes for large datasets.",
+      "seconds": 9.83
+    },
+    {
+      "id": "A21",
+      "split": "dev",
+      "question": "Can I export my activity logs as a CSV file?",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q9"
+      ],
+      "predicted_action": "answer",
+      "predicted_card": "Q9",
+      "options": [],
+      "top3_cards": [
+        "Q9",
+        "Q10",
+        "Q7",
+        "Q8"
+      ],
+      "top_score": 0.793,
+      "decided_by": "llm",
+      "search_query": null,
+      "rerank": {
+        "Q9": 6.871,
+        "Q10": -9.686,
+        "Q7": -10.433,
+        "Q8": -8.942
+      },
+      "reason": "The customer wants to export their activity logs as a CSV file, which is related to data and security.",
+      "message": "Yes, you can export your activity logs as a CSV file. Go to Settings > Account > Export Data and select activity logs for export. Exports are generated asynchronously and a download link will be sent to your registered email within 30 minutes for large datasets.",
+      "seconds": 9.58
+    },
+    {
+      "id": "A22",
+      "split": "test",
+      "question": "how do i resett my pasword",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q1"
+      ],
+      "note": "typos",
+      "predicted_action": "answer",
+      "predicted_card": "Q1",
+      "options": [],
+      "top3_cards": [
+        "Q1",
+        "Q6",
+        "Q10",
+        "Q3"
+      ],
+      "top_score": 0.671,
+      "decided_by": "llm",
+      "search_query": null,
+      "rerank": {
+        "Q1": 4.16,
+        "Q6": -7.985,
+        "Q10": -10.785,
+        "Q3": -7.684
+      },
+      "reason": "The customer wants to reset their password, which is related to account management. Second check: The customer's message is very specific about resetting a password, which directly matches article A. Article B is about canceling a subscription, which is unrelated to password reset. Therefore, A is the clear fit.",
+      "message": "Go to the login page and click \"Forgot Password.\" Enter your registered email address and a reset link will be sent within 2 minutes. The link expires after 30 minutes. If you do not receive the email, check your spam folder or contact support@test.com.",
+      "seconds": 15.13
+    },
+    {
+      "id": "A23",
+      "split": "dev",
+      "question": "Can I pay with PayPal?",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q4"
+      ],
+      "note": "not in card: answer must say PayPal is not mentioned",
+      "predicted_action": "answer",
+      "predicted_card": "Q4",
+      "options": [],
+      "top3_cards": [
+        "Q4",
+        "Q10",
+        "Q5",
+        "Q3"
+      ],
+      "top_score": 0.66,
+      "decided_by": "rules",
+      "search_query": null,
+      "rerank": {
+        "Q4": -5.798,
+        "Q10": -10.236,
+        "Q5": -10.451,
+        "Q3": -9.213
+      },
+      "reason": "LLM listed no valid card. One card clearly matches best.",
+      "message": "PayPal is not mentioned in our help article. All major credit and debit cards (Visa, Mastercard, Amex, Discover) are accepted, as well as bank transfers for annual plans. Payments are processed securely. Cryptocurrency is not supported.",
+      "seconds": 10.06
+    },
+    {
+      "id": "A24",
+      "split": "test",
+      "question": "Do you integrate with Trello?",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q7"
+      ],
+      "note": "not in card: answer must say Trello is not mentioned",
+      "predicted_action": "answer",
+      "predicted_card": "Q7",
+      "options": [],
+      "top3_cards": [
+        "Q7",
+        "Q10",
+        "Q4",
+        "Q8"
+      ],
+      "top_score": 0.641,
+      "decided_by": "llm",
+      "search_query": null,
+      "rerank": {
+        "Q7": -4.924,
+        "Q10": -6.104,
+        "Q4": -10.981,
+        "Q8": -10.999
+      },
+      "reason": "The customer is asking about integrations with Trello, and the closest card is about integrations.",
+      "message": "The platform integrates natively with Slack, Google Workspace, Microsoft Teams, GitHub, Jira, and Zapier. Additional integrations are available via the REST API and webhooks. Contact support@test.com for the full list of supported integrations. Trello is not mentioned in the help article.",
+      "seconds": 10.09
+    },
+    {
+      "id": "A25",
+      "split": "dev",
+      "question": "Wie kann ich mein Passwort zur\u00fccksetzen?",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q1"
+      ],
+      "note": "German; English-only embedding model",
+      "predicted_action": "answer",
+      "predicted_card": "Q1",
+      "options": [],
+      "top3_cards": [
+        "Q1",
+        "Q2",
+        "Q6",
+        "Q10"
+      ],
+      "top_score": 0.788,
+      "decided_by": "llm",
+      "search_query": "how to reset password",
+      "rerank": {
+        "Q1": 4.164,
+        "Q2": -5.887,
+        "Q6": -8.946,
+        "Q10": -10.367
+      },
+      "reason": "The customer is asking about resetting their password, which is directly related to account management.",
+      "message": "Go to the login page and click \"Forgot Password.\" Enter your registered email address and a reset link will be sent within 2 minutes. The link expires after 30 minutes. If you do not receive the email, check your spam folder or contact support@test.com.",
+      "seconds": 13.79
+    },
+    {
+      "id": "C01",
+      "split": "dev",
+      "question": "I want to stop paying",
+      "expected_action": "clarify",
+      "expected_cards": [
+        "Q5",
+        "Q6"
+      ],
+      "predicted_action": "clarify",
+      "predicted_card": null,
+      "options": [
+        "Q6",
+        "Q5"
+      ],
+      "top3_cards": [
+        "Q6",
+        "Q5",
+        "Q3",
+        "Q4"
+      ],
+      "top_score": 0.627,
+      "decided_by": "llm",
+      "search_query": null,
+      "rerank": {
+        "Q6": -1.352,
+        "Q5": -5.499,
+        "Q3": -3.837,
+        "Q4": -9.443
+      },
+      "reason": "The customer wants to stop paying, which is related to the billing process.",
+      "message": "Do you want to cancel your subscription or request a refund?",
+      "seconds": 5.93
+    },
+    {
+      "id": "C02",
+      "split": "test",
+      "question": "I have a problem with my account",
+      "expected_action": "clarify",
+      "expected_cards": [
+        "Q1",
+        "Q2",
+        "Q3"
+      ],
+      "predicted_action": "clarify",
+      "predicted_card": null,
+      "options": [
+        "Q3",
+        "Q6"
+      ],
+      "top3_cards": [
+        "Q3",
+        "Q6",
+        "Q10",
+        "Q5"
+      ],
+      "top_score": 0.702,
+      "decided_by": "llm",
+      "search_query": null,
+      "rerank": {
+        "Q3": -1.261,
+        "Q6": -7.456,
+        "Q10": -5.297,
+        "Q5": -6.713
+      },
+      "reason": "The customer is having an issue with their account, which is relevant to the support questions provided.",
+      "message": "Is this about your account being suspended or about canceling a subscription?",
+      "seconds": 6.07
+    },
+    {
+      "id": "C03",
+      "split": "dev",
+      "question": "I can't get into my account",
+      "expected_action": "clarify",
+      "expected_cards": [
+        "Q1",
+        "Q3"
+      ],
+      "predicted_action": "clarify",
+      "predicted_card": null,
+      "options": [
+        "Q3",
+        "Q1",
+        "Q2"
+      ],
+      "top3_cards": [
+        "Q3",
+        "Q1",
+        "Q2",
+        "Q10"
+      ],
+      "top_score": 0.651,
+      "decided_by": "llm",
+      "search_query": null,
+      "rerank": {
+        "Q3": -4.203,
+        "Q1": -3.94,
+        "Q2": -8.359,
+        "Q10": -7.114
+      },
+      "reason": "The customer is having trouble logging into their account, which is a common issue related to account access.",
+      "message": "Which one of these issues are you facing?",
+      "seconds": 6.12
+    },
+    {
+      "id": "C04",
+      "split": "test",
+      "question": "Something is wrong with my payment",
+      "expected_action": "clarify",
+      "expected_cards": [
+        "Q3",
+        "Q4",
+        "Q5"
+      ],
+      "predicted_action": "clarify",
+      "predicted_card": null,
+      "options": [
+        "Q3",
+        "Q4"
+      ],
+      "top3_cards": [
+        "Q3",
+        "Q4",
+        "Q5",
+        "Q10"
+      ],
+      "top_score": 0.698,
+      "decided_by": "llm",
+      "search_query": null,
+      "rerank": {
+        "Q3": -2.058,
+        "Q4": -9.622,
+        "Q5": -6.828,
+        "Q10": -9.738
+      },
+      "reason": "The customer is concerned about a payment issue, which could be related to account suspension or payment processing problems.",
+      "message": "Is this about a payment issue with your account?",
+      "seconds": 6.18
+    },
+    {
+      "id": "C05",
+      "split": "dev",
+      "question": "What happens to my data?",
+      "expected_action": "clarify",
+      "expected_cards": [
+        "Q6",
+        "Q8",
+        "Q9"
+      ],
+      "predicted_action": "clarify",
+      "predicted_card": null,
+      "options": [
+        "Q9",
+        "Q8"
+      ],
+      "top3_cards": [
+        "Q9",
+        "Q8",
+        "Q6",
+        "Q3"
+      ],
+      "top_score": 0.656,
+      "decided_by": "llm",
+      "search_query": null,
+      "rerank": {
+        "Q9": -4.441,
+        "Q8": -2.299,
+        "Q6": -3.333,
+        "Q3": -6.293
+      },
+      "reason": "The customer is asking about their data, which is relevant to the Data & Security category.",
+      "message": "Are you asking about what happens to your data when you delete your account or are you inquiring about where your data is stored?",
+      "seconds": 6.4
+    },
+    {
+      "id": "C06",
+      "split": "test",
+      "question": "I need help with my email",
+      "expected_action": "clarify",
+      "expected_cards": [
+        "Q1",
+        "Q2"
+      ],
+      "predicted_action": "clarify",
+      "predicted_card": null,
+      "options": [
+        "Q1",
+        "Q2",
+        "Q9"
+      ],
+      "top3_cards": [
+        "Q1",
+        "Q2",
+        "Q10",
+        "Q9"
+      ],
+      "top_score": 0.649,
+      "decided_by": "llm",
+      "search_query": null,
+      "rerank": {
+        "Q1": -4.433,
+        "Q2": -3.625,
+        "Q10": -8.021,
+        "Q9": -5.722
+      },
+      "reason": "The customer is asking for help with their email, which could relate to account settings or data security.",
+      "message": "Are you looking for help with resetting your password, changing your email address, or exporting your data?",
+      "seconds": 6.44
+    },
+    {
+      "id": "C07",
+      "split": "dev",
+      "question": "I don't want to be charged anymore",
+      "expected_action": "clarify",
+      "expected_cards": [
+        "Q5",
+        "Q6"
+      ],
+      "predicted_action": "clarify",
+      "predicted_card": null,
+      "options": [
+        "Q6",
+        "Q5"
+      ],
+      "top3_cards": [
+        "Q6",
+        "Q5",
+        "Q3",
+        "Q4"
+      ],
+      "top_score": 0.611,
+      "decided_by": "llm",
+      "search_query": null,
+      "rerank": {
+        "Q6": -4.783,
+        "Q5": -6.635,
+        "Q3": -7.845,
+        "Q4": -9.925
+      },
+      "reason": "The customer wants to stop being charged, which is related to the billing category.",
+      "message": "Are you looking to cancel your subscription or request a refund?",
+      "seconds": 5.98
+    },
+    {
+      "id": "D01",
+      "split": "dev",
+      "question": "What is the weather in Berlin?",
+      "expected_action": "decline",
+      "expected_cards": [],
+      "predicted_action": "decline",
+      "predicted_card": null,
+      "options": [],
+      "top3_cards": [
+        "Q8",
+        "Q10",
+        "Q9",
+        "Q7"
+      ],
+      "top_score": 0.409,
+      "decided_by": "guardrail",
+      "search_query": "weather in berlin",
+      "rerank": {
+        "Q8": -11.029,
+        "Q10": -11.004,
+        "Q9": -11.022,
+        "Q7": -10.991
+      },
+      "reason": "No card is relevant enough (best score below 0.55).",
+      "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
+      "seconds": 6.66
+    },
+    {
+      "id": "D02",
+      "split": "test",
+      "question": "Can you write Python code for me?",
+      "expected_action": "decline",
+      "expected_cards": [],
+      "predicted_action": "decline",
+      "predicted_card": null,
+      "options": [],
+      "top3_cards": [
+        "Q10",
+        "Q7",
+        "Q9",
+        "Q8"
+      ],
+      "top_score": 0.701,
+      "decided_by": "guardrail",
+      "search_query": null,
+      "rerank": {
+        "Q10": -1.929,
+        "Q7": -10.147,
+        "Q9": -9.345,
+        "Q8": -10.832
+      },
+      "reason": "The re-ranker found the out-of-scope example to be the best match.",
+      "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
+      "seconds": 0.46
+    },
+    {
+      "id": "D03",
+      "split": "dev",
+      "question": "Can you help me debug my JavaScript function?",
+      "expected_action": "decline",
+      "expected_cards": [],
+      "predicted_action": "decline",
+      "predicted_card": null,
+      "options": [],
+      "top3_cards": [
+        "Q10",
+        "Q3",
+        "Q9",
+        "Q1"
+      ],
+      "top_score": 0.584,
+      "decided_by": "guardrail",
+      "search_query": null,
+      "rerank": {
+        "Q10": -6.557,
+        "Q3": -10.735,
+        "Q9": -10.081,
+        "Q1": -11.012
+      },
+      "reason": "The re-ranker found the out-of-scope example to be the best match.",
+      "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
+      "seconds": 0.49
+    },
+    {
+      "id": "D04",
+      "split": "test",
+      "question": "Recommend a good restaurant in Essen",
+      "expected_action": "decline",
+      "expected_cards": [],
+      "predicted_action": "decline",
+      "predicted_card": null,
+      "options": [],
+      "top3_cards": [
+        "Q4",
+        "Q7",
+        "Q8",
+        "Q10"
+      ],
+      "top_score": 0.431,
+      "decided_by": "guardrail",
+      "search_query": "Recommend good restaurant Essen",
+      "rerank": {
+        "Q4": -11.008,
+        "Q7": -10.985,
+        "Q8": -11.015,
+        "Q10": -10.998
+      },
+      "reason": "No card is relevant enough (best score below 0.55).",
+      "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
+      "seconds": 6.6
+    },
+    {
+      "id": "D05",
+      "split": "dev",
+      "question": "What is your company's stock price?",
+      "expected_action": "decline",
+      "expected_cards": [],
+      "predicted_action": "decline",
+      "predicted_card": null,
+      "options": [],
+      "top3_cards": [
+        "Q10",
+        "Q8",
+        "Q3",
+        "Q5"
+      ],
+      "top_score": 0.48,
+      "decided_by": "guardrail",
+      "search_query": null,
+      "rerank": {
+        "Q10": -11.015,
+        "Q8": -10.97,
+        "Q3": -11.004,
+        "Q5": -10.881
+      },
+      "reason": "No card is relevant enough (best score below 0.55).",
+      "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
+      "seconds": 3.52
+    },
+    {
+      "id": "D06",
+      "split": "test",
+      "question": "Tell me a joke",
+      "expected_action": "decline",
+      "expected_cards": [],
+      "predicted_action": "decline",
+      "predicted_card": null,
+      "options": [],
+      "top3_cards": [
+        "Q10",
+        "Q3",
+        "Q1",
+        "Q5"
+      ],
+      "top_score": 0.49,
+      "decided_by": "guardrail",
+      "search_query": null,
+      "rerank": {
+        "Q10": -10.544,
+        "Q3": -10.372,
+        "Q1": -9.966,
+        "Q5": -10.914
+      },
+      "reason": "No card is relevant enough (best score below 0.55).",
+      "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
+      "seconds": 3.51
+    },
+    {
+      "id": "D07",
+      "split": "dev",
+      "question": "Write a SQL query for my integration database",
+      "expected_action": "decline",
+      "expected_cards": [],
+      "note": "close to the integrations topic",
+      "predicted_action": "decline",
+      "predicted_card": null,
+      "options": [],
+      "top3_cards": [
+        "Q10",
+        "Q7",
+        "Q9",
+        "Q8"
+      ],
+      "top_score": 0.693,
+      "decided_by": "guardrail",
+      "search_query": null,
+      "rerank": {
+        "Q10": -4.564,
+        "Q7": -9.542,
+        "Q9": -10.145,
+        "Q8": -10.678
+      },
+      "reason": "The re-ranker found the out-of-scope example to be the best match.",
+      "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
+      "seconds": 0.59
+    },
+    {
+      "id": "D08",
+      "split": "test",
+      "question": "Translate this sentence into French",
+      "expected_action": "decline",
+      "expected_cards": [],
+      "predicted_action": "decline",
+      "predicted_card": null,
+      "options": [],
+      "top3_cards": [
+        "Q10",
+        "Q4",
+        "Q9",
+        "Q8"
+      ],
+      "top_score": 0.458,
+      "decided_by": "guardrail",
+      "search_query": null,
+      "rerank": {
+        "Q10": -5.403,
+        "Q4": -5.626,
+        "Q9": -8.942,
+        "Q8": -4.971
+      },
+      "reason": "No card is relevant enough (best score below 0.55).",
+      "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
+      "seconds": 3.55
+    },
+    {
+      "id": "D09",
+      "split": "dev",
+      "question": "Who won the football match yesterday?",
+      "expected_action": "decline",
+      "expected_cards": [],
+      "predicted_action": "decline",
+      "predicted_card": null,
+      "options": [],
+      "top3_cards": [
+        "Q3",
+        "Q1",
+        "Q8",
+        "Q2"
+      ],
+      "top_score": 0.419,
+      "decided_by": "guardrail",
+      "search_query": "who won football match yesterday",
+      "rerank": {
+        "Q3": -11.012,
+        "Q1": -11.019,
+        "Q8": -11.026,
+        "Q2": -11.013
+      },
+      "reason": "No card is relevant enough (best score below 0.55).",
+      "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
+      "seconds": 7.26
+    }
+  ]
+}

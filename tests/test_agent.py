@@ -4,7 +4,7 @@ from app.agent import DECISION_SCHEMA, DEFAULT_DECLINE_MESSAGE, Action, SupportA
 from app.knowledge_base import load_knowledge_base
 from app.llm import LLMError
 from app.vector_store import VectorStore, make_client
-from tests.fakes import FakeEmbedder, FakeLLM
+from tests.fakes import FakeEmbedder, FakeLLM, FakeReranker
 
 ENTRIES = load_knowledge_base("data/knowledge_base.json")
 
@@ -340,3 +340,77 @@ def test_second_check_question_with_internal_names_is_replaced(store):
     assert response.action == Action.CLARIFY
     assert response.message == DEFAULT_CLARIFY_MESSAGE
     assert len(response.options) == 2  # the buttons still show both articles
+
+
+# ---- re-ranker ---------------------------------------------------------------------
+
+Q1_TITLE = "How do I reset my password?"
+Q2_TITLE = "How do I change the email address on my account?"
+Q7_TITLE = "What third-party tools does the platform integrate with?"
+Q10_TITLE = "Can you help me write code for my integration project?"
+
+
+def test_llm_sees_the_vector_order_even_with_a_reranker(store):
+    # top_k=10: the test search returns every card. The re-ranker prefers Q2, but the LLM still
+    # sees Q1 (the vector top) first: the re-ranker's order made it clarify less often.
+    reranker = FakeReranker({Q2_TITLE: 8.0, Q1_TITLE: 2.0})
+    llm = FakeLLM(json_reply=decision(["Q1"]), reply="answer")
+    make_agent(store, llm, reranker=reranker, second_check_gap=0, top_k=10).respond("How do I reset my password?")
+    prompt = llm.calls[0][1]["content"]
+    first_card = prompt[prompt.index("Cards:"):].split("[", 1)[1][:3]
+    assert first_card == "Q1]"
+
+
+def test_low_reranker_score_declines_without_calling_the_llm(store):
+    reranker = FakeReranker({}, default=-9.0)
+    llm = FakeLLM(json_reply=decision(["Q1"]))
+    response = make_agent(store, llm, reranker=reranker, min_rerank=-2.0).respond("How do I reset my password?")
+    assert response.action == Action.DECLINE
+    assert response.decided_by == "guardrail"
+    assert "re-ranker" in response.reason
+    assert llm.calls == []
+
+
+def test_out_of_scope_card_first_after_reranking_declines(store):
+    reranker = FakeReranker({Q10_TITLE: 9.0, Q1_TITLE: 1.0})
+    llm = FakeLLM(json_reply=decision(["Q1"]))
+    response = make_agent(store, llm, reranker=reranker, min_rerank=-2.0, top_k=10).respond("How do I reset my password?")
+    assert response.action == Action.DECLINE
+    assert llm.calls == []
+
+
+def test_reranker_can_rescue_a_question_where_the_out_of_scope_card_was_first(store):
+    # Without the re-ranker, this message is declined because Q10 is the top vector match.
+    message = "Can you help me write code for my integration project?"
+    assert make_agent(store, FakeLLM()).respond(message).action == Action.DECLINE
+    q6 = ENTRIES[5]
+    reranker = FakeReranker({q6.question: 6.0, Q10_TITLE: 1.0})
+    llm = FakeLLM(json_reply=decision(["Q6"]), reply=q6.answer)
+    response = make_agent(store, llm, reranker=reranker, min_rerank=-2.0, second_check_gap=0, top_k=10).respond(message)
+    assert response.action == Action.ANSWER
+    assert response.source == "Q6"
+    assert response.rerank["Q6"] == 6.0
+
+
+def test_reranker_error_falls_back_to_vector_scores(store):
+    reranker = FakeReranker({}, error=RuntimeError("model missing"))
+    llm = FakeLLM(json_reply=decision(["Q1"]), reply="answer")
+    response = make_agent(store, llm, reranker=reranker, min_rerank=100.0).respond("How do I reset my password?")
+    assert response.rerank == {}
+    assert response.action != Action.DECLINE  # the impossible threshold was not used
+
+
+def test_reranker_uses_the_english_rewrite(store):
+    reranker = FakeReranker({Q1_TITLE: 5.0})
+    llm = FakeLLM(json_reply=[{"has_meaning": True, "search_query": "How do I reset my password?"}, decision(["Q1"])], reply="answer")
+    make_agent(store, llm, reranker=reranker).respond("Ich habe mein Passwort vergessen")
+    assert reranker.queries == ["How do I reset my password?"]
+
+
+def test_rules_mode_does_not_use_the_reranker(store):
+    reranker = FakeReranker({}, default=-9.0)
+    response = make_agent(store, FakeLLM(reply="answer"), reranker=reranker, min_rerank=0.0, mode="rules").respond(
+        "How do I reset my password?"
+    )
+    assert reranker.queries == []
+    assert response.action != Action.DECLINE

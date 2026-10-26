@@ -39,9 +39,12 @@ class FakeLLM:
         self.calls: list[list[dict[str, str]]] = []
 
     def chat(self, messages, json_schema=None):
+        """reply can be one string (always returned) or a list (one per call, in order)."""
         self.calls.append(messages)
         if self.error:
             raise self.error
+        if isinstance(self.reply, list):
+            return self.reply.pop(0) if self.reply else ""
         return self.reply
 
     def chat_json(self, messages, json_schema):
@@ -52,3 +55,23 @@ class FakeLLM:
         if isinstance(self.json_reply, list):
             return self.json_reply.pop(0) if self.json_reply else {}
         return self.json_reply or {}
+
+
+class FakeReranker:
+    """Gives each article a fixed score, found by the article's question in the text.
+    Articles not listed get `default`."""
+
+    def __init__(self, scores_by_question: dict[str, float], default: float = -5.0, error: Exception | None = None):
+        self.scores_by_question = scores_by_question
+        self.default = default
+        self.error = error
+        self.queries: list[str] = []
+
+    def score(self, query: str, documents: list[str]) -> list[float]:
+        self.queries.append(query)
+        if self.error:
+            raise self.error
+        return [
+            next((s for q, s in self.scores_by_question.items() if q in doc), self.default)
+            for doc in documents
+        ]
