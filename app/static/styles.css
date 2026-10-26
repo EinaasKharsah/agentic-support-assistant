@@ -135,8 +135,48 @@ button { cursor: pointer; }
 }
 .icon-button:hover { color: var(--strong); border-color: var(--accent-line); }
 
-/* ---- layout ------------------------------------------------------------------ */
-.layout { height: calc(100% - 64px); }
+/* ---- layout: saved conversations on the left, the chat on the right --------------- */
+.app { display: grid; grid-template-columns: 272px minmax(0, 1fr); height: calc(100% - 64px); }
+.app.sidebar-hidden { grid-template-columns: minmax(0, 1fr); }
+.app.sidebar-hidden .sidebar { display: none; }
+.layout { height: 100%; min-height: 0; }
+
+.sidebar {
+  display: flex; flex-direction: column; gap: 10px; min-height: 0;
+  padding: 16px 12px 14px; border-right: 1px solid var(--line); background: var(--surface);
+}
+.new-chat-btn { width: 100%; justify-content: flex-start; gap: 8px; border-color: var(--accent-line); }
+.new-chat-btn:hover { background: var(--accent); color: var(--accent-ink); }
+.sidebar-title { margin: 6px 8px 0; font-size: 12.5px; font-weight: 600; color: var(--muted); }
+.conv-list { list-style: none; margin: 0; padding: 0; flex: 1; min-height: 0; overflow-y: auto; display: grid; align-content: start; gap: 2px; }
+.conv-empty { margin: 0 8px; font-size: 13px; color: var(--muted); }
+.conv-empty[hidden] { display: none; }
+.conv-item { display: flex; align-items: center; gap: 2px; border-radius: var(--radius-m); }
+.conv-item:hover, .conv-item:focus-within { background: var(--raised); }
+.conv-item.current { background: var(--raised); box-shadow: inset 3px 0 0 var(--accent); }
+.conv-open {
+  flex: 1; min-width: 0; display: grid; gap: 1px; text-align: left;
+  border: 0; background: none; padding: 8px 6px 8px 12px; border-radius: var(--radius-m);
+}
+.conv-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; color: var(--ink); }
+.conv-item.current .conv-title { color: var(--strong); font-weight: 500; }
+.conv-meta { font-size: 12px; color: var(--muted); }
+.conv-actions { display: flex; gap: 0; padding-right: 4px; opacity: 0; }
+.conv-item:hover .conv-actions, .conv-item:focus-within .conv-actions, .conv-item.current .conv-actions { opacity: 1; }
+@media (hover: none) { .conv-actions { opacity: 1; } }
+.mini-btn {
+  display: inline-grid; place-items: center; width: 32px; height: 32px;
+  border: 1px solid transparent; border-radius: var(--radius-s); background: none; color: var(--muted);
+}
+.mini-btn:hover { color: var(--ink); border-color: var(--line-strong); }
+.mini-btn.danger:hover { color: var(--accent-text); border-color: var(--accent-line); }
+.sidebar-footer { display: grid; gap: 10px; padding-top: 12px; border-top: 1px solid var(--line); }
+.storage-note { display: flex; gap: 6px; align-items: flex-start; font-size: 12px; line-height: 1.45; color: var(--muted); }
+.storage-note svg { flex: none; margin-top: 1px; }
+.footer-actions { display: flex; gap: 6px; }
+.footer-actions .text-button { flex: 1; justify-content: center; min-height: 34px; padding: 0 8px; font-size: 12.5px; }
+.text-button.danger:hover:not(:disabled) { border-color: var(--accent-line); color: var(--accent-text); }
+.brand .sidebar-toggle { margin-right: 4px; }
 
 .text-button {
   display: inline-flex; align-items: center; gap: 6px;
@@ -340,6 +380,19 @@ button { cursor: pointer; }
 .cutoff-legend { display: flex; align-items: center; gap: 6px; margin-top: 10px; font-size: 12px; color: var(--muted); }
 .cutoff-legend::before { content: ""; width: 2px; height: 12px; background: var(--ink); opacity: .55; }
 
+/* ---- medium screens: the conversation list becomes a drawer ------------------- */
+@media (max-width: 900px) {
+  .app, .app.sidebar-hidden { grid-template-columns: minmax(0, 1fr); }
+  .sidebar, .app.sidebar-hidden .sidebar {
+    display: flex; position: fixed; top: 0; bottom: 0; left: 0; z-index: 30;
+    width: min(300px, 86vw); border-right: 1px solid var(--line);
+    transform: translateX(-105%); visibility: hidden;
+    transition: transform .2s ease, visibility 0s linear .2s;
+  }
+  .sidebar.open { transform: none; visibility: visible; box-shadow: 12px 0 32px rgba(0, 0, 0, .18); transition: transform .2s ease; }
+  .sidebar-scrim { z-index: 25; }
+}
+
 /* ---- small screens: the trace becomes a bottom sheet ---------------------- */
 @media (max-width: 700px) {
   .trace {
@@ -352,18 +405,18 @@ button { cursor: pointer; }
 @media (max-width: 640px) {
   .topbar { padding: 10px 16px; flex-wrap: wrap; }
   .status { display: none; }
-  #new-chat .label { display: none; }
   .messages { padding: 20px 16px 12px; }
   .composer, .reply-to { width: calc(100% - 32px); }
   .composer { margin-bottom: 12px; }
   .msg-user p { max-width: 88%; }
   .welcome h2 { font-size: 22px; }
-  .layout { height: calc(100% - 104px); }
+  .app { height: calc(100% - 104px); }
 }
 
 /* Windows high contrast and other forced-colour modes: keep borders and states visible. */
 @media (forced-colors: active) {
   .msg-bot, .score-row .fill, .send-button, .suggestion, .option, .composer { forced-color-adjust: auto; border: 1px solid CanvasText; }
+  .conv-item.current { outline: 2px solid Highlight; }
   .topbar::after { background: CanvasText; }
 }
 

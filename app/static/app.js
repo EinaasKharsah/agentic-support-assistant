@@ -39,11 +39,19 @@ const FEEDBACK_PROMPT = {
 const state = {
   mode: "llm",
   minRelevance: 0.55,
-  turns: [], // { question, previous, mode, response, element }
+  turns: [], // { question, previous, mode, response, rating, element }
   selected: -1,
   pendingClarify: null, // the vague question, sent along with the customer's reply
   busy: false,
+  conversations: [], // saved in this browser only: { id, title, created, updated, turns, pendingClarify }
+  currentId: null,
+  storageOk: true,
 };
+
+// Conversations are kept in the browser (localStorage), never on the server:
+// customer messages stay on the customer's device, and the API stays stateless.
+const STORE_KEY = "support-assistant.conversations.v1";
+const MAX_CONVERSATIONS = 50;
 
 // ---- elements -------------------------------------------------------------------
 
@@ -197,6 +205,7 @@ function openTrace(index) {
   // Keep keyboard and screen reader focus inside the open panel.
   $("main").inert = true;
   $("topbar").inert = true;
+  $("sidebar").inert = true;
   $("trace-close").focus();
 }
 
@@ -208,6 +217,7 @@ function closeTrace() {
   scrimEl.hidden = true;
   $("main").inert = false;
   $("topbar").inert = false;
+  $("sidebar").inert = false;
   state.turns.forEach((t) => t.element && t.element.classList.remove("selected"));
   // Return focus to the button that opened the panel.
   turn?.element?.querySelector(".trace-link")?.focus();
@@ -215,19 +225,276 @@ function closeTrace() {
 
 function setupNewChat() {
   const button = $("new-chat");
-  button.innerHTML = icon("rotate-ccw", 15);
+  button.innerHTML = icon("square-pen", 16);
   button.append(el("span", "label", "New conversation"));
   button.addEventListener("click", () => {
     if (state.busy) return;
-    closeTrace();
-    state.turns = [];
-    state.selected = -1;
-    setPendingClarify(null);
-    messagesEl.replaceChildren(welcomeEl);
-    welcomeEl.hidden = false;
-    inputEl.value = "";
+    startNewConversation();
+    closeSidebarOnMobile();
     inputEl.focus();
   });
+}
+
+function startNewConversation() {
+  closeTrace();
+  state.currentId = null;
+  state.turns = [];
+  state.selected = -1;
+  setPendingClarify(null);
+  messagesEl.replaceChildren(welcomeEl);
+  welcomeEl.hidden = false;
+  inputEl.value = "";
+  renderSidebar();
+}
+
+// ---- saved conversations ---------------------------------------------------------------
+
+function loadConversations() {
+  try {
+    const list = JSON.parse(localStorage.getItem(STORE_KEY) || "[]");
+    return Array.isArray(list) ? list.filter((c) => c && c.id && Array.isArray(c.turns)) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveConversations() {
+  try {
+    // The DOM element of each turn is not saved.
+    const json = JSON.stringify(state.conversations, (key, value) => (key === "element" ? undefined : value));
+    localStorage.setItem(STORE_KEY, json);
+    state.storageOk = true;
+  } catch {
+    state.storageOk = false; // private window, blocked storage, or full storage: the chat still works
+  }
+  renderStorageNote();
+}
+
+function currentConversation() {
+  return state.conversations.find((c) => c.id === state.currentId) || null;
+}
+
+function newId() {
+  return (crypto.randomUUID && crypto.randomUUID()) || `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
+function recordTurn(turn) {
+  let conversation = currentConversation();
+  const now = new Date().toISOString();
+  if (!conversation) {
+    conversation = { id: newId(), title: turn.question.slice(0, 80), created: now, updated: now, turns: [], pendingClarify: null };
+    state.conversations.unshift(conversation);
+    state.currentId = conversation.id;
+    state.turns = conversation.turns;
+  }
+  conversation.turns.push(turn);
+  conversation.updated = now;
+  conversation.pendingClarify = state.pendingClarify;
+  // Most recent first, and keep the list a reasonable size.
+  state.conversations = [conversation, ...state.conversations.filter((c) => c !== conversation)].slice(0, MAX_CONVERSATIONS);
+  saveConversations();
+  renderSidebar();
+}
+
+function openConversation(id) {
+  if (state.busy) return;
+  const conversation = state.conversations.find((c) => c.id === id);
+  if (!conversation) return;
+  closeTrace();
+  state.currentId = id;
+  state.turns = conversation.turns;
+  state.selected = -1;
+  messagesEl.replaceChildren(welcomeEl);
+  welcomeEl.hidden = true;
+  conversation.turns.forEach((turn, index) => {
+    messagesEl.append(userRow(turn.question), renderBotMessage(turn, index));
+  });
+  setPendingClarify(conversation.pendingClarify || null);
+  renderSidebar();
+  closeSidebarOnMobile();
+  scrollDown();
+  inputEl.focus();
+}
+
+function deleteConversation(id) {
+  const conversation = state.conversations.find((c) => c.id === id);
+  if (!conversation || state.busy) return;
+  if (!window.confirm(`Delete the conversation "${conversation.title}"? This cannot be undone.`)) return;
+  state.conversations = state.conversations.filter((c) => c.id !== id);
+  saveConversations();
+  if (state.currentId === id) startNewConversation();
+  else renderSidebar();
+}
+
+function deleteAllConversations() {
+  if (!state.conversations.length || state.busy) return;
+  if (!window.confirm(`Delete all ${state.conversations.length} saved conversations? This cannot be undone.`)) return;
+  state.conversations = [];
+  saveConversations();
+  startNewConversation();
+}
+
+// Export as JSON: the question, the reply, and the decision behind it, so an exported
+// conversation can be read, shared with support, or turned into test questions.
+function exportJson(conversations, filename) {
+  const data = {
+    exported_at: new Date().toISOString(),
+    source: "Help center assistant",
+    conversations: conversations.map((c) => ({
+      id: c.id,
+      title: c.title,
+      created: c.created,
+      updated: c.updated,
+      turns: c.turns.map((t) => ({
+        question: t.question,
+        previous_message: t.previous || null,
+        mode: t.mode,
+        action: t.response.action,
+        reply: t.response.message,
+        reason: t.response.reason,
+        decided_by: t.response.decided_by,
+        source_card: t.response.source ? t.response.source.id : null,
+        options: t.response.options.map((o) => o.card_id),
+        search_query: t.response.search_query || null,
+        matches: t.response.matches.map((m) => ({ card_id: m.card_id, score: m.score, rerank_score: m.rerank_score ?? null })),
+        rating: t.rating || null,
+      })),
+    })),
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = el("a");
+  link.href = url;
+  link.download = filename;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function slug(text) {
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40) || "conversation";
+}
+
+function formatWhen(iso) {
+  const date = new Date(iso);
+  const sameDay = date.toDateString() === new Date().toDateString();
+  return sameDay
+    ? date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+    : date.toLocaleDateString([], { day: "numeric", month: "short" });
+}
+
+function renderSidebar() {
+  const list = $("conv-list");
+  list.replaceChildren();
+  for (const conversation of state.conversations) {
+    const current = conversation.id === state.currentId;
+    const item = el("li", "conv-item" + (current ? " current" : ""));
+
+    const open = el("button", "conv-open");
+    open.type = "button";
+    if (current) open.setAttribute("aria-current", "page");
+    open.append(el("span", "conv-title", conversation.title));
+    const count = conversation.turns.length;
+    open.append(el("span", "conv-meta", `${count} ${count === 1 ? "reply" : "replies"} · ${formatWhen(conversation.updated)}`));
+    open.addEventListener("click", () => openConversation(conversation.id));
+
+    const actions = el("div", "conv-actions");
+    const exportButton = el("button", "mini-btn");
+    exportButton.type = "button";
+    exportButton.innerHTML = icon("download", 15);
+    exportButton.setAttribute("aria-label", `Export "${conversation.title}" as JSON`);
+    exportButton.title = "Export as JSON";
+    exportButton.addEventListener("click", () =>
+      exportJson([conversation], `conversation-${slug(conversation.title)}.json`)
+    );
+    const deleteButton = el("button", "mini-btn danger");
+    deleteButton.type = "button";
+    deleteButton.innerHTML = icon("trash-2", 15);
+    deleteButton.setAttribute("aria-label", `Delete "${conversation.title}"`);
+    deleteButton.title = "Delete";
+    deleteButton.addEventListener("click", () => deleteConversation(conversation.id));
+    actions.append(exportButton, deleteButton);
+
+    item.append(open, actions);
+    list.append(item);
+  }
+  const empty = state.conversations.length === 0;
+  $("conv-empty").hidden = !empty;
+  $("export-all").disabled = empty;
+  $("delete-all").disabled = empty;
+}
+
+function renderStorageNote() {
+  const note = $("storage-note");
+  note.innerHTML = icon("info", 14);
+  note.append(
+    document.createTextNode(
+      state.storageOk
+        ? "Saved only in this browser, on this device."
+        : "This browser does not allow saving, so conversations are not kept."
+    )
+  );
+}
+
+function setupSidebar() {
+  state.conversations = loadConversations();
+  const exportAll = $("export-all");
+  exportAll.innerHTML = icon("download", 15);
+  exportAll.append(document.createTextNode("Export all"));
+  exportAll.addEventListener("click", () =>
+    exportJson(state.conversations, `conversations-${new Date().toISOString().slice(0, 10)}.json`)
+  );
+  const deleteAll = $("delete-all");
+  deleteAll.innerHTML = icon("trash-2", 15);
+  deleteAll.append(document.createTextNode("Delete all"));
+  deleteAll.addEventListener("click", deleteAllConversations);
+
+  // One button: collapses the sidebar on wide screens, opens it as a drawer on small ones.
+  const toggle = $("sidebar-toggle");
+  toggle.innerHTML = icon("panel-left", 18);
+  const small = window.matchMedia("(max-width: 900px)");
+  let collapsed = false;
+  try { collapsed = localStorage.getItem("sidebar") === "hidden"; } catch {}
+  const paint = () => {
+    const visible = small.matches ? $("sidebar").classList.contains("open") : !collapsed;
+    $("app").classList.toggle("sidebar-hidden", !small.matches && collapsed);
+    toggle.setAttribute("aria-expanded", String(visible));
+    toggle.setAttribute("aria-label", visible ? "Hide conversations" : "Show conversations");
+  };
+  toggle.addEventListener("click", () => {
+    if (small.matches) {
+      $("sidebar").classList.contains("open") ? closeSidebarOnMobile() : openSidebarOnMobile();
+    } else {
+      collapsed = !collapsed;
+      try { localStorage.setItem("sidebar", collapsed ? "hidden" : "shown"); } catch {}
+    }
+    paint();
+  });
+  small.addEventListener("change", () => { closeSidebarOnMobile(); paint(); });
+  $("sidebar-scrim").addEventListener("click", () => { closeSidebarOnMobile(); paint(); });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && $("sidebar").classList.contains("open")) { closeSidebarOnMobile(); paint(); toggle.focus(); }
+  });
+  state.paintSidebarToggle = paint;
+  paint();
+  renderSidebar();
+  renderStorageNote();
+}
+
+function openSidebarOnMobile() {
+  $("sidebar").classList.add("open");
+  $("sidebar-scrim").hidden = false;
+  $("main").inert = true;
+  $("new-chat").focus();
+}
+
+function closeSidebarOnMobile() {
+  if (!$("sidebar").classList.contains("open")) return;
+  $("sidebar").classList.remove("open");
+  $("sidebar-scrim").hidden = true;
+  $("main").inert = false;
+  state.paintSidebarToggle && state.paintSidebarToggle();
 }
 
 // ---- sending -----------------------------------------------------------------------
@@ -239,9 +506,7 @@ async function send(question, previous = null) {
   $("new-chat").disabled = true;
   welcomeEl.hidden = true;
 
-  const userRow = el("div", "msg-user");
-  userRow.append(el("p", null, question));
-  messagesEl.append(userRow);
+  messagesEl.append(userRow(question));
 
   const thinking = el("div", "thinking");
   thinking.append(el("span", "thinking-bar"), el("span", null, "Searching the help articles"));
@@ -261,9 +526,11 @@ async function send(question, previous = null) {
     // After a clarifying question, the customer's next message is read together with it.
     setPendingClarify(response.action === "clarify" ? (previous ? `${previous} ${question}` : question) : null);
 
-    const turn = { question, previous, mode, response };
-    state.turns.push(turn);
+    const turn = { question, previous, mode, response, rating: null };
+    recordTurn(turn); // adds the turn to the current conversation (state.turns) and saves it
     thinking.replaceWith(renderBotMessage(turn, state.turns.length - 1));
+    // An earlier clarifying question has been answered: its option buttons are no longer needed.
+    disableAnsweredOptions();
   } catch {
     thinking.replaceWith(
       el("p", "error-note", "The assistant is not reachable. Check that the server and Ollama are running, then send your message again.")
@@ -275,6 +542,16 @@ async function send(question, previous = null) {
     scrollDown();
     inputEl.focus();
   }
+}
+
+function userRow(question) {
+  const row = el("div", "msg-user");
+  row.append(el("p", null, question));
+  return row;
+}
+
+function disableAnsweredOptions() {
+  state.turns.slice(0, -1).forEach((t) => t.element?.querySelectorAll(".option").forEach((b) => (b.disabled = true)));
 }
 
 function scrollDown() {
@@ -300,9 +577,11 @@ function renderBotMessage(turn, index) {
 
   if (r.action === "clarify" && r.options.length) {
     const options = el("div", "options");
+    const answered = index < state.turns.length - 1; // the customer already replied
     for (const option of r.options) {
       const button = el("button", "option", option.label);
       button.type = "button";
+      button.disabled = answered;
       button.addEventListener("click", () => {
         options.querySelectorAll("button").forEach((b) => (b.disabled = true));
         send(option.label, state.pendingClarify || turn.question);
@@ -328,7 +607,7 @@ function renderBotMessage(turn, index) {
   const actions = el("div", "msg-actions");
   // Feedback on every kind of reply: a thumbs-down on a decline or a clarifying
   // question shows a wrong decision, not only a wrong answer.
-  actions.append(el("span", null, FEEDBACK_PROMPT[r.action]));
+  actions.append(el("span", null, turn.rating ? "Thanks, your feedback was saved." : FEEDBACK_PROMPT[r.action]));
   actions.append(feedbackButton("up", turn), feedbackButton("down", turn));
   if (r.action === "decline" || (r.action === "answer" && r.confidence < 0.6)) {
     const mail = withIcon(el("a", "human-btn"), "mail", "Email support", 16);
@@ -346,7 +625,8 @@ function feedbackButton(rating, turn) {
   button.type = "button";
   button.innerHTML = icon(rating === "up" ? "thumbs-up" : "thumbs-down", 16);
   button.setAttribute("aria-label", rating === "up" ? "Helpful" : "Not helpful");
-  button.setAttribute("aria-pressed", "false");
+  button.setAttribute("aria-pressed", String(turn.rating === rating));
+  button.disabled = Boolean(turn.rating); // a saved conversation remembers its rating
   button.addEventListener("click", async () => {
     const row = button.parentElement;
     row.querySelectorAll(".feedback-btn").forEach((b) => (b.disabled = true));
@@ -374,6 +654,8 @@ function feedbackButton(rating, turn) {
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       row.firstChild.textContent = "Thanks, your feedback was saved.";
+      turn.rating = rating;
+      saveConversations();
     } catch {
       row.firstChild.textContent = "Feedback could not be saved.";
     }
@@ -462,6 +744,7 @@ function outcomeText(r) {
 // ---- start --------------------------------------------------------------------------------
 
 renderSuggestions();
+setupSidebar();
 setupTheme();
 setupModeSwitch();
 setupComposer();

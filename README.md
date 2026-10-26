@@ -255,7 +255,9 @@ Each change had to improve new development questions without lowering the earlie
 
 ### 7. Chat page
 
-Plain HTML, CSS and JavaScript (no build step), served by FastAPI. Features: suggested questions, clickable options for clarifying questions, the source card behind each answer, thumbs up/down feedback on every reply, "new conversation", a switch to compare "AI decides" with "Rules only", light and dark themes, and the on-demand "How I decided" panel.
+Plain HTML, CSS and JavaScript (no build step), served by FastAPI. Features: suggested questions, clickable options for clarifying questions, the source card behind each answer, thumbs up/down feedback on every reply, a switch to compare "AI decides" with "Rules only", light and dark themes, and the on-demand "How I decided" panel.
+
+**Saved conversations.** A side bar lists earlier conversations, newest first. Opening one restores its messages, ratings, decision traces and a pending clarifying question. Each conversation, or all of them, can be exported as JSON (question, reply, action, reason, who decided, source card, scores and rating), and deleted one by one or all at once. Conversations are kept only in the browser (`localStorage`, up to 50), never on the server, so nothing about a customer is stored without a feedback click. If the browser blocks storage, the chat still works and the side bar says that conversations are not kept. On small screens the side bar opens as a drawer.
 
 Accessibility: WCAG AA colour contrast, full keyboard use, a skip link, screen-reader labels, focus management in the side panel, and support for reduced motion. Fonts and icons are bundled, so the page works offline. All text from the server is inserted as text, never as HTML, so a message cannot inject code into the page.
 

@@ -21,6 +21,8 @@
 
   <header class="topbar" id="topbar">
     <div class="brand">
+      <button type="button" class="icon-button sidebar-toggle" id="sidebar-toggle"
+              aria-controls="sidebar" aria-expanded="true" aria-label="Hide conversations"></button>
       <!-- Original mark: a speech bubble drawn from facets (not an IKIM or MML logo). -->
       <svg class="brand-mark" width="30" height="30" viewBox="0 0 24 24" aria-hidden="true">
         <path d="M4 7l8-4 8 4v8l-7 4-5 3v-4l-4-3z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
@@ -30,7 +32,6 @@
     </div>
 
     <div class="topbar-controls">
-      <button type="button" class="text-button" id="new-chat" title="Clear this conversation and start again" aria-label="New conversation"></button>
       <div class="mode-switch" role="radiogroup" aria-label="How the assistant decides">
         <button type="button" role="radio" aria-checked="true" data-mode="llm"
                 title="The AI model reads the articles and decides; safety rules check it">AI decides</button>
@@ -43,6 +44,21 @@
       <button type="button" class="icon-button" id="theme-toggle" aria-label="Switch dark or light mode"></button>
     </div>
   </header>
+
+  <div class="app" id="app">
+  <nav class="sidebar" id="sidebar" aria-label="Conversations">
+    <button type="button" class="text-button new-chat-btn" id="new-chat"></button>
+    <h2 class="sidebar-title" id="conv-heading">Recent conversations</h2>
+    <ul class="conv-list" id="conv-list" aria-labelledby="conv-heading"></ul>
+    <p class="conv-empty" id="conv-empty">Your conversations will appear here.</p>
+    <div class="sidebar-footer">
+      <p class="storage-note" id="storage-note"></p>
+      <div class="footer-actions">
+        <button type="button" class="text-button" id="export-all"></button>
+        <button type="button" class="text-button danger" id="delete-all"></button>
+      </div>
+    </div>
+  </nav>
 
   <main class="layout" id="main">
     <section class="chat" aria-label="Conversation">
@@ -69,6 +85,8 @@
     </section>
 
   </main>
+  </div>
+  <div class="scrim sidebar-scrim" id="sidebar-scrim" hidden></div>
 
   <aside class="trace" id="trace" role="dialog" aria-modal="true" aria-labelledby="trace-title" aria-hidden="true">
     <div class="trace-header">
