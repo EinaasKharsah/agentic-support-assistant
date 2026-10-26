@@ -1,0 +1,29 @@
+[
+  {"id": "H01", "category": "needs_reasoning", "question": "I paid for the monthly plan 3 days ago. Can I still get my money back?", "expected_action": "answer", "expected_cards": ["Q5"], "note": "the answer must mention that monthly charges are non-refundable after 48 hours"},
+  {"id": "H02", "category": "needs_reasoning", "question": "If I cancel today, can I still use the product until the end of the month?", "expected_action": "answer", "expected_cards": ["Q6"]},
+  {"id": "H03", "category": "needs_reasoning", "question": "I don't want to cancel, I just want my money back for last week's purchase.", "expected_action": "answer", "expected_cards": ["Q5"], "note": "negation: mentions cancel, but asks for a refund"},
+
+  {"id": "H04", "category": "paraphrase", "question": "Will I lose my files if I stop my subscription?", "expected_action": "answer", "expected_cards": ["Q6"]},
+  {"id": "H05", "category": "paraphrase", "question": "The link in the email says it has expired.", "expected_action": "answer", "expected_cards": ["Q1"]},
+  {"id": "H06", "category": "paraphrase", "question": "My card failed and my account got locked. I updated the card ten minutes ago. When will it work again?", "expected_action": "answer", "expected_cards": ["Q3"]},
+  {"id": "H07", "category": "paraphrase", "question": "Do you use AES-256?", "expected_action": "answer", "expected_cards": ["Q8"]},
+
+  {"id": "H08", "category": "not_covered", "question": "Can I connect it to Notion?", "expected_action": ["answer", "decline"], "expected_cards": ["Q7"], "note": "an answer must say Notion is not mentioned"},
+  {"id": "H09", "category": "not_covered", "question": "Do you offer a student discount?", "expected_action": ["decline", "answer", "clarify"], "expected_cards": ["Q4", "Q5"], "note": "read the reply: it must not invent a discount"},
+
+  {"id": "H10", "category": "near_miss", "question": "How do I reset my Wi-Fi router password?", "expected_action": "decline", "expected_cards": []},
+  {"id": "H11", "category": "near_miss", "question": "Can you write a Slack message to my team about the holiday?", "expected_action": "decline", "expected_cards": []},
+  {"id": "H12", "category": "near_miss", "question": "What is Netflix's refund policy?", "expected_action": "decline", "expected_cards": []},
+  {"id": "H13", "category": "near_miss", "question": "Write a Python script that calls your REST API to export my data.", "expected_action": "decline", "expected_cards": []},
+
+  {"id": "H14", "category": "vague", "question": "Why can't I log in?", "expected_action": "clarify", "expected_cards": ["Q1", "Q3"]},
+  {"id": "H15", "category": "vague", "question": "I got a strange email about my account.", "expected_action": "clarify", "expected_cards": ["Q1", "Q2", "Q3"]},
+  {"id": "H16", "category": "vague", "question": "Something is wrong with my money.", "expected_action": "clarify", "expected_cards": ["Q4", "Q5", "Q6"]},
+
+  {"id": "H17", "category": "multi_question", "question": "Can I pay yearly by bank transfer, and get a refund if I don't like it?", "expected_action": ["answer", "clarify"], "expected_cards": ["Q4", "Q5"]},
+
+  {"id": "H18", "category": "other_language", "question": "Puis-je exporter mes données en CSV ?", "expected_action": "answer", "expected_cards": ["Q9"]},
+  {"id": "H19", "category": "other_language", "question": "¿Cómo cambio el correo electrónico de mi cuenta?", "expected_action": "answer", "expected_cards": ["Q2"]},
+
+  {"id": "H20", "category": "small_talk", "question": "Thanks, that was helpful!", "expected_action": ["decline", "clarify"], "expected_cards": [], "note": "must not answer from a card"}
+]
