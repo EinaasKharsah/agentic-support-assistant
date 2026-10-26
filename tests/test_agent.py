@@ -7,7 +7,6 @@ from app.vector_store import VectorStore, make_client
 from tests.fakes import FakeEmbedder, FakeLLM
 
 ENTRIES = load_knowledge_base("data/knowledge_base.json")
-Q10_ANSWER = ENTRIES[9].answer
 
 
 @pytest.fixture(scope="module")
@@ -80,7 +79,7 @@ def test_out_of_scope_top_match_is_declined_without_calling_the_llm(store):
     response = make_agent(store, llm).respond("Can you help me write code for my integration project?")
     assert response.action == Action.DECLINE
     assert response.decided_by == "guardrail"
-    assert response.message == Q10_ANSWER  # the knowledge base's own decline text
+    assert response.message == DEFAULT_DECLINE_MESSAGE  # general text, not Q10's coding-help text
     assert llm.calls == []
 
 
@@ -289,3 +288,34 @@ def test_failed_answer_check_shows_card_text_and_explains_why(store):
     response = make_agent(store, llm).respond("How do I reset my password?")
     assert response.message == ENTRIES[0].answer
     assert "Answer check:" in response.reason
+
+
+# ---- fixes after the held-out evaluation -------------------------------------------
+
+def test_looks_untranslated():
+    from app.agent import looks_untranslated
+
+    assert looks_untranslated("¿Cómo cambio el correo?", "Cómo cambiar correo")  # accents
+    assert looks_untranslated("Como cambio el correo de mi cuenta", "como cambiar correo cuenta")  # same words
+    assert not looks_untranslated("¿Cómo cambio el correo?", "How do I change my email address")
+    assert not looks_untranslated("how do i chnage my emial", "How do I change my email address")
+
+
+def test_untranslated_rewrite_is_translated_on_a_second_try(store):
+    llm = FakeLLM(
+        json_reply=[
+            {"has_meaning": True, "search_query": "Passwort vergessen"},  # still German
+            {"search_query": "How do I reset my password?"},
+            decision(["Q1"]),
+        ],
+        reply="Click Forgot Password. The link arrives within 2 minutes and expires after 30 minutes.",
+    )
+    response = make_agent(store, llm).respond("Ich habe mein Passwort vergessen")
+    assert response.search_query == "How do I reset my password?"
+    assert "Translate" in llm.calls[1][0]["content"]
+
+
+def test_failed_translation_keeps_the_first_rewrite(store):
+    llm = FakeLLM(json_reply=[{"has_meaning": True, "search_query": "Cómo cambiar correo"}, {"search_query": "Cómo cambiar"}, decision(["Q2"])])
+    response = make_agent(store, llm).respond("¿Cómo cambio el correo?")
+    assert response.search_query == "Cómo cambiar correo"

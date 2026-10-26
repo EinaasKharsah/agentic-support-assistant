@@ -1,0 +1,24 @@
+[
+  {"id": "F01", "category": "near_miss", "question": "How do I reset my iPhone passcode?", "expected_action": "decline", "expected_cards": []},
+  {"id": "F02", "category": "near_miss", "question": "What is Spotify's cancellation policy?", "expected_action": "decline", "expected_cards": []},
+  {"id": "F03", "category": "near_miss", "question": "How do I export my contacts from Gmail?", "expected_action": "decline", "expected_cards": []},
+  {"id": "F04", "category": "near_miss", "question": "Is my WhatsApp chat encrypted?", "expected_action": "decline", "expected_cards": []},
+  {"id": "F05", "category": "near_miss", "question": "How do I cancel my Amazon Prime membership?", "expected_action": "decline", "expected_cards": []},
+  {"id": "F06", "category": "near_miss", "question": "Can you change the email address on my Facebook account?", "expected_action": "decline", "expected_cards": []},
+
+  {"id": "F07", "category": "other_tool", "question": "Do you integrate with Asana?", "expected_action": "answer", "expected_cards": ["Q7"], "note": "about OUR integrations: must stay a support question"},
+  {"id": "F08", "category": "other_tool", "question": "Can I connect my Google Calendar?", "expected_action": "answer", "expected_cards": ["Q7"]},
+  {"id": "F09", "category": "other_tool", "question": "I want to pay with Apple Pay, is that possible?", "expected_action": "answer", "expected_cards": ["Q4"]},
+  {"id": "F10", "category": "other_tool", "question": "Can I connect GitHub to my workspace?", "expected_action": "answer", "expected_cards": ["Q7"]},
+
+  {"id": "F11", "category": "no_guessing", "question": "I got an email saying my account was suspended.", "expected_action": "answer", "expected_cards": ["Q3"]},
+  {"id": "F12", "category": "no_guessing", "question": "I received a verification email that I didn't ask for.", "expected_action": ["clarify", "answer"], "expected_cards": ["Q2", "Q1"], "note": "read the reply: it must not claim to know why the email was sent"},
+
+  {"id": "F13", "category": "small_talk", "question": "Hello!", "expected_action": ["decline", "clarify"], "expected_cards": []},
+  {"id": "F14", "category": "small_talk", "question": "Thank you so much", "expected_action": ["decline", "clarify"], "expected_cards": []},
+
+  {"id": "F15", "category": "other_language", "question": "Wie exportiere ich meine Daten?", "expected_action": "answer", "expected_cards": ["Q9"]},
+  {"id": "F16", "category": "other_language", "question": "Come posso cancellare il mio abbonamento?", "expected_action": "answer", "expected_cards": ["Q6"]},
+  {"id": "F17", "category": "other_language", "question": "Como faço para redefinir minha senha?", "expected_action": "answer", "expected_cards": ["Q1"]},
+  {"id": "F18", "category": "other_language", "question": "Hoe kan ik mijn e-mailadres wijzigen?", "expected_action": "answer", "expected_cards": ["Q2"]}
+]

@@ -27,6 +27,7 @@ alone did not show this (gap of only 0.06). Code adds guardrails around it:
                                  score-based rules decide, so the assistant keeps working.
 """
 
+import re
 from dataclasses import dataclass, field, replace
 from enum import Enum
 
@@ -65,9 +66,12 @@ class AgentResponse:
         return self.matches[0].score if self.matches else 0.0
 
 
+# One general message for every decline. Earlier, a decline that matched the out-of-scope
+# card (Q10) used Q10's own text, which talks about coding help, even for "Thanks, that was
+# helpful!" or "Do you offer a student discount?" (found in the held-out evaluation).
 DEFAULT_DECLINE_MESSAGE = (
     "Sorry, I can only help with questions about your account, billing, "
-    "integrations, and data and security."
+    "integrations, and data and security. Is there anything in these areas I can help you with?"
 )
 DEFAULT_CLARIFY_MESSAGE = "I want to make sure I help with the right thing. Which of these do you mean?"
 
@@ -96,6 +100,13 @@ Examples (not from the list below):
 - "Something is wrong with my bill" with cards about refunds, cancelling and failed payments:
   is_support_question=true, matching_cards=[all three], clarifying_question="Is this about ...?"
 - "Can you recommend a good laptop?": is_support_question=false, matching_cards=[]"""
+
+# Tried and reverted (after the held-out run): a rule and three examples saying that questions
+# about another company's product or the customer's own device are not support questions.
+# On new development questions it fixed 1 of 6 near-misses ("Spotify's cancellation policy"),
+# but on the main set the model listed fewer cards, and clarifying questions dropped from
+# 7/7 to 4/7. The 3b model cannot apply this rule reliably, so near-misses stay a known
+# limitation (see README). A re-ranking model or a larger LLM is the better fix.
 
 # The model does the UNDERSTANDING; the code only maps it to an action:
 #   not a support question -> decline, one card -> answer, 2-3 cards -> clarify.
@@ -127,6 +138,30 @@ REWRITE_PROMPT = """Turn the customer's message into a short English search quer
    - Use only the meaning of the customer's own words. Do not add topics or words they did not say.
    - Do not answer the question.
    If has_meaning is false, return an empty string."""
+
+# Second try when the first rewrite is still not English. In the held-out evaluation, a Spanish
+# question came back as Spanish ("Cómo cambiar correo electrónico cuenta"), so the search stayed weak.
+TRANSLATE_PROMPT = """Translate the customer's message into English, as a short search query.
+Write only English words. Keep the meaning. Do not answer the question."""
+
+TRANSLATE_SCHEMA = {
+    "type": "object",
+    "properties": {"search_query": {"type": "string"}},
+    "required": ["search_query"],
+}
+
+
+def looks_untranslated(original: str, rewritten: str) -> bool:
+    """True if a rewrite still looks like the original language: it has letters outside
+    English (é, ñ, ü, Arabic, ...) or mostly repeats the original words."""
+    if any(ch.isalpha() and not ch.isascii() for ch in rewritten):
+        return True
+    words = re.findall(r"[a-z]+", rewritten.lower())
+    original_words = set(re.findall(r"[a-z]+", original.lower()))
+    if not words:
+        return False
+    return sum(word in original_words for word in words) / len(words) >= 0.6
+
 
 REWRITE_SCHEMA = {
     "type": "object",
@@ -250,10 +285,23 @@ class SupportAgent:
         if result.get("has_meaning") is not True:
             return None  # random letters or symbols: keep the weak search, so the guardrail declines
         rewritten = str(result.get("search_query", "")).strip()
+        if rewritten and looks_untranslated(query, rewritten):
+            rewritten = self._translate(query) or rewritten
         # Ignore empty or unchanged rewrites, and very long ones (the model started answering).
         if not rewritten or rewritten.lower() == query.strip().lower() or len(rewritten) > 200:
             return None
         return rewritten
+
+    def _translate(self, query: str) -> str | None:
+        try:
+            result = self.llm.chat_json(
+                [{"role": "system", "content": TRANSLATE_PROMPT}, {"role": "user", "content": query}],
+                json_schema=TRANSLATE_SCHEMA,
+            )
+        except LLMError:
+            return None
+        translated = str(result.get("search_query", "")).strip()
+        return translated if translated and not looks_untranslated(query, translated) else None
 
     def _merge(self, first: list[SearchResult], second: list[SearchResult]) -> list[SearchResult]:
         """Keep each card's best score from both searches, best first."""
@@ -392,10 +440,4 @@ class SupportAgent:
         return AgentResponse(Action.CLARIFY, question, reason, decided_by, options=options, matches=matches)
 
     def _decline(self, matches, decided_by, reason) -> AgentResponse:
-        # If the message matches the knowledge base's own out-of-scope card (Q10),
-        # use its text. Otherwise (e.g. "weather in Berlin") a short general message.
-        if matches and matches[0].entry.out_of_scope and matches[0].score >= self.min_relevance:
-            message = matches[0].entry.answer
-        else:
-            message = DEFAULT_DECLINE_MESSAGE
-        return AgentResponse(Action.DECLINE, message, reason, decided_by, matches=matches)
+        return AgentResponse(Action.DECLINE, DEFAULT_DECLINE_MESSAGE, reason, decided_by, matches=matches)

@@ -25,7 +25,7 @@
     },
     "retrieval_recall_at_1": 0.818,
     "retrieval_recall_at_3": 0.909,
-    "avg_seconds": 8.77,
+    "avg_seconds": 7.03,
     "by_category": {
       "typos": "2/3",
       "short": "3/3",
@@ -60,9 +60,9 @@
       "top_score": 0.574,
       "decided_by": "llm",
       "search_query": null,
-      "reason": "The customer wants to change their email address on their account, which is relevant to the Account category. Second check: The customer's message is clearly asking about changing their email address on their account. Both articles A and B discuss changing email addresses, but they differ in the specific steps and locations. The customer's message is too specific to one of these articles, so it would be clear which one they mean if they were asked which one they meant.",
+      "reason": "The customer wants to change their email address, which is related to account settings. Second check: The customer's message is clearly asking about changing their email address on their account. Both articles A and B discuss changing email addresses, but they differ in the specific steps and locations. The customer's message is too specific to one of these articles, so it would be clear which one they mean if they were asked which one they meant.",
       "message": "Which article are you referring to when you want to change your email address?",
-      "seconds": 11.15
+      "seconds": 12.17
     },
     {
       "id": "R02",
@@ -85,8 +85,8 @@
       "decided_by": "llm",
       "search_query": "cancel subscription",
       "reason": "The customer wants to cancel their subscription, which is related to account management and billing.",
-      "message": "Go to Settings > Billing > Subscription > Cancel Plan. Your access continues until the end of the current billing period.",
-      "seconds": 11.93
+      "message": "Go to Settings > Billing > Subscription > Cancel Plan. Your access continues until the end of the current billing period. Partial refunds are not issued for unused time on monthly plans. After cancellation, your data is retained for 60 days before being permanently deleted.",
+      "seconds": 8.7
     },
     {
       "id": "R03",
@@ -109,8 +109,8 @@
       "decided_by": "llm",
       "search_query": null,
       "reason": "The customer is asking about data encryption, which is related to data security.",
-      "message": "All data is stored in encrypted cloud infrastructure using AES-256 encryption both at rest and in transit using TLS 1.2 or higher.",
-      "seconds": 8.73
+      "message": "All data is stored in encrypted cloud infrastructure. Data is encrypted at rest using AES-256 and in transit using TLS 1.2 or higher. EU customers on eligible plans may request regional data residency by contacting support@test.com.",
+      "seconds": 5.44
     },
     {
       "id": "R04",
@@ -132,9 +132,9 @@
       "top_score": 0.726,
       "decided_by": "llm",
       "search_query": null,
-      "reason": "The customer is asking about a refund, which is related to the billing category. Second check: The customer message is very specific and mentions 'refund', which directly corresponds to article A. Article A deals with refund requests, while Article B is about canceling a subscription. Therefore, the customer's message clearly points to Article A.",
-      "message": "A full refund is available within 14 days of your initial purchase or annual renewal. To request a refund, contact billing@test.com with your account email and order ID. Refunds are processed within 5 to 10 business days.",
-      "seconds": 15.04
+      "reason": "The customer is asking about a refund, which is related to billing and refunds. Second check: The customer message is very specific and mentions 'refund', which directly corresponds to article A. Article A deals with refund requests, while Article B is about canceling a subscription. Therefore, the customer's message clearly points to Article A.",
+      "message": "A full refund is available within 14 days of your initial purchase or annual renewal. Monthly plan charges are non-refundable after 48 hours. To request a refund, contact billing@test.com with your account email and order ID. Refunds are processed within 5 to 10 business days.",
+      "seconds": 11.6
     },
     {
       "id": "R05",
@@ -157,8 +157,8 @@
       "decided_by": "llm",
       "search_query": null,
       "reason": "The customer is asking about Slack integration, which is mentioned in one of the cards.",
-      "message": "The platform integrates natively with Slack, Google Workspace, Microsoft Teams, GitHub, Jira, and Zapier. For a full list of supported integrations, contact support@test.com.",
-      "seconds": 9.04
+      "message": "The platform integrates natively with Slack, Google Workspace, Microsoft Teams, GitHub, Jira, and Zapier. Additional integrations are available via the REST API and webhooks. Contact support@test.com for the full list of supported integrations.",
+      "seconds": 5.47
     },
     {
       "id": "R06",
@@ -188,7 +188,7 @@
       "search_query": null,
       "reason": "The customer is asking about billing, which is relevant to the cards provided.",
       "message": "Are you asking about a refund or how to cancel your subscription?",
-      "seconds": 5.43
+      "seconds": 5.71
     },
     {
       "id": "R07",
@@ -212,8 +212,8 @@
       "decided_by": "llm",
       "search_query": "how to cancel my subscription",
       "reason": "The customer wants to cancel their subscription, which is related to account management and billing.",
-      "message": "Go to Settings > Billing > Subscription > Cancel Plan. Your access continues until the end of the current billing period.",
-      "seconds": 11.98
+      "message": "Go to Settings > Billing > Subscription > Cancel Plan. Your access continues until the end of the current billing period. Partial refunds are not issued for unused time on monthly plans. After cancellation, your data is retained for 60 days before being permanently deleted.",
+      "seconds": 8.79
     },
     {
       "id": "R08",
@@ -237,8 +237,8 @@
       "decided_by": "llm",
       "search_query": "are my data encrypted",
       "reason": "The customer is asking about the encryption of their data, which is relevant to the security and data protection aspects of the platform.",
-      "message": "Yes, all data is encrypted. It's encrypted at rest using AES-256 and in transit using TLS 1.2 or higher.",
-      "seconds": 12.22
+      "message": "All data is stored in encrypted cloud infrastructure. Data is encrypted at rest using AES-256 and in transit using TLS 1.2 or higher. EU customers on eligible plans may request regional data residency by contacting support@test.com.",
+      "seconds": 8.9
     },
     {
       "id": "R09",
@@ -262,8 +262,8 @@
       "decided_by": "guardrail",
       "search_query": null,
       "reason": "No card is relevant enough (best score below 0.55).",
-      "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security.",
-      "seconds": 3.11
+      "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
+      "seconds": 3.17
     },
     {
       "id": "R10",
@@ -284,8 +284,8 @@
       "decided_by": "guardrail",
       "search_query": null,
       "reason": "No card is relevant enough (best score below 0.55).",
-      "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security.",
-      "seconds": 2.99
+      "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
+      "seconds": 3.15
     },
     {
       "id": "R11",
@@ -306,7 +306,7 @@
       "decided_by": "guardrail",
       "search_query": null,
       "reason": "The message matches the out-of-scope example card.",
-      "message": "That is outside the scope of this support channel. This assistant can only help with questions related to your account, billing, integrations, and platform features. For general coding help, please refer to the developer documentation or contact your technical team.",
+      "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
       "seconds": 0.01
     },
     {
@@ -328,8 +328,8 @@
       "decided_by": "guardrail",
       "search_query": null,
       "reason": "The message matches the out-of-scope example card.",
-      "message": "That is outside the scope of this support channel. This assistant can only help with questions related to your account, billing, integrations, and platform features. For general coding help, please refer to the developer documentation or contact your technical team.",
-      "seconds": 0.01
+      "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
+      "seconds": 0.02
     },
     {
       "id": "R13",
@@ -352,9 +352,9 @@
       "top_score": 0.668,
       "decided_by": "llm",
       "search_query": null,
-      "reason": "The customer is asking about payment methods, specifically PayPal, and the closest card to this question is about accepted payment methods.",
-      "message": "No, PayPal is not mentioned in our help article. We accept all major credit and debit cards, as well as bank transfers for annual plans.",
-      "seconds": 9.12
+      "reason": "The customer is asking about a specific payment method (PayPal) and is looking for a yes/no answer.",
+      "message": "All major credit and debit cards (Visa, Mastercard, Amex, Discover) are accepted, as well as bank transfers for annual plans. All payments are processed securely. Cryptocurrency is not supported.",
+      "seconds": 5.76
     },
     {
       "id": "R14",
@@ -375,8 +375,8 @@
       "decided_by": "guardrail",
       "search_query": null,
       "reason": "No card is relevant enough (best score below 0.55).",
-      "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security.",
-      "seconds": 3.12
+      "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
+      "seconds": 3.14
     },
     {
       "id": "R15",
@@ -397,8 +397,8 @@
       "decided_by": "guardrail",
       "search_query": null,
       "reason": "No card is relevant enough (best score below 0.55).",
-      "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security.",
-      "seconds": 2.94
+      "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
+      "seconds": 3.09
     },
     {
       "id": "R16",
@@ -422,7 +422,7 @@
       "search_query": null,
       "reason": "The customer wants to get a refund for the annual plan they signed up for last month. Second check: The customer is asking about getting a refund for the annual plan they signed up for last month. Article A explains how to request a refund, which directly addresses the customer's need to get their money back. Article B is about canceling the subscription, which is not relevant to the customer's request for a refund.",
       "message": "A full refund is available within 14 days of your initial purchase or annual renewal. Monthly plan charges are non-refundable after 48 hours. To request a refund, contact billing@test.com with your account email and order ID. Refunds are processed within 5 to 10 business days.",
-      "seconds": 16.49
+      "seconds": 12.47
     },
     {
       "id": "R17",
@@ -446,7 +446,7 @@
       "search_query": null,
       "reason": "The customer is experiencing an account issue and is frustrated that their account is blocked, preventing them from working. The message clearly indicates a need for account-related assistance. Second check: The customer's message is clearly about account issues and needing immediate help to fix a blocked account. Article A discusses account suspension and ways to reactivate it, which fits the customer's frustration and need for immediate action. Therefore, A is the clear choice.",
       "message": "Suspension usually occurs due to a failed payment or a Terms of Service violation. Check your registered email for a suspension notice. For payment-related suspensions, update your billing information and the account will be reactivated within one hour. For policy violations, contact support@test.com to submit an appeal.",
-      "seconds": 15.86
+      "seconds": 12.25
     },
     {
       "id": "R18",
@@ -475,8 +475,8 @@
       "decided_by": "llm",
       "search_query": null,
       "reason": "The customer is unhappy with a recent charge and is seeking assistance. Second check: The customer's message is clearly about being charged and being unhappy with the charge, which aligns with article A about account suspension and failed payments. The customer's issue is about a charge, not about requesting a refund, so article B is not the correct fit.",
-      "message": "Check your registered email for a suspension notice or a charge confirmation. For payment-related issues, update your billing information to resolve the charge. For policy violations, contact support@test.com to submit an appeal.",
-      "seconds": 14.54
+      "message": "Suspension usually occurs due to a failed payment or a Terms of Service violation. Check your registered email for a suspension notice. For payment-related suspensions, update your billing information and the account will be reactivated within one hour. For policy violations, contact support@test.com to submit an appeal.",
+      "seconds": 11.91
     },
     {
       "id": "R19",
@@ -506,9 +506,9 @@
       "top_score": 0.749,
       "decided_by": "llm",
       "search_query": null,
-      "reason": "The customer wants to reset their password and change their email address, which are two separate actions. The cards provided do not cover both actions directly, but they are related to account management.",
-      "message": "Do you want to reset your password or change your email address?",
-      "seconds": 6.17
+      "reason": "The customer wants to reset their password and change their email address, which are both account-related tasks.",
+      "message": "Do you want to reset your password and/or change your email address?",
+      "seconds": 6.22
     },
     {
       "id": "R20",
@@ -536,8 +536,8 @@
       "decided_by": "llm",
       "search_query": null,
       "reason": "The customer wants to know how to export their data before canceling their subscription. Second check: The customer's message clearly asks about exporting data before canceling, which aligns with the first help article's content. The message does not specify which article the customer is referring to, but it is more specific about the action (exporting data) than the second article's content, which is about canceling a subscription. Therefore, the customer's message is best matched with article A.",
-      "message": "You can export your data at any time. Go to Settings > Account > Export Data. Exports are generated asynchronously and a download link will be sent to your registered email within 30 minutes.",
-      "seconds": 15.6
+      "message": "Go to Settings > Account > Export Data. You can export workspaces, activity logs, and user data as a JSON or CSV file. Exports are generated asynchronously and a download link will be sent to your registered email within 30 minutes for large datasets.",
+      "seconds": 12.62
     }
   ]
 }

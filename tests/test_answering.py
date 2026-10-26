@@ -89,3 +89,8 @@ def test_not_mentioned_answer_passes():
     reply = "PayPal isn't mentioned in our help article. We accept major credit and debit cards and bank transfers for annual plans."
     answer, note = generate_answer("Can I pay with PayPal?", Q4, FakeLLM(reply=reply))
     assert answer == reply and note is None
+
+
+def test_prompt_forbids_guessing_what_happened_to_the_account():
+    system = build_messages("I got a strange email", Q1)[0]["content"]
+    assert "Do not guess what happened" in system

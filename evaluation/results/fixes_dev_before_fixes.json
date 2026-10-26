@@ -1,0 +1,467 @@
+{
+  "metrics": {
+    "questions": 18,
+    "decision_accuracy": 0.667,
+    "errors": {
+      "unsafe": 4,
+      "over_decline": 2
+    },
+    "confusion": {
+      "answer": {
+        "answer": 7,
+        "clarify": 0,
+        "decline": 2
+      },
+      "clarify": {
+        "answer": 1,
+        "clarify": 0,
+        "decline": 0
+      },
+      "decline": {
+        "answer": 4,
+        "clarify": 0,
+        "decline": 4
+      }
+    },
+    "retrieval_recall_at_1": 0.778,
+    "retrieval_recall_at_3": 1.0,
+    "avg_seconds": 8.83,
+    "by_category": {
+      "near_miss": "2/6",
+      "other_tool": "2/4",
+      "no_guessing": "2/2",
+      "small_talk": "2/2",
+      "other_language": "4/4"
+    }
+  },
+  "rows": [
+    {
+      "id": "F01",
+      "category": "near_miss",
+      "question": "How do I reset my iPhone passcode?",
+      "expected_action": "decline",
+      "expected_cards": [],
+      "predicted_action": "answer",
+      "predicted_card": "Q1",
+      "options": [],
+      "top3_cards": [
+        "Q1",
+        "Q6",
+        "Q10",
+        "Q3"
+      ],
+      "top_score": 0.654,
+      "decided_by": "llm",
+      "search_query": null,
+      "reason": "The customer wants to reset their iPhone passcode, which is related to account security. Answer check: the written answer left out limits from the article: 2, 30, so the article text is shown.",
+      "message": "Go to the login page and click \"Forgot Password.\" Enter your registered email address and a reset link will be sent within 2 minutes. The link expires after 30 minutes. If you do not receive the email, check your spam folder or contact support@test.com.",
+      "seconds": 11.97
+    },
+    {
+      "id": "F02",
+      "category": "near_miss",
+      "question": "What is Spotify's cancellation policy?",
+      "expected_action": "decline",
+      "expected_cards": [],
+      "predicted_action": "answer",
+      "predicted_card": "Q6",
+      "options": [],
+      "top3_cards": [
+        "Q6",
+        "Q5",
+        "Q3",
+        "Q4"
+      ],
+      "top_score": 0.667,
+      "decided_by": "llm",
+      "search_query": null,
+      "reason": "The customer is asking about Spotify's cancellation policy, which is related to the billing process. Answer check: the written answer left out limits from the article: 60, so the article text is shown.",
+      "message": "Go to Settings > Billing > Subscription > Cancel Plan. Your access continues until the end of the current billing period. Partial refunds are not issued for unused time on monthly plans. After cancellation, your data is retained for 60 days before being permanently deleted.",
+      "seconds": 8.93
+    },
+    {
+      "id": "F03",
+      "category": "near_miss",
+      "question": "How do I export my contacts from Gmail?",
+      "expected_action": "decline",
+      "expected_cards": [],
+      "predicted_action": "decline",
+      "predicted_card": null,
+      "options": [],
+      "top3_cards": [
+        "Q9",
+        "Q2",
+        "Q7",
+        "Q10"
+      ],
+      "top_score": 0.706,
+      "decided_by": "llm",
+      "search_query": null,
+      "reason": "The customer wants to export their contacts from Gmail, which is not related to the platform's account, billing, payments, integrations, or data and security aspects. The cards provided do not mention Gmail or contact export.",
+      "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security.",
+      "seconds": 5.75
+    },
+    {
+      "id": "F04",
+      "category": "near_miss",
+      "question": "Is my WhatsApp chat encrypted?",
+      "expected_action": "decline",
+      "expected_cards": [],
+      "predicted_action": "decline",
+      "predicted_card": null,
+      "options": [],
+      "top3_cards": [
+        "Q8",
+        "Q10",
+        "Q7",
+        "Q9"
+      ],
+      "top_score": 0.611,
+      "decided_by": "llm",
+      "search_query": null,
+      "reason": "The customer is asking about the encryption of their WhatsApp chat, which is not related to the platform's data and security or integrations. The cards are about data storage, export, and integration, not encryption.",
+      "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security.",
+      "seconds": 5.66
+    },
+    {
+      "id": "F05",
+      "category": "near_miss",
+      "question": "How do I cancel my Amazon Prime membership?",
+      "expected_action": "decline",
+      "expected_cards": [],
+      "predicted_action": "answer",
+      "predicted_card": "Q6",
+      "options": [],
+      "top3_cards": [
+        "Q6",
+        "Q1",
+        "Q3",
+        "Q5"
+      ],
+      "top_score": 0.696,
+      "decided_by": "llm",
+      "search_query": null,
+      "reason": "The customer wants to cancel a subscription, specifically an Amazon Prime membership, which is related to their billing account. Answer check: the written answer left out limits from the article: 60, so the article text is shown.",
+      "message": "Go to Settings > Billing > Subscription > Cancel Plan. Your access continues until the end of the current billing period. Partial refunds are not issued for unused time on monthly plans. After cancellation, your data is retained for 60 days before being permanently deleted.",
+      "seconds": 8.82
+    },
+    {
+      "id": "F06",
+      "category": "near_miss",
+      "question": "Can you change the email address on my Facebook account?",
+      "expected_action": "decline",
+      "expected_cards": [],
+      "predicted_action": "answer",
+      "predicted_card": "Q2",
+      "options": [],
+      "top3_cards": [
+        "Q2",
+        "Q1",
+        "Q9",
+        "Q6"
+      ],
+      "top_score": 0.804,
+      "decided_by": "llm",
+      "search_query": null,
+      "reason": "The customer wants to change their email address on their Facebook account, which is related to account management.",
+      "message": "Facebook is not mentioned in our help article. You can change the email address on your account by navigating to Settings > Profile > Contact Information. Enter your new email address and click Save. A verification email will be sent to the new address \u2014 you must click the link to confirm the change. Your old email remains active until the new one is verified. Please contact support if you need further assistance with this process.",
+      "seconds": 10.34
+    },
+    {
+      "id": "F07",
+      "category": "other_tool",
+      "question": "Do you integrate with Asana?",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q7"
+      ],
+      "note": "about OUR integrations: must stay a support question",
+      "predicted_action": "decline",
+      "predicted_card": null,
+      "options": [],
+      "top3_cards": [
+        "Q10",
+        "Q7",
+        "Q4",
+        "Q9"
+      ],
+      "top_score": 0.591,
+      "decided_by": "guardrail",
+      "search_query": null,
+      "reason": "The message matches the out-of-scope example card.",
+      "message": "That is outside the scope of this support channel. This assistant can only help with questions related to your account, billing, integrations, and platform features. For general coding help, please refer to the developer documentation or contact your technical team.",
+      "seconds": 0.01
+    },
+    {
+      "id": "F08",
+      "category": "other_tool",
+      "question": "Can I connect my Google Calendar?",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q7"
+      ],
+      "predicted_action": "decline",
+      "predicted_card": null,
+      "options": [],
+      "top3_cards": [
+        "Q10",
+        "Q7",
+        "Q9",
+        "Q6"
+      ],
+      "top_score": 0.572,
+      "decided_by": "guardrail",
+      "search_query": null,
+      "reason": "The message matches the out-of-scope example card.",
+      "message": "That is outside the scope of this support channel. This assistant can only help with questions related to your account, billing, integrations, and platform features. For general coding help, please refer to the developer documentation or contact your technical team.",
+      "seconds": 0.01
+    },
+    {
+      "id": "F09",
+      "category": "other_tool",
+      "question": "I want to pay with Apple Pay, is that possible?",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q4"
+      ],
+      "predicted_action": "answer",
+      "predicted_card": "Q4",
+      "options": [],
+      "top3_cards": [
+        "Q4",
+        "Q7",
+        "Q10",
+        "Q3"
+      ],
+      "top_score": 0.591,
+      "decided_by": "llm",
+      "search_query": null,
+      "reason": "The customer wants to know if Apple Pay is a supported payment method, which is relevant to the Account category. Second check: The customer's message is clearly asking about the payment method Apple Pay. Article A discusses various payment methods, while Article B is about account suspension. The customer's message does not mention anything related to account suspension, so it must be asking about Apple Pay.",
+      "message": "Apple Pay is not supported according to our help article. All major credit and debit cards (Visa, Mastercard, Amex, Discover) are accepted, as well as bank transfers for annual plans.",
+      "seconds": 16.3
+    },
+    {
+      "id": "F10",
+      "category": "other_tool",
+      "question": "Can I connect GitHub to my workspace?",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q7"
+      ],
+      "predicted_action": "answer",
+      "predicted_card": "Q7",
+      "options": [],
+      "top3_cards": [
+        "Q7",
+        "Q10",
+        "Q9",
+        "Q1"
+      ],
+      "top_score": 0.711,
+      "decided_by": "llm",
+      "search_query": null,
+      "reason": "The customer wants to know if they can connect GitHub to their workspace, which is related to integrations.",
+      "message": "Yes, you can connect GitHub to your workspace. The platform integrates natively with GitHub. For more details or to explore additional integrations, contact support@test.com.",
+      "seconds": 9.33
+    },
+    {
+      "id": "F11",
+      "category": "no_guessing",
+      "question": "I got an email saying my account was suspended.",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q3"
+      ],
+      "predicted_action": "answer",
+      "predicted_card": "Q3",
+      "options": [],
+      "top3_cards": [
+        "Q3",
+        "Q1",
+        "Q6",
+        "Q5"
+      ],
+      "top_score": 0.81,
+      "decided_by": "llm",
+      "search_query": null,
+      "reason": "The customer is concerned about their account being suspended, which is related to account management.",
+      "message": "Your account was suspended due to a failed payment or a Terms of Service violation. Check your registered email for a suspension notice. For payment-related suspensions, update your billing information and the account will be reactivated within one hour. For policy violations, contact support@test.com to submit an appeal.",
+      "seconds": 9.86
+    },
+    {
+      "id": "F12",
+      "category": "no_guessing",
+      "question": "I received a verification email that I didn't ask for.",
+      "expected_action": [
+        "clarify",
+        "answer"
+      ],
+      "expected_cards": [
+        "Q2",
+        "Q1"
+      ],
+      "note": "read the reply: it must not claim to know why the email was sent",
+      "predicted_action": "answer",
+      "predicted_card": "Q2",
+      "options": [],
+      "top3_cards": [
+        "Q2",
+        "Q3",
+        "Q5",
+        "Q1"
+      ],
+      "top_score": 0.59,
+      "decided_by": "llm",
+      "search_query": null,
+      "reason": "The customer received a verification email they didn't ask for, which is related to their account details. Second check: The customer's message is about receiving a verification email they didn't ask for, which aligns with the issue described in article A. Article A provides steps to change the email address on an account, which could resolve the situation where the customer received a verification email they didn't request. However, article B is about account suspension, which does not relate to the customer's issue. Therefore, article A is the most relevant.",
+      "message": "The article doesn't mention receiving a verification email for changing an email address. You can change your email address by navigating to Settings > Profile > Contact Information. Enter your new email address and click Save. Your old email remains active until the new one is verified. Please ensure you do not use the old email for any important actions until the verification process is complete.",
+      "seconds": 17.14
+    },
+    {
+      "id": "F13",
+      "category": "small_talk",
+      "question": "Hello!",
+      "expected_action": [
+        "decline",
+        "clarify"
+      ],
+      "expected_cards": [],
+      "predicted_action": "decline",
+      "predicted_card": null,
+      "options": [],
+      "top3_cards": [
+        "Q4",
+        "Q10",
+        "Q1",
+        "Q8"
+      ],
+      "top_score": 0.491,
+      "decided_by": "guardrail",
+      "search_query": "hello",
+      "reason": "No card is relevant enough (best score below 0.55).",
+      "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security.",
+      "seconds": 3.94
+    },
+    {
+      "id": "F14",
+      "category": "small_talk",
+      "question": "Thank you so much",
+      "expected_action": [
+        "decline",
+        "clarify"
+      ],
+      "expected_cards": [],
+      "predicted_action": "decline",
+      "predicted_card": null,
+      "options": [],
+      "top3_cards": [
+        "Q10",
+        "Q4",
+        "Q5",
+        "Q9"
+      ],
+      "top_score": 0.474,
+      "decided_by": "guardrail",
+      "search_query": null,
+      "reason": "No card is relevant enough (best score below 0.55).",
+      "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security.",
+      "seconds": 3.16
+    },
+    {
+      "id": "F15",
+      "category": "other_language",
+      "question": "Wie exportiere ich meine Daten?",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q9"
+      ],
+      "predicted_action": "answer",
+      "predicted_card": "Q9",
+      "options": [],
+      "top3_cards": [
+        "Q9",
+        "Q8",
+        "Q10",
+        "Q5"
+      ],
+      "top_score": 0.577,
+      "decided_by": "llm",
+      "search_query": null,
+      "reason": "The customer wants to export their data, which is relevant to the Data & Security category.",
+      "message": "Go to Settings > Account > Export Data. You can export workspaces, activity logs, and user data as a JSON or CSV file. Exports are generated asynchronously and a download link will be sent to your registered email within 30 minutes for large datasets.",
+      "seconds": 9.53
+    },
+    {
+      "id": "F16",
+      "category": "other_language",
+      "question": "Come posso cancellare il mio abbonamento?",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q6"
+      ],
+      "predicted_action": "answer",
+      "predicted_card": "Q6",
+      "options": [],
+      "top3_cards": [
+        "Q6",
+        "Q3",
+        "Q1",
+        "Q5"
+      ],
+      "top_score": 0.796,
+      "decided_by": "llm",
+      "search_query": "how to cancel my subscription",
+      "reason": "The customer is asking about canceling their subscription, which is directly related to the billing category.",
+      "message": "Go to Settings > Billing > Subscription > Cancel Plan. Your access continues until the end of the current billing period. Partial refunds are not issued for unused time on monthly plans. After cancellation, your data is retained for 60 days before being permanently deleted.",
+      "seconds": 12.7
+    },
+    {
+      "id": "F17",
+      "category": "other_language",
+      "question": "Como fa\u00e7o para redefinir minha senha?",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q1"
+      ],
+      "predicted_action": "answer",
+      "predicted_card": "Q1",
+      "options": [],
+      "top3_cards": [
+        "Q1",
+        "Q2",
+        "Q10",
+        "Q7"
+      ],
+      "top_score": 0.645,
+      "decided_by": "llm",
+      "search_query": "redefine my password",
+      "reason": "The customer wants to reset their password, which is related to account management.",
+      "message": "Go to the login page and click \"Forgot Password.\" Enter your registered email address and a reset link will be sent within 2 minutes. The link expires after 30 minutes. If you do not receive the email, check your spam folder or contact support@test.com.",
+      "seconds": 12.75
+    },
+    {
+      "id": "F18",
+      "category": "other_language",
+      "question": "Hoe kan ik mijn e-mailadres wijzigen?",
+      "expected_action": "answer",
+      "expected_cards": [
+        "Q2"
+      ],
+      "predicted_action": "answer",
+      "predicted_card": "Q2",
+      "options": [],
+      "top3_cards": [
+        "Q2",
+        "Q1",
+        "Q9",
+        "Q3"
+      ],
+      "top_score": 0.856,
+      "decided_by": "llm",
+      "search_query": "How can I change my email address?",
+      "reason": "The customer wants to change their email address, which is related to account settings.",
+      "message": "Navigate to Settings > Profile > Contact Information. Enter your new email address and click Save. A verification email will be sent to the new address \u2014 you must click the link to confirm the change. Your old email remains active until the new one is verified.",
+      "seconds": 12.72
+    }
+  ]
+}
