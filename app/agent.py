@@ -193,6 +193,23 @@ SECOND_CHECK_SCHEMA = {
 }
 
 
+# Internal names the customer must never see. The second check calls the two articles "A" and
+# "B", and the model can copy them into its question ("Which article are you referring to,
+# A or B?"). Card ids (Q5) are internal too.
+INTERNAL_NAMES = re.compile(
+    r"\b(article|articles|card|cards|option|options)\s+[AB]\b|\b[AB]\s+or\s+[AB]\b|\bQ\d+\b", re.IGNORECASE
+)
+
+
+def customer_facing_question(question: str) -> str:
+    """The clarifying question as the customer sees it. If the model's question is empty or
+    uses internal names, a general question is shown; the article buttons carry the options."""
+    question = (question or "").strip()
+    if not question or INTERNAL_NAMES.search(question):
+        return DEFAULT_CLARIFY_MESSAGE
+    return question
+
+
 def format_candidates(matches: list[SearchResult]) -> str:
     lines = []
     for match in matches:
@@ -437,6 +454,7 @@ class SupportAgent:
 
     def _clarify(self, entries, matches, decided_by, reason, question) -> AgentResponse:
         options = [Option(card_id=e.id, label=e.question) for e in entries]
+        question = customer_facing_question(question)
         return AgentResponse(Action.CLARIFY, question, reason, decided_by, options=options, matches=matches)
 
     def _decline(self, matches, decided_by, reason) -> AgentResponse:

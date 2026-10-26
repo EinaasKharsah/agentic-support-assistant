@@ -319,3 +319,24 @@ def test_failed_translation_keeps_the_first_rewrite(store):
     llm = FakeLLM(json_reply=[{"has_meaning": True, "search_query": "Cómo cambiar correo"}, {"search_query": "Cómo cambiar"}, decision(["Q2"])])
     response = make_agent(store, llm).respond("¿Cómo cambio el correo?")
     assert response.search_query == "Cómo cambiar correo"
+
+
+def test_internal_names_never_reach_the_customer():
+    from app.agent import DEFAULT_CLARIFY_MESSAGE, customer_facing_question
+
+    assert customer_facing_question("Which article are you referring to, A or B?") == DEFAULT_CLARIFY_MESSAGE
+    assert customer_facing_question("Do you mean Q5 or Q6?") == DEFAULT_CLARIFY_MESSAGE
+    assert customer_facing_question("") == DEFAULT_CLARIFY_MESSAGE
+    good = "Do you want to cancel your subscription or request a refund?"
+    assert customer_facing_question(good) == good
+    assert customer_facing_question("Is this about a refund or a payment method?") == "Is this about a refund or a payment method?"
+
+
+def test_second_check_question_with_internal_names_is_replaced(store):
+    from app.agent import DEFAULT_CLARIFY_MESSAGE
+
+    llm = FakeLLM(json_reply=[decision(["Q1"]), second_check("either", "Which article are you referring to, A or B?")])
+    response = make_agent(store, llm, min_relevance=0.0, second_check_gap=1.0).respond("How do I reset my password?")
+    assert response.action == Action.CLARIFY
+    assert response.message == DEFAULT_CLARIFY_MESSAGE
+    assert len(response.options) == 2  # the buttons still show both articles
