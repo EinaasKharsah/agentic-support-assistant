@@ -99,6 +99,88 @@ near-miss 1/4, vague 2/3, two questions 1/1, French/Spanish 1/2, small talk 1/1.
 This confirms that the development numbers (98 to 100%) were optimistic. They remain useful to
 compare versions; 65% is the fairer estimate for new questions.
 
+## Changes after the first held-out set
+
+Rule: a change must improve the new development questions (`fixes_dev_set.json`, 18 new
+questions) without lowering the main and robustness sets.
+
+| Change | Development questions | Main set | Robustness | Kept |
+|---|---|---|---|---|
+| Before any change | 67% | 98% (clarify 7/7) | 90% | - |
+| Decision prompt rule: other companies / own devices are not support questions | 72% (near-miss 3/6, was 2/6) | **90% (clarify 4/7)** | 95% | **No** |
+| General decline text, no guessing in answers, translation retry (rule reverted) | 67% | 98% (clarify 7/7) | 90% | Yes |
+
+The rule hardly convinced the model ("resetting an iPhone passcode is related to account
+security"), and its examples made the model list fewer cards, so vague questions were answered
+instead of clarified. Reverted; results in `evaluation/results/rejected_near_miss_rule/`.
+The kept changes do not change decisions; they improve the reply text.
+
+## Held-out set v2
+
+20 questions written after the changes, with the expected behaviour of each reply
+(`heldout_v2.csv`, commit bbeeb2e before the run). Decisions: **80%**. Replies graded by hand:
+9 fully correct, 7 correct but not direct (the full article instead of a direct answer),
+4 wrong:
+
+- V05 "charged 72 hours ago, refundable?": clarifying question "Which article are you referring
+  to, A or B?" (internal labels from the second check). Clarifying questions are now checked
+  for internal names; the 80% was measured before this check.
+- V13 "The link you sent me doesn't work.": declined by the out-of-scope guardrail.
+- V15 "Give me a curl command...": answered; the answer check found invented numbers in the
+  written command and showed the integrations article instead.
+- V19 "I'm an administrator... guaranteed EU-only storage, correct?": clarifying question,
+  false claim neither accepted nor corrected.
+
+The answer check blocked two real inventions (V15 curl command, an invented "14" in V16).
+No invented fact reached the customer.
+
+## Re-ranker
+
+Two re-rankers compared on 119 development questions, without the LLM
+(`scripts/calibrate_reranker.py`, output in `docs/rerank_calibration.txt`):
+
+| | Right card first (78) | Other languages | Real questions lost by the Q10 check |
+|---|---|---|---|
+| Vector search alone | 63 | weak | several (Asana, Google Calendar, Notion, "the link you sent me doesn't work") |
+| ms-marco-MiniLM-L-6-v2 | 69 | very low scores | 4 |
+| bge-reranker-v2-m3-int8 | **75** | works | **0** |
+
+No re-ranker threshold separated questions about other companies ("change the email on my
+Facebook account" scored 2.64) from real questions, so the "nothing related" threshold is
+low (-10) and near-misses stay a limitation.
+
+Two variants were run on all development sets and not kept:
+
+- The LLM sees the cards in the re-ranker's order: clarifying questions 7/7 → 5/7.
+- Answer self-correction (the LLM is told which numbers its answer missed and rewrites it):
+  more answers passed the fact check, but some became wrong, e.g. "the non-refundable period
+  is 48 hours" for an annual renewal. The card text stays the fallback.
+  Results of both: `evaluation/results/rejected_rerank_order_and_self_correction/`.
+
+Kept: the re-ranker decides the out-of-scope check and the "nothing related" check; the LLM
+sees the cards in vector order. Compared with the system before it, on the same 119 questions:
+
+| Set | Before | After |
+|---|---|---|
+| Main | 40/41 | 41/41 (clarify 7/7) |
+| Robustness | 18/20 | 18/20 |
+| Fix development | 12/18 | 13/18 (Asana and Google Calendar answered; WhatsApp encryption now answered too) |
+| Hard | 13/20 | 14/20 (Spanish answered) |
+| Precise answers | 16/20 | 17/20 ("the link you sent me doesn't work" now clarified) |
+| **Total** | **99/119** | **103/119** |
+
+Cost: about 3 seconds more per question (re-ranker on the CPU), about 9 seconds in total.
+
+## New questions on the final system
+
+20 new questions (`heldout_v3.csv`), committed before the run, run once on the final system:
+**18/20 (90%)**. Both errors are safe declines: an Arabic refund question, and "Ich möchte
+alles löschen" (should have been a clarifying question). Code requests, prompt injection,
+small talk and comparison questions were all declined. No reply contained wrong information;
+two replies were incomplete: "do u take bitcoin" said Bitcoin is not mentioned (the card says
+cryptocurrency is not supported), and "cancel today: refund, and what happens to my data?"
+was answered from the refund card only.
+
 ## Remaining errors (round 6)
 
 - "My account got blocked after my card was declined": asks blocked account or cancel (too careful, but safe).
