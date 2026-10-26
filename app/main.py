@@ -4,7 +4,8 @@ Endpoints:
   GET  /          the chat page
   GET  /health    is the service up, and how many cards are loaded
   POST /chat      send a customer message, get the agent's decision and answer
-  POST /feedback  thumbs up / down on an answer (saved to a JSONL file)
+  POST /feedback  thumbs up / down on a reply, saved with the decision behind it (JSONL file)
+  GET  /feedback/stats  thumbs up / down per decision type
 
 Interactive docs (try the API in the browser): http://localhost:8000/docs
 """
@@ -79,12 +80,27 @@ class ChatResponse(BaseModel):
     search_query: str | None = None  # the rewritten search, if the first search was weak
 
 
+class MatchIn(BaseModel):
+    card_id: str = Field(max_length=20)
+    score: float
+
+
 class FeedbackRequest(BaseModel):
-    response_id: str
+    response_id: str = Field(max_length=64)
     rating: Literal["up", "down"]
     question: str = Field(max_length=1000)
     answer: str = Field(max_length=5000)
     comment: str | None = Field(default=None, max_length=1000)
+    # The decision behind the reply. With these fields, a feedback record can later become
+    # a test case or a training example (see scripts/export_feedback.py).
+    previous_message: str | None = Field(default=None, max_length=1000)
+    action: Literal["answer", "clarify", "decline"] | None = None
+    source_card: str | None = Field(default=None, max_length=20)
+    options: list[str] = Field(default=[], max_length=10)  # cards offered in a clarifying question
+    decided_by: Literal["llm", "guardrail", "rules"] | None = None
+    reason: str | None = Field(default=None, max_length=2000)
+    search_query: str | None = Field(default=None, max_length=1000)
+    matches: list[MatchIn] = Field(default=[], max_length=10)
 
 
 # ---- building the agent once at startup --------------------------------------------
@@ -202,11 +218,40 @@ def chat(request: ChatRequest, agent: SupportAgent = Depends(get_agent)) -> Chat
 
 @app.post("/feedback")
 def feedback(request: FeedbackRequest) -> dict:
-    """Save thumbs up/down. Like the accept/reject step in ACIE or AIANO, this
-    collects real examples to find weak spots and grow the evaluation set."""
+    """Save thumbs up/down together with the decision behind the reply.
+
+    Like the clinician accept/reject step in ACIE, these judgments first measure quality
+    on real questions. scripts/export_feedback.py turns thumbs-down replies into cases to
+    review and thumbs-up decisions into training examples for fine-tuning later.
+    The file holds customer messages, so it stays out of git (see .gitignore).
+    """
     path = Path(settings.feedback_path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    record = {"time": datetime.now(timezone.utc).isoformat(), **request.model_dump()}
+    record = {
+        "time": datetime.now(timezone.utc).isoformat(),
+        "model": settings.ollama_model,
+        "agent_mode": settings.agent_mode,
+        **request.model_dump(),
+    }
     with path.open("a", encoding="utf-8") as file:
-        file.write(json.dumps(record) + "\n")
+        file.write(json.dumps(record, ensure_ascii=False) + "\n")
     return {"status": "saved"}
+
+
+@app.get("/feedback/stats")
+def feedback_stats() -> dict:
+    """Thumbs up and down per decision type: a first, simple quality monitor."""
+    ratings = {"up": 0, "down": 0}
+    by_action: dict[str, dict[str, int]] = {}
+    path = Path(settings.feedback_path)
+    if path.exists():
+        for line in path.read_text(encoding="utf-8").splitlines():
+            try:
+                record = json.loads(line)
+                rating = record["rating"]
+                ratings[rating] += 1
+            except (ValueError, KeyError):
+                continue  # skip a damaged line instead of failing
+            action = record.get("action") or "unknown"
+            by_action.setdefault(action, {"up": 0, "down": 0})[rating] += 1
+    return {"total": sum(ratings.values()), "ratings": ratings, "by_action": by_action}

@@ -171,6 +171,15 @@ def format_candidates(matches: list[SearchResult]) -> str:
     return "\n\n".join(lines)
 
 
+def decision_messages(query: str, candidates: list[SearchResult]) -> list[dict[str, str]]:
+    """The exact messages sent to the LLM for the decision step. Also used to turn
+    feedback into training examples, so training and use see the same prompt."""
+    return [
+        {"role": "system", "content": DECISION_SYSTEM_PROMPT},
+        {"role": "user", "content": f"Customer message: {query}\n\nCards:\n{format_candidates(candidates)}"},
+    ]
+
+
 class SupportAgent:
     def __init__(
         self,
@@ -271,16 +280,7 @@ class SupportAgent:
             return self._rules_decision(query, matches)
 
         try:
-            decision = self.llm.chat_json(
-                [
-                    {"role": "system", "content": DECISION_SYSTEM_PROMPT},
-                    {
-                        "role": "user",
-                        "content": f"Customer message: {query}\n\nCards:\n{format_candidates(candidates)}",
-                    },
-                ],
-                json_schema=DECISION_SCHEMA,
-            )
+            decision = self.llm.chat_json(decision_messages(query, candidates), json_schema=DECISION_SCHEMA)
         except LLMError:
             return self._rules_decision(query, matches, note="LLM unavailable. ")
 

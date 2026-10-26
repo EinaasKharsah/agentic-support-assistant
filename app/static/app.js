@@ -28,6 +28,11 @@ const DECIDED_BY = {
 };
 
 const SUPPORT_EMAIL = "support@test.com";
+const FEEDBACK_PROMPT = {
+  answer: "Was this helpful?",
+  clarify: "Was this question helpful?",
+  decline: "Was this the right reply?",
+};
 
 // ---- state -------------------------------------------------------------------
 
@@ -321,12 +326,10 @@ function renderBotMessage(turn, index) {
   }
 
   const actions = el("div", "msg-actions");
-  if (r.action === "answer") {
-    actions.append(el("span", null, "Was this helpful?"));
-    const up = feedbackButton("up", turn);
-    const down = feedbackButton("down", turn);
-    actions.append(up, down);
-  }
+  // Feedback on every kind of reply: a thumbs-down on a decline or a clarifying
+  // question shows a wrong decision, not only a wrong answer.
+  actions.append(el("span", null, FEEDBACK_PROMPT[r.action]));
+  actions.append(feedbackButton("up", turn), feedbackButton("down", turn));
   if (r.action === "decline" || (r.action === "answer" && r.confidence < 0.6)) {
     const mail = withIcon(el("a", "human-btn"), "mail", "Email support", 16);
     const subject = encodeURIComponent("Question from the help center");
@@ -348,17 +351,28 @@ function feedbackButton(rating, turn) {
     const row = button.parentElement;
     row.querySelectorAll(".feedback-btn").forEach((b) => (b.disabled = true));
     button.setAttribute("aria-pressed", "true");
+    const r = turn.response;
     try {
-      await fetch("/feedback", {
+      const res = await fetch("/feedback", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          response_id: turn.response.id,
+          response_id: r.id,
           rating,
           question: turn.question,
-          answer: turn.response.message,
+          previous_message: turn.previous,
+          answer: r.message,
+          // The decision behind the reply, so feedback can become a test case or training example.
+          action: r.action,
+          source_card: r.source ? r.source.id : null,
+          options: r.options.map((o) => o.card_id),
+          decided_by: r.decided_by,
+          reason: r.reason,
+          search_query: r.search_query,
+          matches: r.matches.map((m) => ({ card_id: m.card_id, score: m.score })),
         }),
       });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       row.firstChild.textContent = "Thanks, your feedback was saved.";
     } catch {
       row.firstChild.textContent = "Feedback could not be saved.";

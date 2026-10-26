@@ -90,6 +90,33 @@ def test_feedback_is_saved(client_with, tmp_path):
     saved = json.loads((tmp_path / "feedback.jsonl").read_text().strip())
     assert saved["rating"] == "down"
     assert saved["response_id"] == "abc"
+    assert saved["model"] == main.settings.ollama_model  # which model gave the reply
+
+
+def test_feedback_keeps_the_decision_and_stats_count_it(client_with, tmp_path):
+    decision_fields = {
+        "action": "clarify",
+        "options": ["Q6", "Q5"],
+        "decided_by": "llm",
+        "reason": "cancel or refund",
+        "previous_message": None,
+        "matches": [{"card_id": "Q6", "score": 0.63}, {"card_id": "Q5", "score": 0.6}],
+    }
+    with client_with(FakeLLM()) as client:
+        for rating in ["up", "down", "down"]:
+            client.post(
+                "/feedback",
+                json={"response_id": "x", "rating": rating, "question": "I want to stop paying", "answer": "Cancel or refund?", **decision_fields},
+            )
+        stats = client.get("/feedback/stats").json()
+    saved = json.loads((tmp_path / "feedback.jsonl").read_text().splitlines()[0])
+    assert saved["options"] == ["Q6", "Q5"] and saved["matches"][0] == {"card_id": "Q6", "score": 0.63}
+    assert stats == {"total": 3, "ratings": {"up": 1, "down": 2}, "by_action": {"clarify": {"up": 1, "down": 2}}}
+
+
+def test_feedback_stats_without_a_file(client_with):
+    with client_with(FakeLLM()) as client:
+        assert client.get("/feedback/stats").json()["total"] == 0
 
 
 def test_invalid_rating_is_rejected(client_with):
