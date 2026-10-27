@@ -456,6 +456,6 @@ With more time, I would:
 
 ## Use of AI tools
 
-An AI coding assistant (Claude) supported the implementation, mainly in writing and debugging code.
+An AI coding assistant (Claude) supported the implementation, mainly in writing and debugging code, and also in writing test questions.
 
-All design and engineering decisions were my own, including the system architecture, the selection of the LLM, embedding model and vector store, the agent design and its guardrails, and the design of the test sets and error metrics. Each change to the agent was based on evaluation results that I ran locally and reviewed before deciding on the next step. For example, when the smaller models produced invented answers, I chose a larger model rather than adding hard-coded answers to the code.
+All design and engineering decisions were my own, including the system architecture, the selection of the LLM, embedding model, and vector store, the agent design and its guardrails, and the design of the test sets and error metrics. Each change to the agent was based on evaluation results that I ran locally and reviewed before deciding on the next step. 
