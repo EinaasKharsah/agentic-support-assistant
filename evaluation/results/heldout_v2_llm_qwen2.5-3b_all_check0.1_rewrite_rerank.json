@@ -25,7 +25,7 @@
     },
     "retrieval_recall_at_1": 0.933,
     "retrieval_recall_at_3": 1.0,
-    "avg_seconds": 12.38,
+    "avg_seconds": 13.01,
     "by_category": {}
   },
   "rows": [
@@ -49,14 +49,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q1": -0.933,
-        "Q2": -8.698,
-        "Q6": -10.692,
-        "Q9": -9.721
+        "Q1": -1.35,
+        "Q2": -8.79,
+        "Q6": -10.695,
+        "Q9": -9.752
       },
       "reason": "The customer is inquiring about the validity of a password reset email link, which is related to account management. Answer check: the written answer left out limits from the article: 2, so the article text is shown.",
       "message": "Go to the login page and click \"Forgot Password.\" Enter your registered email address and a reset link will be sent within 2 minutes. The link expires after 30 minutes. If you do not receive the email, check your spam folder or contact support@test.com.",
-      "seconds": 19.67
+      "seconds": 10.45
     },
     {
       "id": "V02",
@@ -78,14 +78,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q2": -1.501,
-        "Q1": -9.081,
-        "Q3": -9.528,
-        "Q6": -10.721
+        "Q2": -1.269,
+        "Q1": -9.414,
+        "Q3": -9.552,
+        "Q6": -10.637
       },
       "reason": "The customer is asking about the status of their saved email address, specifically which one is still active. Second check: The customer is asking about an active email address after saving a new one. Article A discusses changing the email address and verifying it, which directly addresses this issue. Article B is about resetting a password and does not mention email addresses at all. Therefore, the customer's message clearly points to Article A.",
       "message": "Your old email address remains active until the new one is verified.",
-      "seconds": 15.59
+      "seconds": 16.65
     },
     {
       "id": "V03",
@@ -107,14 +107,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q3": 2.324,
-        "Q6": -8.896,
-        "Q5": -10.794,
-        "Q10": -10.635
+        "Q3": 1.786,
+        "Q6": -8.886,
+        "Q5": -10.789,
+        "Q10": -10.596
       },
       "reason": "The customer is concerned about a Terms of Service violation and wants to know if updating their payment details can resolve the issue.",
       "message": "No, updating your payment details would not restore access in this case. Suspension due to a Terms of Service violation requires contacting support@test.com to submit an appeal.",
-      "seconds": 10.47
+      "seconds": 11.2
     },
     {
       "id": "V04",
@@ -136,14 +136,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q4": -1.234,
-        "Q10": -9.99,
-        "Q5": -8.076,
-        "Q6": -9.912
+        "Q4": -0.897,
+        "Q10": -9.864,
+        "Q5": -8.127,
+        "Q6": -10.115
       },
       "reason": "The customer is asking about the payment method for an annual plan, which is relevant to the billing category.",
       "message": "Yes, bank transfers are accepted for annual plans. Payments for annual plans are processed via bank transfer.",
-      "seconds": 9.28
+      "seconds": 10.01
     },
     {
       "id": "V05",
@@ -168,14 +168,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q6": -4.355,
-        "Q5": 0.541,
-        "Q3": -7.842,
-        "Q1": -10.961
+        "Q6": -4.59,
+        "Q5": 0.407,
+        "Q3": -7.389,
+        "Q1": -10.925
       },
       "reason": "The customer is inquiring about a past charge and its refundability under the platform's policy. Second check: The customer is inquiring about a specific charge that was charged 72 hours ago and asking if it is refundable under their policy. This question is clearly about the refund policy, which is covered in article B. The customer's message does not specify which article they mean, so a follow-up question would be helpful.",
       "message": "I want to make sure I help with the right thing. Which of these do you mean?",
-      "seconds": 12.23
+      "seconds": 13.52
     },
     {
       "id": "V06",
@@ -197,14 +197,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q5": -0.861,
-        "Q6": -6.749,
-        "Q3": -10.275,
-        "Q4": -8.099
+        "Q5": -1.189,
+        "Q6": -7.078,
+        "Q3": -10.009,
+        "Q4": -8.157
       },
       "reason": "The customer is inquiring about the refund window for a renewed annual plan, which is related to billing. Second check: The customer is inquiring about a refund window for an annual plan renewal, which is best addressed by the 'How do I request a refund?' article. The other article discusses cancellation and partial refunds, which are not relevant to the customer's question about renewals. Answer check: the written answer left out limits from the article: 14, so the article text is shown.",
       "message": "A full refund is available within 14 days of your initial purchase or annual renewal. Monthly plan charges are non-refundable after 48 hours. To request a refund, contact billing@test.com with your account email and order ID. Refunds are processed within 5 to 10 business days.",
-      "seconds": 16.47
+      "seconds": 18.29
     },
     {
       "id": "V07",
@@ -226,14 +226,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q6": -3.318,
-        "Q3": -8.259,
-        "Q5": -9.546,
-        "Q10": -10.873
+        "Q6": -3.275,
+        "Q3": -8.115,
+        "Q5": -9.594,
+        "Q10": -10.97
       },
       "reason": "The customer is asking about cancellation and its immediate effects, which is relevant to the Billing category. Second check: The customer's message is clearly asking about the immediate effects of canceling a subscription, which is best addressed by article A. Article B is about account suspension, which is unrelated to the customer's question. Answer check: the written answer left out limits from the article: 60, so the article text is shown.",
       "message": "Go to Settings > Billing > Subscription > Cancel Plan. Your access continues until the end of the current billing period. Partial refunds are not issued for unused time on monthly plans. After cancellation, your data is retained for 60 days before being permanently deleted.",
-      "seconds": 15.38
+      "seconds": 16.32
     },
     {
       "id": "V08",
@@ -255,14 +255,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q7": -5.128,
-        "Q10": -9.223,
-        "Q9": -10.897,
-        "Q8": -10.757
+        "Q7": -4.907,
+        "Q10": -9.2,
+        "Q9": -10.956,
+        "Q8": -10.856
       },
       "reason": "The customer is asking about a built-in connection to Microsoft Teams, which is an integration feature.",
       "message": "Yes, the platform integrates natively with Microsoft Teams. For a full list of supported integrations, including additional ones via the REST API and webhooks, you can contact support@test.com.",
-      "seconds": 9.8
+      "seconds": 10.54
     },
     {
       "id": "V09",
@@ -284,14 +284,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q8": -2.116,
-        "Q9": -10.101,
-        "Q6": -9.068,
-        "Q10": -10.645
+        "Q8": -2.204,
+        "Q9": -9.875,
+        "Q6": -9.176,
+        "Q10": -10.775
       },
       "reason": "The customer is asking about data residency and EU customer status, which is relevant to the Data & Security category. Second check: The customer's message is clearly asking about data residency, which is addressed in Help Article A. Article A discusses where data is stored and mentions EU customers on eligible plans who can request regional data residency. The customer's question about data staying inside the EU aligns with this topic. Answer check: the written answer left out limits from the article: 1.2, 256, so the article text is shown.",
       "message": "All data is stored in encrypted cloud infrastructure. Data is encrypted at rest using AES-256 and in transit using TLS 1.2 or higher. EU customers on eligible plans may request regional data residency by contacting support@test.com.",
-      "seconds": 15.29
+      "seconds": 16.72
     },
     {
       "id": "V10",
@@ -313,14 +313,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q9": -2.081,
-        "Q7": -9.028,
-        "Q10": -10.378,
-        "Q8": -9.801
+        "Q9": -2.78,
+        "Q7": -8.462,
+        "Q10": -10.2,
+        "Q8": -9.65
       },
       "reason": "The customer wants to download their workspace data as an Excel file, which is related to data export options. Second check: The customer is asking about downloading workspace data as an Excel file. Article A discusses exporting data, which could include Excel files. Article B is about integrations, which is unrelated to the customer's request. Answer check: the written answer left out limits from the article: 30, so the article text is shown.",
       "message": "Go to Settings > Account > Export Data. You can export workspaces, activity logs, and user data as a JSON or CSV file. Exports are generated asynchronously and a download link will be sent to your registered email within 30 minutes for large datasets.",
-      "seconds": 15.08
+      "seconds": 16.56
     },
     {
       "id": "V11",
@@ -342,14 +342,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q9": -2.053,
-        "Q3": -10.022,
-        "Q5": -10.296,
-        "Q8": -9.252
+        "Q9": -2.415,
+        "Q3": -10.033,
+        "Q5": -10.032,
+        "Q8": -8.775
       },
       "reason": "The customer is inquiring about a data export request that did not receive an email confirmation, which is related to the Data & Security category.",
       "message": "It hasn't been 30 minutes yet, so your export should still be generating. You can check the status in 30 minutes. If you haven't received the email within that time, please contact support for further assistance.",
-      "seconds": 10.09
+      "seconds": 10.82
     },
     {
       "id": "V12",
@@ -374,14 +374,14 @@
       "decided_by": "guardrail",
       "search_query": null,
       "rerank": {
-        "Q4": -10.772,
-        "Q10": -10.1,
-        "Q7": -10.673,
-        "Q8": -9.912
+        "Q4": -10.788,
+        "Q10": -10.252,
+        "Q7": -10.493,
+        "Q8": -8.686
       },
       "reason": "No card is relevant enough (best score below 0.55).",
       "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
-      "seconds": 4.13
+      "seconds": 3.54
     },
     {
       "id": "V13",
@@ -408,14 +408,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q10": -9.909,
-        "Q1": -5.798,
-        "Q3": -10.555,
-        "Q7": -10.603
+        "Q10": -9.709,
+        "Q1": -6.202,
+        "Q3": -10.274,
+        "Q7": -10.533
       },
       "reason": "The customer is reporting that a link they received does not work, which is related to account management. Second check: The customer's message is clearly about a non-functional link, which is not related to either of the help articles provided. The articles discuss password reset and account suspension, neither of which are mentioned or implied in the customer's message. Therefore, the customer's message does not clearly point to either article.",
       "message": "Could you please specify which article you meant when you wrote about the non-functional link?",
-      "seconds": 11.66
+      "seconds": 12.6
     },
     {
       "id": "V14",
@@ -441,14 +441,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q6": -5.146,
-        "Q5": -5.048,
-        "Q10": -10.236,
-        "Q3": -7.279
+        "Q6": -5.047,
+        "Q5": -5.48,
+        "Q10": -10.151,
+        "Q3": -7.764
       },
       "reason": "The customer wants to undo a change to their plan, which is related to their billing account.",
       "message": "Are you looking to cancel or request a refund for your plan?",
-      "seconds": 6.24
+      "seconds": 6.7
     },
     {
       "id": "V15",
@@ -468,14 +468,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q7": -7.389,
-        "Q10": -9.629,
-        "Q9": -10.851,
-        "Q3": -10.834
+        "Q7": -7.159,
+        "Q10": -9.663,
+        "Q9": -10.88,
+        "Q3": -10.666
       },
       "reason": "The customer is asking about creating a Jira issue through the platform's API, which is related to integrations. Answer check: the written answer added facts that are not in the article: 1, 2, 64, so the article text is shown.",
       "message": "The platform integrates natively with Slack, Google Workspace, Microsoft Teams, GitHub, Jira, and Zapier. Additional integrations are available via the REST API and webhooks. Contact support@test.com for the full list of supported integrations.",
-      "seconds": 14.82
+      "seconds": 17.18
     },
     {
       "id": "V16",
@@ -497,14 +497,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q6": -0.952,
-        "Q3": -8.328,
-        "Q5": -8.574,
-        "Q1": -8.611
+        "Q6": -0.847,
+        "Q3": -8.168,
+        "Q5": -8.553,
+        "Q1": -9.183
       },
       "reason": "The customer wants to cancel their subscription and confirm the action.",
       "message": "You can cancel your subscription by going to Settings > Billing > Subscription > Cancel Plan. After you complete this, your access will continue until the end of the current billing period. Please note that partial refunds are not issued for unused time on monthly plans. Once you have canceled, your data will be retained for 60 days before being permanently deleted.",
-      "seconds": 10.42
+      "seconds": 11.49
     },
     {
       "id": "V17",
@@ -526,14 +526,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q5": -5.411,
-        "Q3": -9.626,
-        "Q6": -10.175,
-        "Q4": -10.417
+        "Q5": -4.984,
+        "Q3": -9.637,
+        "Q6": -9.75,
+        "Q4": -10.145
       },
       "reason": "The customer is asking about a refund for an order and wants to know if it has reached their bank account. Second check: The customer's message is clearly asking about a refund for a specific order. Article A discusses how to request a refund, which directly addresses the customer's query about a refund for order AB-4821. Therefore, the customer is likely looking for Article A. Answer check: the written answer left out limits from the article: 14, 48, so the article text is shown.",
       "message": "A full refund is available within 14 days of your initial purchase or annual renewal. Monthly plan charges are non-refundable after 48 hours. To request a refund, contact billing@test.com with your account email and order ID. Refunds are processed within 5 to 10 business days.",
-      "seconds": 16.12
+      "seconds": 18.12
     },
     {
       "id": "V18",
@@ -555,14 +555,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q5": 3.478,
-        "Q6": -6.49,
-        "Q3": -7.706,
-        "Q4": -9.909
+        "Q5": 3.138,
+        "Q6": -6.497,
+        "Q3": -7.697,
+        "Q4": -10.146
       },
       "reason": "The customer is asking about the refund policy for monthly payments, which is related to the billing category. Second check: The customer's message is asking about the refund policy, specifically timing. Article A explains the refund policy in detail, including the 48-hour period for refundable monthly payments. Article B does not mention anything about refund policies or timing. The customer's message clearly points to Article A. Answer check: the written answer left out limits from the article: 10, 14, 5, so the article text is shown.",
       "message": "A full refund is available within 14 days of your initial purchase or annual renewal. Monthly plan charges are non-refundable after 48 hours. To request a refund, contact billing@test.com with your account email and order ID. Refunds are processed within 5 to 10 business days.",
-      "seconds": 15.19
+      "seconds": 17.13
     },
     {
       "id": "V19",
@@ -587,14 +587,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q8": -6.767,
-        "Q9": -10.12,
-        "Q10": -9.976,
-        "Q3": -9.473
+        "Q8": -6.429,
+        "Q9": -9.73,
+        "Q10": -9.726,
+        "Q3": -9.804
       },
       "reason": "The customer is asking about EU-only storage for EU accounts, which is related to data security and account settings. The message is not about a specific payment or account issue, but rather a general query about storage policies. Second check: The customer's message is clearly about EU storage guarantees, not about data storage locations or data export. The message does not mention anything related to exporting data or where data is stored. Therefore, the message is asking about the storage guarantees, which is not addressed in either article. The customer's message is more specific and clear about the storage guarantees, which is not covered by either of the provided articles. A clarifying question could be: 'Are you asking about the storage guarantees for EU accounts, or are you looking for information about where your data is stored?'",
       "message": "Are you asking about the storage guarantees for EU accounts, or are you looking for information about where your data is stored?",
-      "seconds": 13.75
+      "seconds": 15.92
     },
     {
       "id": "V20",
@@ -619,14 +619,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q4": -3.798,
-        "Q10": -9.525,
-        "Q7": -10.799,
-        "Q8": -10.494
+        "Q4": -2.889,
+        "Q10": -9.633,
+        "Q7": -10.821,
+        "Q8": -10.516
       },
       "reason": "The customer is asking about cryptocurrency acceptance, which is not mentioned in any of the provided cards. The cards are about billing, integrations, and data security.",
       "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
-      "seconds": 5.97
+      "seconds": 6.43
     }
   ]
 }

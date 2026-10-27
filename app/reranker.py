@@ -23,4 +23,7 @@ class CrossEncoderReranker:
 
     def score(self, query: str, documents: list[str]) -> list[float]:
         # Raw model scores (logits): higher = better answer. Not limited to 0..1.
-        return [float(s) for s in self._model.rerank(query, documents)]
+        # Both texts are lower-cased: the model is case-sensitive, and customers often type
+        # in lower case ("notion", "paypal"). Near the threshold, a capital letter alone
+        # changed the decision, so the decision should not depend on it.
+        return [float(s) for s in self._model.rerank(query.lower(), [d.lower() for d in documents])]

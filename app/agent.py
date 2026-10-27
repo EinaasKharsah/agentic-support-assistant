@@ -248,6 +248,8 @@ class SupportAgent:
         rewrite_weak_queries: bool = True,
         reranker: Reranker | None = None,
         min_rerank: float = 0.0,
+        rerank_out_of_scope_margin: float = 0.0,
+        rerank_sure: float | None = None,
     ):
         self.store = store
         self.llm = llm
@@ -264,9 +266,13 @@ class SupportAgent:
         # Rewrite the message and search again when the first search finds nothing relevant.
         self.rewrite_weak_queries = rewrite_weak_queries
         # Optional re-ranking model: reads the message and each article together. When set,
-        # it orders the candidates and declines when no article really answers the message.
+        # it declines when it is clearly sure that no article answers the message.
         self.reranker = reranker
         self.min_rerank = min_rerank
+        self.rerank_out_of_scope_margin = rerank_out_of_scope_margin
+        # When the LLM would ask "A or B?" but exactly one of them scores at least this much,
+        # the re-ranker is sure, so the agent answers from it. None = off.
+        self.rerank_sure = rerank_sure
 
     # ---- public -----------------------------------------------------------
 
@@ -362,13 +368,18 @@ class SupportAgent:
             # guardrails below. The LLM still sees the cards in vector order: when it saw the
             # re-ranker's order (best card first), it more often listed only that card, and
             # clarifying questions on the main set dropped from 7/7 to 5/7.
+            # It only declines when it is clearly sure. Close calls go to the LLM, because at
+            # very low scores a small difference (even a capital letter) can flip the order.
             ranked = sorted(matches, key=lambda m: rerank[m.entry.id], reverse=True)
-            if ranked[0].entry.out_of_scope:
-                return self._decline(
-                    matches, "guardrail", "The re-ranker found the out-of-scope example to be the best match."
-                )
             in_scope = [m for m in ranked if not m.entry.out_of_scope]
             best = rerank[in_scope[0].entry.id] if in_scope else float("-inf")
+            if ranked[0].entry.out_of_scope and rerank[ranked[0].entry.id] - best >= self.rerank_out_of_scope_margin:
+                return self._decline(
+                    matches,
+                    "guardrail",
+                    f"The re-ranker found the out-of-scope example to be the best match, by "
+                    f"{rerank[ranked[0].entry.id] - best:.2f} points (needed {self.rerank_out_of_scope_margin:.2f}).",
+                )
             if best < self.min_rerank:
                 return self._decline(
                     matches,
@@ -392,12 +403,17 @@ class SupportAgent:
         except LLMError:
             return self._rules_decision(query, matches, note="LLM unavailable. ")
 
-        return self._apply_llm_decision(query, matches, candidates, decision)
+        return self._apply_llm_decision(query, matches, candidates, decision, rerank or {})
 
     # ---- decision handling --------------------------------------------------
 
     def _apply_llm_decision(
-        self, query: str, matches: list[SearchResult], candidates: list[SearchResult], decision: dict
+        self,
+        query: str,
+        matches: list[SearchResult],
+        candidates: list[SearchResult],
+        decision: dict,
+        rerank: dict[str, float] | None = None,
     ) -> AgentResponse:
         """Map the model's understanding to an action. Guardrail 2: ignore invalid output."""
         by_id = {m.entry.id: m.entry for m in candidates}
@@ -415,16 +431,41 @@ class SupportAgent:
         valid = [by_id[cid] for cid in dict.fromkeys(str(c).strip() for c in cards) if cid in by_id][:3]
 
         if len(valid) == 1:
-            return self._second_check(query, valid[0], matches, candidates, reason)
+            return self._second_check(query, valid[0], matches, candidates, reason, rerank)
         if len(valid) >= 2:
+            sure = self._reranker_sure_answer(query, valid, matches, rerank, reason)
+            if sure:
+                return sure
             question = str(decision.get("clarifying_question", "")).strip() or DEFAULT_CLARIFY_MESSAGE
             return self._clarify(valid, matches, "llm", reason, question)
 
         # A support question, but the model listed no valid card (none fit, or unknown ids).
         return self._rules_decision(query, matches, note="LLM listed no valid card. ")
 
+    def _reranker_sure_answer(self, query, entries, matches, rerank, reason) -> AgentResponse | None:
+        """The LLM would ask "A or B?". If exactly one of them is a clear match for the re-ranker
+        (for example the article's own title: about +6), answer from it instead. On the
+        development sets, every correct clarifying question had its best article below +2:
+        there the re-ranker is not sure either, so the question is kept."""
+        if self.rerank_sure is None or not rerank:
+            return None
+        sure = [e for e in entries if rerank.get(e.id, float("-inf")) >= self.rerank_sure]
+        if len(sure) != 1:
+            return None
+        note = (
+            f" The re-ranker is sure about {sure[0].id} (score {rerank[sure[0].id]:.2f}, "
+            f"needed {self.rerank_sure:.2f}), so the assistant answers instead of asking."
+        )
+        return self._answer(query, sure[0], matches, "llm", reason + note)
+
     def _second_check(
-        self, query: str, chosen, matches: list[SearchResult], candidates: list[SearchResult], reason: str
+        self,
+        query: str,
+        chosen,
+        matches: list[SearchResult],
+        candidates: list[SearchResult],
+        reason: str,
+        rerank: dict[str, float] | None = None,
     ) -> AgentResponse:
         """Reflection step: before answering, check that a close runner-up is not just as likely."""
         scores = {m.entry.id: m.score for m in candidates}
@@ -460,6 +501,9 @@ class SupportAgent:
         check_reason = str(check.get("reason", "")).strip()
         combined = f"{reason} Second check: {check_reason}".strip()
         if choice == "either":
+            sure = self._reranker_sure_answer(query, [a, b], matches, rerank, combined)
+            if sure:
+                return sure
             question = str(check.get("clarifying_question", "")).strip() or DEFAULT_CLARIFY_MESSAGE
             return self._clarify([a, b], matches, "llm", combined, question)
         if choice in ("A", "B"):

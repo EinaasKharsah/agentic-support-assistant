@@ -22,7 +22,7 @@
     },
     "retrieval_recall_at_1": 1.0,
     "retrieval_recall_at_3": 1.0,
-    "avg_seconds": 8.76,
+    "avg_seconds": 9.35,
     "by_category": {}
   },
   "rows": [
@@ -47,14 +47,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q1": 2.84,
-        "Q10": -8.863,
-        "Q8": -6.006,
-        "Q3": -6.407
+        "Q1": 2.841,
+        "Q10": -8.966,
+        "Q8": -5.687,
+        "Q3": -6.292
       },
       "reason": "The customer is asking about resetting their password, which is related to their account.",
       "message": "Go to the login page and click \"Forgot Password.\" Enter your registered email address and a reset link will be sent within 2 minutes. The link expires after 30 minutes. If you do not receive the email, check your spam folder or contact support@test.com.",
-      "seconds": 19.19
+      "seconds": 20.19
     },
     {
       "id": "A02",
@@ -77,14 +77,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q1": -0.825,
-        "Q3": -9.18,
-        "Q2": -8.564,
-        "Q9": -9.97
+        "Q1": -1.087,
+        "Q3": -8.996,
+        "Q2": -8.349,
+        "Q9": -9.852
       },
       "reason": "The customer is experiencing an issue with receiving a password reset link, which is related to their account. Answer check: the written answer left out limits from the article: 2, 30, so the article text is shown.",
       "message": "Go to the login page and click \"Forgot Password.\" Enter your registered email address and a reset link will be sent within 2 minutes. The link expires after 30 minutes. If you do not receive the email, check your spam folder or contact support@test.com.",
-      "seconds": 8.91
+      "seconds": 9.32
     },
     {
       "id": "A03",
@@ -107,14 +107,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q1": 2.11,
-        "Q6": -9.262,
-        "Q5": -7.572,
-        "Q3": -9.156
+        "Q1": 1.414,
+        "Q6": -8.606,
+        "Q5": -7.599,
+        "Q3": -8.824
       },
       "reason": "The customer is asking about the validity of a reset link, which is related to account management. Answer check: the written answer left out limits from the article: 2, so the article text is shown.",
       "message": "Go to the login page and click \"Forgot Password.\" Enter your registered email address and a reset link will be sent within 2 minutes. The link expires after 30 minutes. If you do not receive the email, check your spam folder or contact support@test.com.",
-      "seconds": 8.86
+      "seconds": 9.51
     },
     {
       "id": "A04",
@@ -137,14 +137,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q2": 3.545,
-        "Q1": -5.265,
-        "Q9": -8.6,
-        "Q3": -6.383
+        "Q2": 3.371,
+        "Q1": -5.551,
+        "Q9": -8.707,
+        "Q3": -7.135
       },
       "reason": "The customer wants to update their email address on their profile, which is related to account management.",
       "message": "Navigate to Settings > Profile > Contact Information. Enter your new email address and click Save. A verification email will be sent to the new address \u2014 you must click the link to confirm the change. Your old email remains active until the new one is verified.",
-      "seconds": 9.83
+      "seconds": 10.43
     },
     {
       "id": "A05",
@@ -167,14 +167,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q2": -1.07,
-        "Q1": -4.857,
-        "Q9": -9.704,
-        "Q3": -9.144
+        "Q2": -0.971,
+        "Q1": -5.172,
+        "Q9": -8.91,
+        "Q3": -8.902
       },
       "reason": "The customer wants to change their login email, which is related to account settings. Second check: The customer's message clearly asks about changing the email address on their account. Article A directly addresses this by providing instructions on how to change the email address. Article B is about resetting a password, which is unrelated to the customer's request. Therefore, the customer's message clearly points to Article A.",
       "message": "You cannot switch your login email directly through the account settings as described in the help article. The article only mentions changing the email address for contact information. For login email changes, you should contact support for assistance.",
-      "seconds": 15.47
+      "seconds": 16.96
     },
     {
       "id": "A06",
@@ -197,14 +197,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q3": 5.177,
-        "Q6": -9.438,
-        "Q5": -9.177,
-        "Q1": -8.057
+        "Q3": 4.903,
+        "Q6": -9.307,
+        "Q5": -9.029,
+        "Q1": -7.596
       },
       "reason": "The customer wants to know why their account was suspended, which is related to account status and actions taken.",
       "message": "Your account appears to be suspended due to a failed payment or a Terms of Service violation. To determine the reason, check your registered email for a suspension notice. If the issue is related to a failed payment, update your billing information to reactivate your account within one hour. For policy violations, contact support@test.com to submit an appeal.",
-      "seconds": 10.26
+      "seconds": 11.22
     },
     {
       "id": "A07",
@@ -227,14 +227,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q3": -3.116,
-        "Q5": -8.16,
-        "Q6": -9.577,
-        "Q4": -9.688
+        "Q3": -3.434,
+        "Q5": -7.924,
+        "Q6": -9.311,
+        "Q4": -9.69
       },
       "reason": "The customer is concerned about their account being blocked due to a declined card payment, which is a common issue in account management. Second check: The customer's message clearly indicates they are experiencing an account suspension issue due to a declined payment. Article A discusses account suspensions and provides steps for reactivating the account. Therefore, the customer's message clearly points to Article A.",
       "message": "Suspension usually occurs due to a failed payment or a Terms of Service violation. Check your registered email for a suspension notice. Since your card was declined, it's likely a payment-related issue. Update your billing information and the account will be reactivated within one hour. If you haven't received a notice, contact support@test.com for further assistance.",
-      "seconds": 15.45
+      "seconds": 16.98
     },
     {
       "id": "A08",
@@ -257,14 +257,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q4": -7.67,
-        "Q10": -11.018,
-        "Q8": -10.97,
-        "Q7": -10.886
+        "Q4": -6.622,
+        "Q10": -10.9,
+        "Q8": -10.931,
+        "Q7": -10.659
       },
       "reason": "The customer is asking about payment methods, specifically if Bitcoin is accepted.",
       "message": "The article states that cryptocurrency is not supported. All major credit and debit cards (Visa, Mastercard, Amex, Discover) are accepted, as well as bank transfers for annual plans.",
-      "seconds": 9.5
+      "seconds": 10.09
     },
     {
       "id": "A09",
@@ -287,14 +287,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q4": 0.693,
-        "Q10": -10.911,
-        "Q6": -10.567,
-        "Q5": -10.481
+        "Q4": 0.411,
+        "Q10": -10.305,
+        "Q6": -10.482,
+        "Q5": -10.433
       },
       "reason": "The customer is asking about credit cards that can be used, which is related to payment methods.",
       "message": "All major credit cards such as Visa, Mastercard, Amex, and Discover are accepted.",
-      "seconds": 8.66
+      "seconds": 9.18
     },
     {
       "id": "A10",
@@ -317,14 +317,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q4": 0.313,
-        "Q10": -10.11,
-        "Q3": -9.483,
-        "Q5": -9.995
+        "Q4": 0.058,
+        "Q10": -9.828,
+        "Q3": -8.66,
+        "Q5": -9.486
       },
       "reason": "The customer is asking about payment methods, specifically bank transfers, which is relevant to the Billing category.",
       "message": "Yes, bank transfers are accepted for annual plans. Payments are processed securely.",
-      "seconds": 8.69
+      "seconds": 9.24
     },
     {
       "id": "A11",
@@ -347,14 +347,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q5": -2.086,
-        "Q6": -5.709,
-        "Q3": -8.129,
-        "Q10": -9.982
+        "Q5": -2.54,
+        "Q6": -6.056,
+        "Q3": -7.956,
+        "Q10": -10.148
       },
       "reason": "The customer is asking about a refund for a plan they purchased last week. Second check: The customer is asking about getting a refund for a plan purchase. Article A directly addresses refund requests, which fits the customer's query about getting their money back. Article B is about canceling a subscription, which is not relevant to the customer's request.",
       "message": "A full refund is available within 14 days of your initial purchase. Since it's been more than 14 days, you are not eligible for a refund at this time. Monthly plan charges are non-refundable after 48 hours. If you need further assistance, you can contact billing@test.com with your account email and order ID. Refunds are processed within 5 to 10 business days.",
-      "seconds": 16.21
+      "seconds": 17.98
     },
     {
       "id": "A12",
@@ -377,14 +377,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q5": 2.055,
-        "Q6": -5.589,
-        "Q3": -7.566,
-        "Q1": -8.11
+        "Q5": 2.061,
+        "Q6": -5.519,
+        "Q3": -6.688,
+        "Q1": -7.025
       },
       "reason": "The customer is asking about the time it takes to receive a refund, which is relevant to the Billing category. Answer check: the written answer left out limits from the article: 14, 48, so the article text is shown.",
       "message": "A full refund is available within 14 days of your initial purchase or annual renewal. Monthly plan charges are non-refundable after 48 hours. To request a refund, contact billing@test.com with your account email and order ID. Refunds are processed within 5 to 10 business days.",
-      "seconds": 8.77
+      "seconds": 9.25
     },
     {
       "id": "A13",
@@ -407,14 +407,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q6": 2.483,
-        "Q10": -10.914,
-        "Q5": -4.505,
-        "Q3": -6.923
+        "Q6": 1.92,
+        "Q10": -10.596,
+        "Q5": -4.495,
+        "Q3": -6.815
       },
       "reason": "The customer wants to end their plan, which is related to the billing process.",
       "message": "Go to Settings > Billing > Subscription > Cancel Plan. Your access continues until the end of the current billing period. Partial refunds are not issued for unused time on monthly plans. After cancellation, your data is retained for 60 days before being permanently deleted.",
-      "seconds": 9.7
+      "seconds": 10.58
     },
     {
       "id": "A14",
@@ -437,14 +437,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q6": 1.378,
-        "Q3": -7.5,
-        "Q5": -9.741,
-        "Q9": -8.354
+        "Q6": 0.512,
+        "Q3": -7.975,
+        "Q5": -9.177,
+        "Q9": -7.909
       },
       "reason": "The customer is asking about what happens to their data after canceling their subscription, which is relevant to the Billing category. Second check: The customer's message is clearly asking about what happens to their data after canceling, which aligns with the content of article A. Article B does not address data retention or cancellation at all. Therefore, the customer's message clearly points to article A.",
       "message": "After you cancel your subscription, your data is retained for 60 days before being permanently deleted.",
-      "seconds": 14.31
+      "seconds": 15.35
     },
     {
       "id": "A15",
@@ -467,14 +467,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q7": 2.889,
-        "Q10": -5.593,
-        "Q9": -10.512,
-        "Q8": -10.982
+        "Q7": 2.321,
+        "Q10": -5.335,
+        "Q9": -9.972,
+        "Q8": -10.843
       },
       "reason": "The customer is asking about a specific integration (Slack) and is looking for information about supported integrations.",
       "message": "Yes, the platform integrates natively with Slack. For more details or additional integrations, you can contact support@test.com.",
-      "seconds": 9.37
+      "seconds": 10.21
     },
     {
       "id": "A16",
@@ -497,14 +497,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q7": -3.207,
-        "Q10": -9.047,
-        "Q9": -10.8,
-        "Q1": -11.006
+        "Q7": -3.622,
+        "Q10": -8.887,
+        "Q9": -10.46,
+        "Q1": -11.001
       },
       "reason": "The customer wants to know if they can connect their platform to Jira, which is mentioned in the Integrations card.",
       "message": "Yes, you can connect it to Jira. The platform integrates natively with Jira as well as with Slack, Google Workspace, Microsoft Teams, GitHub, and Zapier. For more details or to add other integrations, you can contact support@test.com.",
-      "seconds": 9.66
+      "seconds": 10.24
     },
     {
       "id": "A17",
@@ -527,14 +527,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q7": 1.294,
-        "Q10": -8.15,
-        "Q9": -10.831,
-        "Q4": -9.987
+        "Q7": 0.44,
+        "Q10": -7.782,
+        "Q9": -10.711,
+        "Q4": -8.949
       },
       "reason": "The customer is asking about the platform's support for webhooks, which is relevant to the integrations category.",
       "message": "Yes, the platform supports webhooks for additional integrations. For more details, you can contact support@test.com.",
-      "seconds": 8.66
+      "seconds": 9.17
     },
     {
       "id": "A18",
@@ -557,14 +557,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q8": 4.528,
-        "Q9": -7.016,
-        "Q10": -10.226,
-        "Q4": -7.629
+        "Q8": 4.43,
+        "Q9": -6.093,
+        "Q10": -9.937,
+        "Q4": -7.731
       },
       "reason": "The customer is asking about data encryption, which is relevant to the cards about data security.",
       "message": "Yes, all data is encrypted. It is encrypted at rest using AES-256 and in transit using TLS 1.2 or higher.",
-      "seconds": 9.22
+      "seconds": 9.69
     },
     {
       "id": "A19",
@@ -587,14 +587,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q8": -2.21,
-        "Q9": -9.441,
-        "Q10": -10.941,
-        "Q6": -9.254
+        "Q8": -1.831,
+        "Q9": -9.062,
+        "Q10": -10.509,
+        "Q6": -9.087
       },
       "reason": "The customer is asking about data residency and storage, which is relevant to the Data & Security category. Second check: The customer's message is clearly asking about data storage location, which is addressed in help article A. Article A discusses where data is stored and mentions EU customers can request regional data residency. The customer's message specifically asks about keeping data inside the EU, which is a direct query to article A. Answer check: the written answer left out limits from the article: 1.2, 256, so the article text is shown.",
       "message": "All data is stored in encrypted cloud infrastructure. Data is encrypted at rest using AES-256 and in transit using TLS 1.2 or higher. EU customers on eligible plans may request regional data residency by contacting support@test.com.",
-      "seconds": 14.32
+      "seconds": 15.44
     },
     {
       "id": "A20",
@@ -617,14 +617,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q9": 2.943,
-        "Q7": -8.469,
-        "Q8": -6.828,
-        "Q10": -10.95
+        "Q9": 2.644,
+        "Q7": -8.01,
+        "Q8": -6.808,
+        "Q10": -10.889
       },
       "reason": "The customer wants to download all their workspace data, which is relevant to the Data & Security category.",
       "message": "Go to Settings > Account > Export Data. You can download workspace data as a JSON or CSV file. Exports are generated asynchronously and a download link will be sent to your registered email within 30 minutes for large datasets.",
-      "seconds": 9.83
+      "seconds": 10.38
     },
     {
       "id": "A21",
@@ -647,14 +647,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q9": 6.871,
-        "Q10": -9.686,
-        "Q7": -10.433,
-        "Q8": -8.942
+        "Q9": 6.33,
+        "Q10": -9.832,
+        "Q7": -10.088,
+        "Q8": -8.803
       },
       "reason": "The customer wants to export their activity logs as a CSV file, which is related to data and security.",
       "message": "Yes, you can export your activity logs as a CSV file. Go to Settings > Account > Export Data and select activity logs for export. Exports are generated asynchronously and a download link will be sent to your registered email within 30 minutes for large datasets.",
-      "seconds": 9.58
+      "seconds": 10.35
     },
     {
       "id": "A22",
@@ -678,14 +678,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q1": 4.16,
-        "Q6": -7.985,
-        "Q10": -10.785,
-        "Q3": -7.684
+        "Q1": 4.582,
+        "Q6": -8.128,
+        "Q10": -10.688,
+        "Q3": -7.917
       },
       "reason": "The customer wants to reset their password, which is related to account management. Second check: The customer's message is very specific about resetting a password, which directly matches article A. Article B is about canceling a subscription, which is unrelated to password reset. Therefore, A is the clear fit.",
       "message": "Go to the login page and click \"Forgot Password.\" Enter your registered email address and a reset link will be sent within 2 minutes. The link expires after 30 minutes. If you do not receive the email, check your spam folder or contact support@test.com.",
-      "seconds": 15.13
+      "seconds": 16.43
     },
     {
       "id": "A23",
@@ -709,14 +709,14 @@
       "decided_by": "rules",
       "search_query": null,
       "rerank": {
-        "Q4": -5.798,
-        "Q10": -10.236,
-        "Q5": -10.451,
-        "Q3": -9.213
+        "Q4": -6.065,
+        "Q10": -9.713,
+        "Q5": -10.414,
+        "Q3": -8.052
       },
       "reason": "LLM listed no valid card. One card clearly matches best.",
       "message": "PayPal is not mentioned in our help article. All major credit and debit cards (Visa, Mastercard, Amex, Discover) are accepted, as well as bank transfers for annual plans. Payments are processed securely. Cryptocurrency is not supported.",
-      "seconds": 10.06
+      "seconds": 10.47
     },
     {
       "id": "A24",
@@ -740,14 +740,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q7": -4.924,
-        "Q10": -6.104,
+        "Q7": -4.421,
+        "Q10": -5.946,
         "Q4": -10.981,
-        "Q8": -10.999
+        "Q8": -11.005
       },
       "reason": "The customer is asking about integrations with Trello, and the closest card is about integrations.",
       "message": "The platform integrates natively with Slack, Google Workspace, Microsoft Teams, GitHub, Jira, and Zapier. Additional integrations are available via the REST API and webhooks. Contact support@test.com for the full list of supported integrations. Trello is not mentioned in the help article.",
-      "seconds": 10.09
+      "seconds": 10.68
     },
     {
       "id": "A25",
@@ -771,14 +771,14 @@
       "decided_by": "llm",
       "search_query": "how to reset password",
       "rerank": {
-        "Q1": 4.164,
-        "Q2": -5.887,
-        "Q6": -8.946,
-        "Q10": -10.367
+        "Q1": 4.216,
+        "Q2": -6.387,
+        "Q6": -9.068,
+        "Q10": -10.428
       },
       "reason": "The customer is asking about resetting their password, which is directly related to account management.",
       "message": "Go to the login page and click \"Forgot Password.\" Enter your registered email address and a reset link will be sent within 2 minutes. The link expires after 30 minutes. If you do not receive the email, check your spam folder or contact support@test.com.",
-      "seconds": 13.79
+      "seconds": 14.53
     },
     {
       "id": "C01",
@@ -805,14 +805,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q6": -1.352,
-        "Q5": -5.499,
-        "Q3": -3.837,
-        "Q4": -9.443
+        "Q6": -2.032,
+        "Q5": -5.913,
+        "Q3": -4.376,
+        "Q4": -9.804
       },
       "reason": "The customer wants to stop paying, which is related to the billing process.",
       "message": "Do you want to cancel your subscription or request a refund?",
-      "seconds": 5.93
+      "seconds": 6.34
     },
     {
       "id": "C02",
@@ -840,14 +840,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q3": -1.261,
-        "Q6": -7.456,
-        "Q10": -5.297,
-        "Q5": -6.713
+        "Q3": -1.9,
+        "Q6": -7.742,
+        "Q10": -5.684,
+        "Q5": -7.228
       },
       "reason": "The customer is having an issue with their account, which is relevant to the support questions provided.",
       "message": "Is this about your account being suspended or about canceling a subscription?",
-      "seconds": 6.07
+      "seconds": 6.59
     },
     {
       "id": "C03",
@@ -875,14 +875,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q3": -4.203,
-        "Q1": -3.94,
-        "Q2": -8.359,
-        "Q10": -7.114
+        "Q3": -4.722,
+        "Q1": -3.968,
+        "Q2": -8.215,
+        "Q10": -7.417
       },
       "reason": "The customer is having trouble logging into their account, which is a common issue related to account access.",
       "message": "Which one of these issues are you facing?",
-      "seconds": 6.12
+      "seconds": 6.59
     },
     {
       "id": "C04",
@@ -910,14 +910,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q3": -2.058,
-        "Q4": -9.622,
-        "Q5": -6.828,
-        "Q10": -9.738
+        "Q3": -2.839,
+        "Q4": -9.461,
+        "Q5": -7.208,
+        "Q10": -9.508
       },
       "reason": "The customer is concerned about a payment issue, which could be related to account suspension or payment processing problems.",
       "message": "Is this about a payment issue with your account?",
-      "seconds": 6.18
+      "seconds": 6.45
     },
     {
       "id": "C05",
@@ -945,14 +945,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q9": -4.441,
-        "Q8": -2.299,
-        "Q6": -3.333,
-        "Q3": -6.293
+        "Q9": -4.753,
+        "Q8": -2.448,
+        "Q6": -4.258,
+        "Q3": -6.021
       },
       "reason": "The customer is asking about their data, which is relevant to the Data & Security category.",
       "message": "Are you asking about what happens to your data when you delete your account or are you inquiring about where your data is stored?",
-      "seconds": 6.4
+      "seconds": 6.93
     },
     {
       "id": "C06",
@@ -980,14 +980,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q1": -4.433,
-        "Q2": -3.625,
-        "Q10": -8.021,
-        "Q9": -5.722
+        "Q1": -4.75,
+        "Q2": -4.407,
+        "Q10": -7.981,
+        "Q9": -5.83
       },
       "reason": "The customer is asking for help with their email, which could relate to account settings or data security.",
       "message": "Are you looking for help with resetting your password, changing your email address, or exporting your data?",
-      "seconds": 6.44
+      "seconds": 6.94
     },
     {
       "id": "C07",
@@ -1014,14 +1014,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q6": -4.783,
-        "Q5": -6.635,
-        "Q3": -7.845,
-        "Q4": -9.925
+        "Q6": -4.845,
+        "Q5": -7.24,
+        "Q3": -8.115,
+        "Q4": -10.486
       },
       "reason": "The customer wants to stop being charged, which is related to the billing category.",
       "message": "Are you looking to cancel your subscription or request a refund?",
-      "seconds": 5.98
+      "seconds": 6.48
     },
     {
       "id": "D01",
@@ -1043,13 +1043,13 @@
       "search_query": "weather in berlin",
       "rerank": {
         "Q8": -11.029,
-        "Q10": -11.004,
-        "Q9": -11.022,
-        "Q7": -10.991
+        "Q10": -11.019,
+        "Q9": -11.021,
+        "Q7": -11.011
       },
       "reason": "No card is relevant enough (best score below 0.55).",
       "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
-      "seconds": 6.66
+      "seconds": 6.92
     },
     {
       "id": "D02",
@@ -1070,14 +1070,14 @@
       "decided_by": "guardrail",
       "search_query": null,
       "rerank": {
-        "Q10": -1.929,
-        "Q7": -10.147,
-        "Q9": -9.345,
-        "Q8": -10.832
+        "Q10": -2.651,
+        "Q7": -9.262,
+        "Q9": -10.032,
+        "Q8": -10.806
       },
-      "reason": "The re-ranker found the out-of-scope example to be the best match.",
+      "reason": "The re-ranker found the out-of-scope example to be the best match, by 6.61 points (needed 1.00).",
       "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
-      "seconds": 0.46
+      "seconds": 0.49
     },
     {
       "id": "D03",
@@ -1098,14 +1098,14 @@
       "decided_by": "guardrail",
       "search_query": null,
       "rerank": {
-        "Q10": -6.557,
-        "Q3": -10.735,
-        "Q9": -10.081,
-        "Q1": -11.012
+        "Q10": -5.937,
+        "Q3": -10.86,
+        "Q9": -9.857,
+        "Q1": -11.0
       },
-      "reason": "The re-ranker found the out-of-scope example to be the best match.",
+      "reason": "The re-ranker found the out-of-scope example to be the best match, by 3.92 points (needed 1.00).",
       "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
-      "seconds": 0.49
+      "seconds": 0.51
     },
     {
       "id": "D04",
@@ -1126,14 +1126,14 @@
       "decided_by": "guardrail",
       "search_query": "Recommend good restaurant Essen",
       "rerank": {
-        "Q4": -11.008,
-        "Q7": -10.985,
-        "Q8": -11.015,
-        "Q10": -10.998
+        "Q4": -10.994,
+        "Q7": -11.009,
+        "Q8": -11.014,
+        "Q10": -11.014
       },
       "reason": "No card is relevant enough (best score below 0.55).",
       "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
-      "seconds": 6.6
+      "seconds": 6.71
     },
     {
       "id": "D05",
@@ -1155,13 +1155,13 @@
       "search_query": null,
       "rerank": {
         "Q10": -11.015,
-        "Q8": -10.97,
-        "Q3": -11.004,
-        "Q5": -10.881
+        "Q8": -10.967,
+        "Q3": -11.015,
+        "Q5": -10.893
       },
       "reason": "No card is relevant enough (best score below 0.55).",
       "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
-      "seconds": 3.52
+      "seconds": 3.6
     },
     {
       "id": "D06",
@@ -1182,14 +1182,14 @@
       "decided_by": "guardrail",
       "search_query": null,
       "rerank": {
-        "Q10": -10.544,
-        "Q3": -10.372,
-        "Q1": -9.966,
-        "Q5": -10.914
+        "Q10": -10.64,
+        "Q3": -10.56,
+        "Q1": -10.185,
+        "Q5": -10.972
       },
       "reason": "No card is relevant enough (best score below 0.55).",
       "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
-      "seconds": 3.51
+      "seconds": 3.6
     },
     {
       "id": "D07",
@@ -1211,14 +1211,14 @@
       "decided_by": "guardrail",
       "search_query": null,
       "rerank": {
-        "Q10": -4.564,
-        "Q7": -9.542,
-        "Q9": -10.145,
-        "Q8": -10.678
+        "Q10": -3.863,
+        "Q7": -9.467,
+        "Q9": -10.15,
+        "Q8": -10.183
       },
-      "reason": "The re-ranker found the out-of-scope example to be the best match.",
+      "reason": "The re-ranker found the out-of-scope example to be the best match, by 5.60 points (needed 1.00).",
       "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
-      "seconds": 0.59
+      "seconds": 0.48
     },
     {
       "id": "D08",
@@ -1239,14 +1239,14 @@
       "decided_by": "guardrail",
       "search_query": null,
       "rerank": {
-        "Q10": -5.403,
-        "Q4": -5.626,
-        "Q9": -8.942,
-        "Q8": -4.971
+        "Q10": -4.985,
+        "Q4": -6.309,
+        "Q9": -8.87,
+        "Q8": -6.537
       },
       "reason": "No card is relevant enough (best score below 0.55).",
       "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
-      "seconds": 3.55
+      "seconds": 3.52
     },
     {
       "id": "D09",
@@ -1267,14 +1267,14 @@
       "decided_by": "guardrail",
       "search_query": "who won football match yesterday",
       "rerank": {
-        "Q3": -11.012,
-        "Q1": -11.019,
-        "Q8": -11.026,
-        "Q2": -11.013
+        "Q3": -11.021,
+        "Q1": -11.022,
+        "Q8": -11.023,
+        "Q2": -11.004
       },
       "reason": "No card is relevant enough (best score below 0.55).",
       "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
-      "seconds": 7.26
+      "seconds": 7.25
     }
   ]
 }

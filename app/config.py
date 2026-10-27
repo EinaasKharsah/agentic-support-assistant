@@ -41,13 +41,22 @@ class Settings:
 
     # Re-ranking model (a cross-encoder that reads the message and each article together).
     # Chosen with scripts/calibrate_reranker.py on 119 development questions: it put the right
-    # article first for 75 of 78 answerable questions (vector search alone: 63), works in other
-    # languages, and as the out-of-scope check it lost no real question. Empty = no re-ranker.
+    # article first for 75 of 78 answerable questions (vector search alone: 63) and works in
+    # other languages. Empty = no re-ranker.
     reranker_model: str = os.getenv("RERANKER_MODEL", "BAAI/bge-reranker-v2-m3-int8")
-    # Below this re-ranker score, no article is related at all, so the agent declines. Kept low on
-    # purpose: near-miss questions ("change the email on my Facebook account") score as high as
-    # real ones, so no threshold separates them, and a higher one loses real questions.
-    min_rerank: float = float(os.getenv("MIN_RERANK", "-10"))
+    # The re-ranker only declines when it is clearly sure; unclear cases go to the LLM.
+    # Below this score, no article is related at all. Set below every real development question:
+    # short questions about tools we do not list ("can i connect notion?") score near -9.5, as
+    # low as many off-topic requests, so a higher value declines real questions.
+    min_rerank: float = float(os.getenv("MIN_RERANK", "-10.5"))
+    # The out-of-scope example must beat the best article by this much to decline (1 point =
+    # about 2.7 times the odds). Off-topic requests won by 1.2 to 7 points; smaller wins were
+    # noise, and a capital letter could flip them.
+    rerank_out_of_scope_margin: float = float(os.getenv("RERANK_OUT_OF_SCOPE_MARGIN", "1.0"))
+    # When the LLM would ask "A or B?" but exactly one article scores at least this much, the
+    # re-ranker is sure (an exact title scores about +6), so the agent answers. Every correct
+    # clarifying question on the development sets had its best article below +2.
+    rerank_sure: float = float(os.getenv("RERANK_SURE", "3.0"))
 
     # Thumbs up/down from the chat page are appended to this file (one JSON per line).
     feedback_path: str = os.getenv("FEEDBACK_PATH", "feedback/feedback.jsonl")

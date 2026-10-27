@@ -27,7 +27,9 @@ services:
       SECOND_CHECK_GAP: ${SECOND_CHECK_GAP:-0.1}
       REWRITE_WEAK_QUERIES: ${REWRITE_WEAK_QUERIES:-true}
       RERANKER_MODEL: ${RERANKER_MODEL:-BAAI/bge-reranker-v2-m3-int8}
-      MIN_RERANK: ${MIN_RERANK:--10}
+      MIN_RERANK: ${MIN_RERANK:--10.5}
+      RERANK_OUT_OF_SCOPE_MARGIN: ${RERANK_OUT_OF_SCOPE_MARGIN:-1.0}
+      RERANK_SURE: ${RERANK_SURE:-3.0}
       LLM_TIMEOUT_SECONDS: ${LLM_TIMEOUT_SECONDS:-60}
     extra_hosts:
       # Lets the app reach an Ollama that runs on your own computer (see README).

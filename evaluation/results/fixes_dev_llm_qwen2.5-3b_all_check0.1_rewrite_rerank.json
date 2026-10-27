@@ -24,7 +24,7 @@
     },
     "retrieval_recall_at_1": 0.778,
     "retrieval_recall_at_3": 1.0,
-    "avg_seconds": 10.52,
+    "avg_seconds": 11.13,
     "by_category": {
       "near_miss": "1/6",
       "other_tool": "4/4",
@@ -53,14 +53,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q1": -2.056,
-        "Q6": -9.429,
-        "Q10": -10.932,
-        "Q3": -10.565
+        "Q1": -0.787,
+        "Q6": -9.244,
+        "Q10": -10.713,
+        "Q3": -10.434
       },
       "reason": "The customer wants to reset their iPhone passcode, which is related to account security. Answer check: the written answer left out limits from the article: 2, so the article text is shown.",
       "message": "Go to the login page and click \"Forgot Password.\" Enter your registered email address and a reset link will be sent within 2 minutes. The link expires after 30 minutes. If you do not receive the email, check your spam folder or contact support@test.com.",
-      "seconds": 9.9
+      "seconds": 10.32
     },
     {
       "id": "F02",
@@ -81,14 +81,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q6": -6.312,
-        "Q5": -9.696,
-        "Q3": -8.81,
-        "Q4": -10.994
+        "Q6": -5.369,
+        "Q5": -8.648,
+        "Q3": -7.344,
+        "Q4": -10.391
       },
-      "reason": "The customer is asking about Spotify's cancellation policy, which is related to the billing process.",
-      "message": "Spotify's cancellation policy is as follows: Go to Settings > Billing > Subscription > Cancel Plan. Your access continues until the end of the current billing period. Partial refunds are not issued for unused time on monthly plans. After cancellation, your data is retained for 60 days before being permanently deleted.",
-      "seconds": 10.28
+      "reason": "The customer is asking about Spotify's cancellation policy, which is related to the billing process. Answer check: the written answer made a claim about Spotify's, which the article does not mention, so the article text is shown.",
+      "message": "Go to Settings > Billing > Subscription > Cancel Plan. Your access continues until the end of the current billing period. Partial refunds are not issued for unused time on monthly plans. After cancellation, your data is retained for 60 days before being permanently deleted.",
+      "seconds": 10.94
     },
     {
       "id": "F03",
@@ -109,14 +109,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q9": -2.511,
-        "Q2": -6.52,
-        "Q7": -10.614,
-        "Q10": -10.894
+        "Q9": -0.883,
+        "Q2": -5.462,
+        "Q7": -10.383,
+        "Q10": -10.317
       },
       "reason": "The customer wants to export contacts from Gmail, which is not related to the platform's account, billing, payments, integrations, or data and security. The cards provided do not mention Gmail or contact export.",
       "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
-      "seconds": 6.24
+      "seconds": 6.73
     },
     {
       "id": "F04",
@@ -137,14 +137,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q8": -5.236,
-        "Q10": -10.721,
-        "Q7": -10.663,
-        "Q9": -9.577
+        "Q8": -4.776,
+        "Q10": -10.2,
+        "Q7": -10.274,
+        "Q9": -8.768
       },
-      "reason": "The customer is asking about encryption, which is related to data security.",
-      "message": "The article does not mention WhatsApp chat encryption. According to the article, all data is stored in encrypted cloud infrastructure using AES-256 for data at rest and TLS 1.2 or higher for data in transit. For EU customers on eligible plans, there is a mention of regional data residency, but it's not related to WhatsApp chat encryption.",
-      "seconds": 10.44
+      "reason": "The customer is asking about encryption, which is related to data security. Answer check: the written answer made a claim about WhatsApp, which the article does not mention, so the article text is shown.",
+      "message": "All data is stored in encrypted cloud infrastructure. Data is encrypted at rest using AES-256 and in transit using TLS 1.2 or higher. EU customers on eligible plans may request regional data residency by contacting support@test.com.",
+      "seconds": 11.0
     },
     {
       "id": "F05",
@@ -165,14 +165,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q6": -1.395,
-        "Q1": -8.969,
-        "Q3": -8.918,
-        "Q5": -8.603
+        "Q6": -1.803,
+        "Q1": -9.354,
+        "Q3": -8.976,
+        "Q5": -8.31
       },
       "reason": "The customer wants to cancel a subscription, specifically an Amazon Prime membership, which is related to their billing account. Answer check: the written answer left out limits from the article: 60, so the article text is shown.",
       "message": "Go to Settings > Billing > Subscription > Cancel Plan. Your access continues until the end of the current billing period. Partial refunds are not issued for unused time on monthly plans. After cancellation, your data is retained for 60 days before being permanently deleted.",
-      "seconds": 10.17
+      "seconds": 10.42
     },
     {
       "id": "F06",
@@ -193,14 +193,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q2": 2.638,
-        "Q1": -4.612,
-        "Q9": -8.475,
-        "Q6": -10.567
+        "Q2": 2.787,
+        "Q1": -4.806,
+        "Q9": -8.306,
+        "Q6": -10.254
       },
-      "reason": "The customer wants to change their email address on their Facebook account, which is related to account management.",
-      "message": "The article does not mention anything about changing the email address on a Facebook account. It only describes changing the email address on an account related to Settings > Profile > Contact Information. For Facebook account changes, you should contact their support directly.",
-      "seconds": 9.99
+      "reason": "The customer wants to change their email address on their Facebook account, which is related to account management. Answer check: the written answer made a claim about Facebook, which the article does not mention, so the article text is shown.",
+      "message": "Navigate to Settings > Profile > Contact Information. Enter your new email address and click Save. A verification email will be sent to the new address \u2014 you must click the link to confirm the change. Your old email remains active until the new one is verified.",
+      "seconds": 10.68
     },
     {
       "id": "F07",
@@ -224,14 +224,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q10": -5.638,
-        "Q7": -4.44,
-        "Q4": -11.003,
-        "Q9": -10.853
+        "Q10": -5.198,
+        "Q7": -4.348,
+        "Q4": -11.009,
+        "Q9": -10.66
       },
       "reason": "The customer is asking about integrations with Asana, which is relevant to the Integrations category.",
       "message": "The platform integrates natively with Slack, Google Workspace, Microsoft Teams, GitHub, Jira, and Zapier. Additional integrations are available via the REST API and webhooks. Contact support@test.com for the full list of supported integrations. Asana is not mentioned in the help article.",
-      "seconds": 10.01
+      "seconds": 10.83
     },
     {
       "id": "F08",
@@ -254,14 +254,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q10": -9.734,
-        "Q7": -8.85,
-        "Q9": -10.448,
-        "Q6": -10.727
+        "Q10": -9.008,
+        "Q7": -8.121,
+        "Q9": -10.143,
+        "Q6": -11.008
       },
-      "reason": "The customer wants to know if they can connect their Google Calendar to the platform, which is related to integrations.",
-      "message": "The platform integrates natively with Google Workspace. You can connect your Google Calendar through this integration.",
-      "seconds": 8.84
+      "reason": "The customer wants to know if they can connect their Google Calendar to the platform, which is related to integrations. Answer check: the written answer made a claim about Calendar, which the article does not mention, so the article text is shown.",
+      "message": "The platform integrates natively with Slack, Google Workspace, Microsoft Teams, GitHub, Jira, and Zapier. Additional integrations are available via the REST API and webhooks. Contact support@test.com for the full list of supported integrations.",
+      "seconds": 9.41
     },
     {
       "id": "F09",
@@ -284,14 +284,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q4": -7.377,
-        "Q7": -10.459,
-        "Q10": -8.526,
-        "Q3": -8.639
+        "Q4": -7.879,
+        "Q7": -10.565,
+        "Q10": -9.952,
+        "Q3": -9.259
       },
-      "reason": "The customer wants to know if Apple Pay is a supported payment method, which is relevant to the Account category. Second check: The customer's message is clearly asking about the payment method Apple Pay. Article A discusses accepted payment methods, while Article B is about account suspension. The customer's message does not mention anything about an account being suspended, so it must be about Apple Pay.",
-      "message": "Apple Pay is not accepted for payments according to our help article. All major credit and debit cards (Visa, Mastercard, Amex, Discover) are accepted, as well as bank transfers for annual plans.",
-      "seconds": 15.75
+      "reason": "The customer wants to know if Apple Pay is a supported payment method, which is relevant to the Account category. Second check: The customer's message is clearly asking about the payment method Apple Pay. Article A discusses various payment methods, while Article B is about account suspension and does not mention Apple Pay. Therefore, the customer's message clearly points to Article A. Answer check: the written answer made a claim about Apple, Pay, which the article does not mention, so the article text is shown.",
+      "message": "All major credit and debit cards (Visa, Mastercard, Amex, Discover) are accepted, as well as bank transfers for annual plans. All payments are processed securely. Cryptocurrency is not supported.",
+      "seconds": 17.19
     },
     {
       "id": "F10",
@@ -314,14 +314,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q7": -0.639,
-        "Q10": -9.51,
-        "Q9": -8.943,
-        "Q1": -10.853
+        "Q7": -1.783,
+        "Q10": -9.144,
+        "Q9": -8.303,
+        "Q1": -10.537
       },
       "reason": "The customer wants to know if they can connect GitHub to their workspace, which is related to integrations.",
       "message": "Yes, you can connect GitHub to your workspace. The platform integrates natively with GitHub. For more details or to explore additional integrations, you can contact support@test.com.",
-      "seconds": 9.73
+      "seconds": 10.29
     },
     {
       "id": "F11",
@@ -344,14 +344,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q3": 3.352,
-        "Q1": -5.526,
-        "Q6": -8.659,
-        "Q5": -7.195
+        "Q3": 3.004,
+        "Q1": -5.655,
+        "Q6": -8.662,
+        "Q5": -7.147
       },
       "reason": "The customer is concerned about their account being suspended, which is related to account management.",
       "message": "Your account was suspended due to a failed payment or a Terms of Service violation. Check your registered email for a suspension notice. For payment-related suspensions, update your billing information and the account will be reactivated within one hour. For policy violations, contact support@test.com to submit an appeal.",
-      "seconds": 10.47
+      "seconds": 10.94
     },
     {
       "id": "F12",
@@ -379,14 +379,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q2": -5.254,
-        "Q3": -7.329,
-        "Q5": -9.195,
-        "Q1": -7.683
+        "Q2": -6.085,
+        "Q3": -7.536,
+        "Q5": -9.355,
+        "Q1": -7.438
       },
       "reason": "The customer received a verification email they didn't ask for, which is related to their account. Second check: The customer's message is about receiving a verification email they didn't ask for, which aligns with the issue described in article A. Article A provides steps to change the email address, which could resolve the situation where the customer received a verification email they didn't request. Therefore, article A is the most relevant.",
       "message": "The article does not mention receiving a verification email for changing an email address. According to the article, after entering your new email address and clicking Save, a verification email will be sent to the new address. However, the article does not specify that you will receive a verification email if you change your email address. You should contact support to confirm the process for changing your email address.",
-      "seconds": 16.97
+      "seconds": 18.7
     },
     {
       "id": "F13",
@@ -410,14 +410,14 @@
       "decided_by": "guardrail",
       "search_query": "hello",
       "rerank": {
-        "Q4": -5.181,
-        "Q10": -6.723,
-        "Q1": -3.569,
-        "Q8": -5.03
+        "Q4": -4.063,
+        "Q10": -7.093,
+        "Q1": -3.594,
+        "Q8": -3.793
       },
       "reason": "No card is relevant enough (best score below 0.55).",
       "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
-      "seconds": 6.36
+      "seconds": 6.42
     },
     {
       "id": "F14",
@@ -441,14 +441,14 @@
       "decided_by": "guardrail",
       "search_query": null,
       "rerank": {
-        "Q10": -8.047,
-        "Q4": -7.836,
-        "Q5": -7.78,
-        "Q9": -8.5
+        "Q10": -8.02,
+        "Q4": -7.99,
+        "Q5": -7.763,
+        "Q9": -8.03
       },
       "reason": "No card is relevant enough (best score below 0.55).",
       "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
-      "seconds": 3.45
+      "seconds": 3.65
     },
     {
       "id": "F15",
@@ -471,14 +471,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q9": 4.975,
-        "Q8": -7.596,
-        "Q10": -10.877,
-        "Q5": -11.005
+        "Q9": 3.78,
+        "Q8": -7.016,
+        "Q10": -10.919,
+        "Q5": -11.02
       },
       "reason": "The customer wants to export their data, which is relevant to the Data & Security category.",
       "message": "Go to Settings > Account > Export Data to export your workspaces, activity logs, and user data as a JSON or CSV file. Exports are generated asynchronously and a download link will be sent to your registered email within 30 minutes for large datasets.",
-      "seconds": 9.94
+      "seconds": 10.86
     },
     {
       "id": "F16",
@@ -501,14 +501,14 @@
       "decided_by": "llm",
       "search_query": "how to cancel my subscription",
       "rerank": {
-        "Q6": 5.101,
-        "Q3": -7.467,
-        "Q1": -7.323,
-        "Q5": -6.002
+        "Q6": 5.75,
+        "Q3": -7.626,
+        "Q1": -7.331,
+        "Q5": -6.458
       },
       "reason": "The customer wants to cancel their subscription, which is related to their billing and account settings.",
       "message": "Go to Settings > Billing > Subscription > Cancel Plan. Your access continues until the end of the current billing period. Partial refunds are not issued for unused time on monthly plans. After cancellation, your data is retained for 60 days before being permanently deleted.",
-      "seconds": 13.54
+      "seconds": 13.97
     },
     {
       "id": "F17",
@@ -531,14 +531,14 @@
       "decided_by": "llm",
       "search_query": "redefine my password",
       "rerank": {
-        "Q1": -0.089,
-        "Q2": -7.268,
-        "Q10": -10.677,
-        "Q7": -10.756
+        "Q1": -0.651,
+        "Q2": -7.403,
+        "Q10": -10.636,
+        "Q7": -10.886
       },
       "reason": "The customer is asking about resetting their password, which is related to account management.",
       "message": "Go to the login page and click \"Forgot Password.\" Enter your registered email address and a reset link will be sent within 2 minutes. The link expires after 30 minutes. If you do not receive the email, check your spam folder or contact support@test.com.",
-      "seconds": 13.95
+      "seconds": 13.97
     },
     {
       "id": "F18",
@@ -561,14 +561,14 @@
       "decided_by": "llm",
       "search_query": "How can I change my email address?",
       "rerank": {
-        "Q2": 5.752,
-        "Q1": -3.402,
-        "Q9": -7.653,
-        "Q3": -9.18
+        "Q2": 5.468,
+        "Q1": -3.773,
+        "Q9": -7.224,
+        "Q3": -8.429
       },
       "reason": "The customer wants to change their email address, which is related to account settings.",
       "message": "Navigate to Settings > Profile > Contact Information. Enter your new email address and click Save. A verification email will be sent to the new address \u2014 you must click the link to confirm the change. Your old email remains active until the new one is verified.",
-      "seconds": 13.32
+      "seconds": 13.96
     }
   ]
 }

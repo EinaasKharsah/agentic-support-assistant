@@ -123,6 +123,8 @@ def main() -> None:
         rewrite_weak_queries=settings.rewrite_weak_queries,
         reranker=reranker,
         min_rerank=settings.min_rerank,
+        rerank_out_of_scope_margin=settings.rerank_out_of_scope_margin,
+        rerank_sure=settings.rerank_sure,
         mode=args.mode,
         generate_answers=args.with_answers,
     )

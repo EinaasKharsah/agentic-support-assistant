@@ -26,7 +26,7 @@
     },
     "retrieval_recall_at_1": 0.889,
     "retrieval_recall_at_3": 1.0,
-    "avg_seconds": 10.94,
+    "avg_seconds": 15.65,
     "by_category": {
       "needs_reasoning": "2/3",
       "paraphrase": "3/4",
@@ -61,14 +61,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q5": -1.336,
-        "Q6": -4.743,
-        "Q3": -7.155,
-        "Q4": -9.427
+        "Q5": -1.457,
+        "Q6": -4.783,
+        "Q3": -7.173,
+        "Q4": -9.407
       },
-      "reason": "The customer is asking about getting a refund for a monthly plan they paid for 3 days ago. Second check: The customer is asking about a refund, which is directly addressed in Article A. Article B does not mention refunds at all, focusing instead on cancellation and subscription details. Therefore, the customer's message clearly points to Article A. Answer check: the written answer left out limits from the article: 10, 5, so the article text is shown.",
+      "reason": "The customer is asking about getting a refund for a monthly plan they paid for 3 days ago. Second check: The customer is asking about a refund, which is directly addressed in Article A. Article B does not mention refunds at all, so it cannot be the correct article for this question. Answer check: the written answer left out limits from the article: 10, 5, so the article text is shown.",
       "message": "A full refund is available within 14 days of your initial purchase or annual renewal. Monthly plan charges are non-refundable after 48 hours. To request a refund, contact billing@test.com with your account email and order ID. Refunds are processed within 5 to 10 business days.",
-      "seconds": 16.57
+      "seconds": 17.57
     },
     {
       "id": "H02",
@@ -91,14 +91,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q6": -1.113,
-        "Q5": -8.169,
-        "Q3": -9.165,
-        "Q10": -10.781
+        "Q6": -1.513,
+        "Q5": -8.862,
+        "Q3": -9.113,
+        "Q10": -10.532
       },
       "reason": "The customer is asking about the cancellation of a subscription and whether they can still use the product until the end of the month. The cards are about cancellation and refunds, which are relevant. Second check: The customer's message is clearly asking about the cancellation process and its effects on the product usage. Article A directly addresses this by explaining the cancellation process and the continuation of access until the end of the billing period. Article B is about requesting a refund, which is not relevant to the customer's question. Answer check: the written answer left out limits from the article: 60, so the article text is shown.",
       "message": "Go to Settings > Billing > Subscription > Cancel Plan. Your access continues until the end of the current billing period. Partial refunds are not issued for unused time on monthly plans. After cancellation, your data is retained for 60 days before being permanently deleted.",
-      "seconds": 16.47
+      "seconds": 18.06
     },
     {
       "id": "H03",
@@ -125,14 +125,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q6": -5.206,
-        "Q5": -4.634,
-        "Q3": -7.845,
-        "Q10": -9.581
+        "Q6": -5.722,
+        "Q5": -5.322,
+        "Q3": -7.6,
+        "Q10": -9.445
       },
       "reason": "The customer wants a refund for a previous purchase, not to cancel a subscription. Second check: The customer wants a refund for a previous purchase, which aligns with the goal of the 'How do I request a refund?' article. The message does not specify which article the customer means, so a follow-up question is needed to clarify.",
       "message": "Are you looking for information on how to request a refund, or do you need help with canceling your subscription?",
-      "seconds": 13.36
+      "seconds": 13.39
     },
     {
       "id": "H04",
@@ -155,14 +155,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q6": -2.944,
-        "Q3": -8.712,
-        "Q9": -10.124,
-        "Q5": -10.45
+        "Q6": -2.99,
+        "Q3": -8.115,
+        "Q9": -10.018,
+        "Q5": -9.881
       },
       "reason": "The customer is asking about the consequences of stopping their subscription, specifically if they will lose their files.",
       "message": "No, you won't lose your files. Your data is retained for 60 days after cancellation before being permanently deleted.",
-      "seconds": 9.62
+      "seconds": 9.67
     },
     {
       "id": "H05",
@@ -185,14 +185,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q1": -1.007,
-        "Q3": -6.672,
-        "Q6": -8.756,
-        "Q5": -7.521
+        "Q1": -1.373,
+        "Q3": -6.845,
+        "Q6": -7.658,
+        "Q5": -7.051
       },
       "reason": "The customer is concerned about an expired link in an email, which is related to account management. Second check: The customer's message is clearly about an expired email link, which is addressed in Help Article A. Article B is about account suspension and does not mention anything about an expired link. Answer check: the written answer left out limits from the article: 30, so the article text is shown.",
       "message": "Go to the login page and click \"Forgot Password.\" Enter your registered email address and a reset link will be sent within 2 minutes. The link expires after 30 minutes. If you do not receive the email, check your spam folder or contact support@test.com.",
-      "seconds": 15.52
+      "seconds": 84.57
     },
     {
       "id": "H06",
@@ -218,14 +218,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q3": -3.959,
-        "Q1": -6.542,
-        "Q5": -8.644,
-        "Q6": -10.597
+        "Q3": -3.37,
+        "Q1": -6.851,
+        "Q5": -8.285,
+        "Q6": -10.483
       },
       "reason": "The customer's message is about their account being locked due to a failed card update, which is related to account management. Second check: The customer's message describes a problem with their account being locked due to a failed card update. Article A discusses account suspension, which is a different issue. Article B is about resetting a password, which is unrelated to the account lock issue. Therefore, the customer's message does not clearly point to either article, and a follow-up question is needed to determine which article the customer meant.",
       "message": "Are you looking for information on account suspension or password reset?",
-      "seconds": 12.84
+      "seconds": 13.43
     },
     {
       "id": "H07",
@@ -248,14 +248,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q8": 2.176,
-        "Q4": -9.347,
-        "Q10": -9.918,
-        "Q7": -10.187
+        "Q8": 1.665,
+        "Q4": -9.916,
+        "Q10": -8.972,
+        "Q7": -9.008
       },
       "reason": "The customer is asking about encryption, specifically AES-256, which is relevant to the security of their data. Answer check: the written answer left out limits from the article: 1.2, so the article text is shown.",
       "message": "All data is stored in encrypted cloud infrastructure. Data is encrypted at rest using AES-256 and in transit using TLS 1.2 or higher. EU customers on eligible plans may request regional data residency by contacting support@test.com.",
-      "seconds": 9.18
+      "seconds": 9.67
     },
     {
       "id": "H08",
@@ -282,14 +282,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q10": -9.824,
-        "Q7": -9.202,
-        "Q9": -10.754,
-        "Q8": -10.921
+        "Q10": -9.267,
+        "Q7": -9.496,
+        "Q9": -10.635,
+        "Q8": -10.929
       },
       "reason": "The customer wants to know if they can connect their platform to Notion, which is an integration question.",
       "message": "Notion isn't mentioned in our help article. The platform integrates with Slack, Google Workspace, Microsoft Teams, GitHub, Jira, and Zapier. Additional integrations are available via the REST API and webhooks. Contact support@test.com for the full list of supported integrations.",
-      "seconds": 10.21
+      "seconds": 10.8
     },
     {
       "id": "H09",
@@ -315,17 +315,17 @@
         "Q6"
       ],
       "top_score": 0.566,
-      "decided_by": "guardrail",
+      "decided_by": "llm",
       "search_query": null,
       "rerank": {
         "Q10": -11.009,
-        "Q4": -10.601,
-        "Q5": -10.456,
-        "Q6": -10.947
+        "Q4": -10.273,
+        "Q5": -9.913,
+        "Q6": -10.984
       },
-      "reason": "No article really answers this message (re-ranker score -10.46, needed -10.00).",
+      "reason": "The customer is asking about a student discount, which is not directly related to the cards provided. The cards are about billing and subscription cancellation, which are not relevant to the student discount question.",
       "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
-      "seconds": 0.65
+      "seconds": 6.39
     },
     {
       "id": "H10",
@@ -346,14 +346,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q1": -1.247,
-        "Q2": -8.324,
-        "Q6": -9.935,
-        "Q10": -10.41
+        "Q1": -0.494,
+        "Q2": -8.426,
+        "Q6": -8.952,
+        "Q10": -10.183
       },
       "reason": "The customer is asking about resetting a password, which is related to account management.",
       "message": "The article does not mention resetting a Wi-Fi router password. According to the article, you can reset your password by going to the login page and clicking \"Forgot Password.\" Enter your registered email address and a reset link will be sent within 2 minutes. The link expires after 30 minutes. If you do not receive the email, check your spam folder or contact support@test.com.",
-      "seconds": 10.82
+      "seconds": 11.24
     },
     {
       "id": "H11",
@@ -371,17 +371,17 @@
         "Q3"
       ],
       "top_score": 0.626,
-      "decided_by": "guardrail",
+      "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q10": -8.912,
-        "Q7": -9.433,
-        "Q9": -10.812,
-        "Q3": -10.992
+        "Q10": -8.713,
+        "Q7": -9.208,
+        "Q9": -10.667,
+        "Q3": -10.993
       },
-      "reason": "The re-ranker found the out-of-scope example to be the best match.",
+      "reason": "The customer wants to send a message to their team about a holiday, but the cards provided are about account suspensions, data export, and integrations. None of these cards directly address writing a Slack message to the team.",
       "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
-      "seconds": 0.55
+      "seconds": 6.88
     },
     {
       "id": "H12",
@@ -402,14 +402,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q5": -5.467,
-        "Q6": -6.27,
-        "Q3": -9.61,
-        "Q4": -10.686
+        "Q5": -4.87,
+        "Q6": -6.343,
+        "Q3": -8.247,
+        "Q4": -9.946
       },
       "reason": "The customer is asking about Netflix's refund policy, which is related to billing. Second check: The customer's message is clearly asking about the refund policy, not how to cancel a subscription. The first article (A) directly addresses refund policies, while the second article (B) is about canceling a subscription. The customer's message does not mention cancellation, so it must be about the refund policy. Answer check: the written answer left out limits from the article: 10, 14, 48, 5, so the article text is shown.",
       "message": "A full refund is available within 14 days of your initial purchase or annual renewal. Monthly plan charges are non-refundable after 48 hours. To request a refund, contact billing@test.com with your account email and order ID. Refunds are processed within 5 to 10 business days.",
-      "seconds": 15.55
+      "seconds": 16.75
     },
     {
       "id": "H13",
@@ -430,14 +430,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q9": -3.993,
-        "Q10": -7.789,
-        "Q7": -7.977,
-        "Q8": -7.346
+        "Q9": -4.243,
+        "Q10": -7.723,
+        "Q7": -7.553,
+        "Q8": -6.917
       },
-      "reason": "The customer wants to export their data using a Python script and the REST API, which aligns with the card about exporting data. Second check: The customer's message clearly asks about exporting data, which is directly addressed in Help Article A. Article B is about integrations, which does not fit the customer's request.",
-      "message": "The article does not provide information on how to export data using a Python script to call a REST API. According to the article, you can export data by going to Settings > Account > Export Data. It mentions that you can export workspaces, activity logs, and user data as a JSON or CSV file. Exports are generated asynchronously and a download link will be sent to your registered email within 30 minutes for large datasets. \n\nTo perform the export using a Python script, you would need to follow the steps described in the article, such as navigating to the correct settings page and initiating the export process. You would then need to handle the asynchronous nature of the export and retrieve the download link to access the exported data. \n\nSince the article does not provide details on how to interact with the API using Python, you would need to refer to the API documentation to understand the necessary HTTP requests and parameters to make.",
-      "seconds": 18.46
+      "reason": "The customer wants to export their data using a Python script and the REST API, which aligns with the card about exporting data. Second check: The customer's message clearly asks about exporting data, which is directly addressed in Help Article A. Article B is about integrations, which does not fit the customer's request. Answer check: the written answer made a claim about Python, REST, API, which the article does not mention, so the article text is shown.",
+      "message": "Go to Settings > Account > Export Data. You can export workspaces, activity logs, and user data as a JSON or CSV file. Exports are generated asynchronously and a download link will be sent to your registered email within 30 minutes for large datasets.",
+      "seconds": 20.59
     },
     {
       "id": "H14",
@@ -464,14 +464,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q1": -5.93,
-        "Q3": -6.875,
-        "Q10": -9.806,
-        "Q9": -10.216
+        "Q1": -5.781,
+        "Q3": -7.394,
+        "Q10": -9.725,
+        "Q9": -10.195
       },
       "reason": "The customer wants to know why they can't log in, which is related to their account.",
       "message": "Are you trying to log in but receiving an error message?",
-      "seconds": 6.11
+      "seconds": 6.56
     },
     {
       "id": "H15",
@@ -496,14 +496,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q3": -4.683,
-        "Q2": -7.799,
-        "Q1": -7.371,
-        "Q10": -9.041
+        "Q3": -4.564,
+        "Q2": -7.456,
+        "Q1": -7.033,
+        "Q10": -9.066
       },
       "reason": "The customer is concerned about a strange email related to their account, which suggests they might be worried about account security or status. Second check: The customer's message mentions a 'strange email about my account', which aligns with article A's context about account suspensions. Article B discusses changing email addresses, which does not relate to the customer's issue.",
       "message": "The article doesn't mention receiving an email about a suspended account. According to the article, suspension usually occurs due to a failed payment or a Terms of Service violation. Check your registered email for a suspension notice, as mentioned in the article. If you don't find one, you may need to contact support for further assistance.",
-      "seconds": 16.03
+      "seconds": 17.56
     },
     {
       "id": "H16",
@@ -531,14 +531,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q3": -4.974,
-        "Q5": -8.068,
-        "Q10": -10.695,
-        "Q4": -10.782
+        "Q3": -5.299,
+        "Q5": -7.588,
+        "Q10": -10.619,
+        "Q4": -10.976
       },
       "reason": "The customer is concerned about their account and money, suggesting a potential issue with their billing or account status.",
       "message": "Is this about your account being suspended or a refund request?",
-      "seconds": 6.19
+      "seconds": 6.63
     },
     {
       "id": "H17",
@@ -568,14 +568,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q5": -4.539,
-        "Q4": -4.478,
-        "Q6": -7.857,
-        "Q3": -9.047
+        "Q5": -4.888,
+        "Q4": -4.593,
+        "Q6": -7.824,
+        "Q3": -9.313
       },
       "reason": "The customer is asking about paying yearly by bank transfer and getting a refund if they don't like it, which relates to their payment method and refund policy.",
       "message": "Are you asking about paying yearly by bank transfer and getting a refund if you don't like it?",
-      "seconds": 6.66
+      "seconds": 7.42
     },
     {
       "id": "H18",
@@ -598,14 +598,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q9": 3.369,
-        "Q8": -9.757,
-        "Q10": -10.412,
-        "Q7": -10.817
+        "Q9": -0.758,
+        "Q8": -10.221,
+        "Q10": -10.61,
+        "Q7": -10.331
       },
       "reason": "The customer wants to export their data in CSV format, which is relevant to the Data & Security category. Answer check: the written answer added facts that are not in the article: Compte > Exporter, so the article text is shown.",
       "message": "Go to Settings > Account > Export Data. You can export workspaces, activity logs, and user data as a JSON or CSV file. Exports are generated asynchronously and a download link will be sent to your registered email within 30 minutes for large datasets.",
-      "seconds": 11.47
+      "seconds": 12.35
     },
     {
       "id": "H19",
@@ -628,14 +628,14 @@
       "decided_by": "llm",
       "search_query": "how do I change email address of my account",
       "rerank": {
-        "Q2": 6.262,
-        "Q1": -1.575,
-        "Q9": -6.765,
-        "Q3": -7.106
+        "Q2": 6.27,
+        "Q1": -2.302,
+        "Q9": -6.374,
+        "Q3": -6.843
       },
       "reason": "The customer wants to change their email address on their account, which is relevant to the Account category.",
       "message": "Navigate to Settings > Profile > Contact Information. Enter your new email address and click Save. A verification email will be sent to the new address \u2014 you must click the link to confirm the change. Your old email remains active until the new one is verified.",
-      "seconds": 16.55
+      "seconds": 17.21
     },
     {
       "id": "H20",
@@ -660,14 +660,14 @@
       "decided_by": "llm",
       "search_query": null,
       "rerank": {
-        "Q10": -7.641,
-        "Q7": -7.623,
-        "Q1": -7.365,
-        "Q3": -7.425
+        "Q10": -7.367,
+        "Q7": -8.166,
+        "Q1": -7.081,
+        "Q3": -7.15
       },
       "reason": "The customer message is thanking the support team for their previous assistance, but does not indicate a need for further information or a specific issue to resolve.",
       "message": "Sorry, I can only help with questions about your account, billing, integrations, and data and security. Is there anything in these areas I can help you with?",
-      "seconds": 6.05
+      "seconds": 6.34
     }
   ]
 }

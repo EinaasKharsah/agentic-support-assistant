@@ -69,13 +69,17 @@ def main() -> None:
             scores = reranker.score(item["question"], [m.entry.to_text() for m in matches])
             ranked = sorted(zip(matches, scores), key=lambda pair: pair[1], reverse=True)
             in_scope = [(m, s) for m, s in ranked if not m.entry.out_of_scope]
+            best_in_scope = in_scope[0][1] if in_scope else float("-inf")
+            margin = ranked[0][1] - best_in_scope if ranked[0][0].entry.out_of_scope else float("-inf")
             rows.append({
                 "item": item,
                 "vector_top": matches[0].entry.id,
                 "rerank_top": ranked[0][0].entry.id,
                 "best_in_scope": in_scope[0][0].entry.id if in_scope else None,
-                "best_in_scope_score": in_scope[0][1] if in_scope else float("-inf"),
-                "q10_top": ranked[0][0].entry.out_of_scope,
+                "best_in_scope_score": best_in_scope,
+                "q10_margin": margin,
+                # Q10 first only counts when it wins by the configured margin (see app/config.py).
+                "q10_top": margin >= settings.rerank_out_of_scope_margin,
             })
 
         # 1. Ranking: questions that should be answered, is the right card first?
@@ -98,10 +102,11 @@ def main() -> None:
             lost_low = sum((not r["q10_top"]) and r["best_in_scope_score"] < t for r in must_keep)
             print(f"{t:9.1f} | {caught:2d}/{len(must_decline)} | {lost_q10 + lost_low:2d} ({lost_q10} / {lost_low})")
 
-        print("\nScores per question (best in-scope article, Q10 first?):")
+        print(f"\nScores per question (best in-scope article; Q10+x = Q10 first by x points, declines at {settings.rerank_out_of_scope_margin}):")
         for r in sorted(rows, key=lambda r: r["best_in_scope_score"]):
             exp = "/".join(accepted(r["item"]))
-            print(f"  {r['best_in_scope_score']:7.2f} {'Q10' if r['q10_top'] else '   '} "
+            q10 = f"Q10+{r['q10_margin']:.1f}" if r["q10_margin"] > float("-inf") else ""
+            print(f"  {r['best_in_scope_score']:7.2f} {q10:<8} "
                   f"{exp:<15} {r['item']['set'][:10]:<10} {r['item']['question'][:70]}")
         print()
 

@@ -139,6 +139,8 @@ def build_agent() -> SupportAgent:
         rewrite_weak_queries=settings.rewrite_weak_queries,
         reranker=reranker,
         min_rerank=settings.min_rerank,
+        rerank_out_of_scope_margin=settings.rerank_out_of_scope_margin,
+        rerank_sure=settings.rerank_sure,
         mode=settings.agent_mode,
     )
 

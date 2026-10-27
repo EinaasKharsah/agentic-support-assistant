@@ -91,6 +91,35 @@ def test_not_mentioned_answer_passes():
     assert answer == reply and note is None
 
 
+def test_claim_about_a_name_not_in_the_card_shows_the_card():
+    # A real answer from the model: PayPal is not in the card, and bank transfers ARE.
+    reply = (
+        "Our support article states that we accept all major credit and debit cards, including PayPal, "
+        "as payment methods. However, it does not mention bank transfers or cryptocurrency."
+    )
+    answer, note = generate_answer("forget about it all, do you take PayPal?", Q4, FakeLLM(reply=reply))
+    assert answer == Q4.answer
+    assert "PayPal" in note
+
+
+def test_not_mentioned_about_something_the_card_mentions_is_caught():
+    reply = "It does not mention bank transfers or cryptocurrency."
+    assert "although the article mentions it" in fact_problem(reply, Q4, "How can I pay?")
+
+
+def test_claim_about_a_lowercase_name_from_the_question_is_caught():
+    reply = "Notion is supported through Zapier."
+    Q7 = ENTRIES[6]
+    assert "Notion" in fact_problem(reply, Q7, "can i connect notion?")
+    assert fact_problem("Notion isn't mentioned in our help article. We integrate with Slack and Jira.", Q7, "notion?") is None
+
+
+def test_names_from_the_card_are_allowed():
+    Q7 = ENTRIES[6]
+    reply = "Yes, the platform integrates natively with Slack, Microsoft Teams and Jira."
+    assert fact_problem(reply, Q7, "Do you work with Slack?") is None
+
+
 def test_prompt_forbids_guessing_what_happened_to_the_account():
     system = build_messages("I got a strange email", Q1)[0]["content"]
     assert "Do not guess what happened" in system

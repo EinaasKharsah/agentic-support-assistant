@@ -379,6 +379,61 @@ def test_out_of_scope_card_first_after_reranking_declines(store):
     assert llm.calls == []
 
 
+def test_out_of_scope_card_first_by_a_small_margin_lets_the_llm_decide(store):
+    # A real case: "can i connect to notion?" had Q10 first by 0.6 points, both very low.
+    # That is noise, so the LLM decides instead of the re-ranker.
+    reranker = FakeReranker({Q10_TITLE: -9.5, Q7_TITLE: -10.1}, default=-12.0)
+    llm = FakeLLM(json_reply=decision(["Q7"]), reply="Notion isn't mentioned in our help article.")
+    agent = make_agent(store, llm, reranker=reranker, min_rerank=-10.5, rerank_out_of_scope_margin=1.0,
+                       second_check_gap=0, top_k=10)
+    response = agent.respond("which third-party tools does the platform integrate with? notion?")
+    assert response.action == Action.ANSWER
+    assert response.source == "Q7"
+
+
+def test_out_of_scope_card_first_by_a_clear_margin_declines(store):
+    reranker = FakeReranker({Q10_TITLE: -6.0, Q7_TITLE: -10.1}, default=-12.0)
+    llm = FakeLLM(json_reply=decision(["Q7"]))
+    agent = make_agent(store, llm, reranker=reranker, min_rerank=-10.5, rerank_out_of_scope_margin=1.0, top_k=10)
+    response = agent.respond("Write a SQL query for my integration database")
+    assert response.action == Action.DECLINE
+    assert "by 4.10 points" in response.reason
+    assert llm.calls == []
+
+
+def test_reranker_sure_of_one_article_answers_instead_of_clarifying(store):
+    # A real case: for "How do I cancel my subscription?" (the title of Q6) the LLM listed two
+    # cards, but the re-ranker gave Q6 +6.2 and the other card -8.0.
+    q6 = ENTRIES[5]
+    reranker = FakeReranker({q6.question: 6.2}, default=-8.0)
+    llm = FakeLLM(json_reply=decision(["Q6", "Q5"], question="Cancel or refund?"), reply=q6.answer)
+    agent = make_agent(store, llm, reranker=reranker, min_rerank=-10.5, rerank_sure=3.0, top_k=10)
+    # (The fake search needs both card titles in the message to offer both cards to the LLM.)
+    response = agent.respond("How do I cancel my subscription or request a refund?")
+    assert response.action == Action.ANSWER
+    assert response.source == "Q6"
+    assert "re-ranker is sure" in response.reason
+
+
+def test_clarifying_question_is_kept_when_the_reranker_is_not_sure(store):
+    # As for "I want to stop paying": the best article scored only -1.4, so the question is kept.
+    q5, q6 = ENTRIES[4], ENTRIES[5]
+    reranker = FakeReranker({q6.question: -1.4, q5.question: -5.5}, default=-9.0)
+    llm = FakeLLM(json_reply=decision(["Q6", "Q5"], question="Cancel or refund?"))
+    agent = make_agent(store, llm, reranker=reranker, min_rerank=-10.5, rerank_sure=3.0, top_k=10)
+    response = agent.respond("How do I cancel my subscription or request a refund?")
+    assert response.action == Action.CLARIFY
+
+
+def test_clarifying_question_is_kept_when_two_articles_are_sure(store):
+    q1, q2 = ENTRIES[0], ENTRIES[1]
+    reranker = FakeReranker({q1.question: 4.0, q2.question: 3.5}, default=-9.0)
+    llm = FakeLLM(json_reply=decision(["Q1", "Q2"], question="Password or email?"))
+    agent = make_agent(store, llm, reranker=reranker, min_rerank=-10.5, rerank_sure=3.0, top_k=10)
+    response = agent.respond("How do I reset my password and also change my email?")
+    assert response.action == Action.CLARIFY
+
+
 def test_reranker_can_rescue_a_question_where_the_out_of_scope_card_was_first(store):
     # Without the re-ranker, this message is declined because Q10 is the top vector match.
     message = "Can you help me write code for my integration project?"
