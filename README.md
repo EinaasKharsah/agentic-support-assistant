@@ -23,6 +23,8 @@ Everything runs locally: a small LLM in Ollama (`qwen2.5:3b`), embeddings with `
 
 ## Demo
 
+**Video (1 minute):** [end-to-end demo on Google Drive](https://drive.google.com/file/d/1CAc8S7G_w2uI8mEmsy4cVNV6yb4pLfyy/view?usp=sharing): an answer with the "How I decided" panel, a clarifying question, a tool the knowledge base does not mention, a decline, and saved conversations.
+
 **Vague question → clarifying question → answer.** After the customer picks "refund", the assistant answers from the refund article, including the 48-hour condition.
 
 ![Clarifying question, then an answer from the refund article](docs/images/clarify-then-answer.png)
