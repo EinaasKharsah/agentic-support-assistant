@@ -61,29 +61,17 @@ uvicorn app.main:app --reload     # Qdrant runs in memory when QDRANT_URL is not
 ## How it works
 
 ```mermaid
-flowchart TD
-    M[Customer message] --> S[Search: find the 4 closest cards in Qdrant]
-    S --> W{Best score<br/>below 0.55?}
-    W -- yes --> R[LLM rewrites the message as a<br/>short English search query]
-    R --> S2[Search again]
-    S2 --> G1
-    W -- no --> G1{Still below 0.55?}
-    G1 -- yes --> D[Decline]
-    G1 -- no --> RR{Re-ranker clearly sure<br/>that nothing fits?}
-    RR -- yes --> D
-    RR -- no --> L[LLM reads the message and 3 cards:<br/>Is this a support question?<br/>Which cards could the customer mean?]
-    L --> V{Code routes}
-    V -- not a support question --> D
-    V -- 2 or more cards --> C[Clarifying question,<br/>cards as buttons]
-    V -- exactly 1 card --> SC{Another card<br/>almost as close?}
-    SC -- no --> A[LLM writes the answer<br/>from that one card]
-    SC -- yes --> X[Second check:<br/>A, B or either?]
-    X -- A or B --> A
-    X -- either --> C
-    A --> FC{Code checks the facts}
-    FC -- ok --> OUT[Answer]
-    FC -- not ok --> CARD[Show the card text]
-    V -- invalid reply or LLM error --> F[Score-based rules decide]
+flowchart LR
+    S["Message →<br/>search 4 cards"] --> G{"Anything<br/>related?"}
+    G -- no --> D([Decline])
+    G -- yes --> L["LLM: support question?<br/>Which cards fit?"]
+    L -- no --> D
+    L -- 2+ cards --> C([Clarify])
+    L -- 1 card --> SC{"Another card<br/>as close?"}
+    SC -- either --> C
+    SC -- "no / A or B" --> A["LLM writes the answer,<br/>code checks the facts"]
+    A -- ok --> OUT([Answer])
+    A -- fails --> CARD([Article text])
 ```
 
 1. **Search.** The message is embedded with `bge-small-en-v1.5` and compared with the 10 cards (cosine similarity).
