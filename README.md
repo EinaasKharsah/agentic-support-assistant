@@ -31,7 +31,7 @@ Everything runs locally: a small LLM in Ollama (`qwen2.5:3b`), embeddings with `
 
 ![Decision trace panel](docs/images/how-i-decided.png)
 
-More examples: [PayPal is not mentioned](docs/images/not-mentioned.png), [weather question declined](docs/images/decline.png).
+More examples: [Notion is not mentioned](docs/images/not-mentioned.png), [weather question declined](docs/images/decline.png).
 
 ---
 
